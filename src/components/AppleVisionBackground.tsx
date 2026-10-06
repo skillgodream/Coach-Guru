@@ -4,15 +4,18 @@ interface AppleVisionBackgroundProps {
   children: React.ReactNode;
   showHaloRing?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
 export const AppleVisionBackground: React.FC<AppleVisionBackgroundProps> = ({
   children,
   showHaloRing = true,
   className = '',
+  onClick,
 }) => {
   return (
     <div
+      onClick={onClick}
       className={`relative w-full overflow-hidden bg-[#FAF8FE] flex flex-col justify-between ${className}`}
       style={{
         backgroundImage: `

@@ -1,0 +1,267 @@
+import express from 'express';
+import { GoogleGenAI } from '@google/genai';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT: number = Number(process.env.PORT) || 3000;
+
+app.use(express.json({ limit: '10mb' }));
+
+// Initialize Gemini Client
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY || '',
+  httpOptions: {
+    headers: {
+      'User-Agent': 'aistudio-build',
+    },
+  },
+});
+
+// API Route: Extract Text from PDF/Image using Gemini Server Multimodal Engine
+app.post('/api/pdf/extract', async (req, res) => {
+  try {
+    const { fileBase64, mimeType = 'application/pdf', filename = 'uploaded_document.pdf' } = req.body;
+
+    if (!fileBase64 || typeof fileBase64 !== 'string') {
+      return res.status(400).json({ success: false, error: 'No fileBase64 data provided.' });
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.json({ success: false, useLocal: true, reason: 'GEMINI_API_KEY missing on server' });
+    }
+
+    let docPart: any;
+    let textDirect: string | null = null;
+
+    const lowerName = filename.toLowerCase();
+    const isDocx = lowerName.endsWith('.docx') || lowerName.endsWith('.doc') || mimeType.includes('word') || mimeType.includes('openxmlformats');
+
+    if (isDocx) {
+      try {
+        const decodedStr = Buffer.from(fileBase64, 'base64').toString('utf-8');
+        const xmlMatches = decodedStr.match(/<w:t[^>]*>(.*?)<\/w:t>/g);
+        if (xmlMatches && xmlMatches.length > 0) {
+          textDirect = xmlMatches.map((node) => node.replace(/<[^>]+>/g, '')).join(' ');
+        }
+      } catch (e) {
+        console.warn('[Server DOCX Extract] Direct buffer decode failed:', e);
+      }
+    }
+
+    if (!textDirect) {
+      const cleanMime = mimeType.includes('image') ? mimeType : mimeType.includes('text') ? 'text/plain' : 'application/pdf';
+      docPart = {
+        inlineData: {
+          mimeType: cleanMime,
+          data: fileBase64,
+        },
+      };
+    }
+
+    const prompt = `You are a High-Fidelity Document & OCR Extraction Engine.
+Extract the COMPLETE human-readable text from this document ("${filename}") word-for-word.
+Preserve paragraph structure, headers, section numbers, bullet points, and original Unicode typography (curly quotes, dashes, accents, symbols).
+Do NOT summarize. Return JSON:
+{
+  "extractedText": "Complete extracted text content here...",
+  "pageCount": estimated total pages as integer,
+  "wordCount": estimated total words as integer
+}`;
+
+    if (textDirect && textDirect.trim().length > 10) {
+      const extractedText = textDirect.trim();
+      const wordCount = extractedText.split(/\s+/).filter(Boolean).length;
+      const pageCount = Math.max(1, Math.ceil(wordCount / 220));
+      console.log(`[Server /api/pdf/extract SUCCESS] Direct XML decoded ${wordCount} words from '${filename}'`);
+      return res.json({
+        success: true,
+        extractedText,
+        wordCount,
+        pageCount,
+      });
+    }
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.8-flash',
+      contents: { parts: [docPart, { text: prompt }] },
+      config: {
+        responseMimeType: 'application/json',
+      },
+    });
+
+    const outputText = response.text || '';
+    const parsed = JSON.parse(outputText);
+    const extractedText = parsed.extractedText || '';
+    const wordCount = parsed.wordCount || extractedText.split(/\s+/).filter(Boolean).length;
+    const pageCount = parsed.pageCount || Math.max(1, Math.ceil(wordCount / 220));
+
+    console.log(`[Server /api/pdf/extract SUCCESS] Extracted ${wordCount} words from '${filename}' (${pageCount} pages)`);
+
+    return res.json({
+      success: true,
+      extractedText,
+      wordCount,
+      pageCount,
+    });
+  } catch (err: any) {
+    console.error('[Server /api/pdf/extract Error]:', err?.message || err);
+    return res.json({ success: false, error: err?.message || 'Server PDF extraction failed' });
+  }
+});
+
+// API Route: Generate Blueprint & Lesson from SOP Source Document
+app.post('/api/gemini/generate-blueprint', async (req, res) => {
+  try {
+    const { rawText, fileBase64, mimeType, filename, fileHash, pageCount, wordCount } = req.body;
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.json({
+        success: false,
+        useLocalGenerator: true,
+        reason: 'GEMINI_API_KEY not set on server, fallback to local domain-neutral generator.',
+      });
+    }
+
+    const parts: any[] = [];
+
+    // Add inline binary document part if PDF or Image base64 is provided
+    if (fileBase64 && typeof fileBase64 === 'string') {
+      parts.push({
+        inlineData: {
+          mimeType: mimeType || 'application/pdf',
+          data: fileBase64,
+        },
+      });
+    }
+
+    const systemInstruction = `You are a Lead Operational Intelligence Engineer and Instructional Designer.
+Your task is to transform an uploaded Standard Operating Procedure (SOP) into a structured OPERATIONAL BLUEPRINT.
+
+CRITICAL RULES:
+1. DISTINGUISH METADATA VS OPERATIONAL CONTENT:
+   - METADATA (DO NOT MAKE INTO STEPS): Document titles, REF codes ("DOCUMENT REF: SOP-HTL-101"), Version numbers ("VERSION 1.0"), Effective dates, Approvals, Section headers.
+   - OPERATIONAL CONTENT (MUST DRIVE BLUEPRINT): Physical actions, system entries, verbal communications, verifications, decision points, exception handling, escalations.
+2. BEHAVIOR CHANGE TEST: Ask: "If this item were removed from the SOP, would the worker's actual physical, verbal, system or decision-making behavior change?"
+   - YES -> Candidate operational content
+   - NO -> Metadata / background context
+3. SOURCE GROUNDING: Ground ALL outputs strictly in the provided SOP text. Retain source quotes and references for EVERY operational step, decision, and rule.
+4. ZERO DOMAIN FALLBACKS: Extract the REAL role and domain (e.g., Phlebotomy Technician, Retail Cashier, Hotel Front Office Agent). NEVER fall back to generic warehouse/picking terms unless in source text.
+5. NO GENERIC TEMPLATE STRINGS: Do NOT output strings like "frontline specialist duties", "Follow written operational procedure guidelines carefully", "Approved Operational Rule", "Non-compliant action". Be specific to the SOP!`;
+
+    const docText = rawText ? rawText.slice(0, 12000) : '';
+    const textPrompt = `Uploaded SOP Document: "${filename}" (${pageCount || 1} pages, ${wordCount || 100} words)
+${docText ? `Document Text:\n"""\n${docText}\n"""\n` : ''}
+
+Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
+{
+  "document_identity": {
+    "doc_title": "${filename ? filename.replace(/\.(txt|pdf|docx)$/i, '') : 'Operational Procedure'}",
+    "doc_ref": "Extracted document reference or empty",
+    "version": "Extracted version or empty"
+  },
+  "role": "Exact worker role described in SOP (e.g., Phlebotomy Technician, Retail Cashier, Hotel Front Office Agent)",
+  "process": "Exact core operational process (e.g., Patient Registration & Blood Collection, POS Return Processing, Guest Check-In)",
+  "purpose": "1-2 sentence primary operational goal for the worker",
+  "scope": "Applicable department or workspace boundaries",
+  "prerequisites": [
+    { "text": "Requirement before starting", "source_ref": "S1.pre1", "source_text": "Quote from text" }
+  ],
+  "tools_and_systems": [
+    { "name": "Tool or system name", "purpose": "What it is used for", "never_do": "Key prohibition", "source_ref": "S1.tool1", "source_text": "Quote" }
+  ],
+  "terminology": [
+    { "term": "Key term or code", "meaning": "Plain definition", "source_ref": "S1.term1", "source_text": "Quote" }
+  ],
+  "operational_steps": [
+    {
+      "instruction": "Specific, clear workplace action (e.g., Verify patient full name and date of birth against photo ID)",
+      "category": "DO" | "CHECK" | "KNOW" | "DECIDE" | "RESPOND" | "RECOVER" | "ESCALATE",
+      "why_it_matters": "Operational reason or consequence",
+      "action_verb": "Action verb",
+      "critical_control": true/false,
+      "source": { "page_or_section": "Page 1 · Section 1", "source_ref": "S1.sec1", "source_text": "Exact quote from document" }
+    }
+  ],
+  "decision_points": [
+    { "situation": "Condition triggering decision", "decision": "Decision choice", "action": "Required action", "source_ref": "S1.dec1", "source_text": "Quote" }
+  ],
+  "exceptions": [
+    { "trigger": "Unexpected scenario or error", "resolution": "Corrective resolution", "source_ref": "S1.exp1", "source_text": "Quote" }
+  ],
+  "escalations": [
+    { "situation": "When stuck or anomaly occurs", "contact_or_action": "Who to notify or call", "source_ref": "S1.esc1", "source_text": "Quote" }
+  ],
+  "critical_controls": [
+    { "rule": "Mandatory non-negotiable rule", "rationale": "Why it is critical", "source_ref": "S1.ctrl1", "source_text": "Quote" }
+  ],
+  "safety_rules": [
+    { "rule": "Safety or compliance rule", "source_ref": "S1.safe1", "source_text": "Quote" }
+  ],
+  "quality_rules": [
+    { "rule": "Quality standard rule", "source_ref": "S1.qual1", "source_text": "Quote" }
+  ],
+  "customer_or_business_impact": [
+    { "impact": "Who depends and impact", "source_ref": "S1.imp1", "source_text": "Quote" }
+  ],
+  "common_mistakes": [
+    { "mistake": "Potential worker error", "prevention": "How to avoid it", "source_ref": "S1.err1", "source_text": "Quote" }
+  ],
+  "source_evidence": [
+    { "id": "E1", "page_or_section": "Page 1", "excerpt": "Document excerpt" }
+  ],
+  "confidence": 0.98
+}`;
+
+    parts.push({ text: textPrompt });
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.8-flash',
+      contents: { parts },
+      config: {
+        systemInstruction,
+        responseMimeType: 'application/json',
+      },
+    });
+
+    const outputText = response.text || '';
+    const parsedData = JSON.parse(outputText);
+
+    return res.json({
+      success: true,
+      blueprint: parsedData,
+    });
+  } catch (err: any) {
+    console.error('[Server /api/gemini/generate-blueprint Error]:', err?.message || err);
+    return res.json({
+      success: false,
+      useLocalGenerator: true,
+      error: err?.message || 'Server error, falling back to local generator.',
+    });
+  }
+});
+
+// Vite Middleware for Dev Mode
+if (process.env.NODE_ENV !== 'production') {
+  const { createServer: createViteServer } = await import('vite');
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'spa',
+  });
+  app.use(vite.middlewares);
+} else {
+  app.use(express.static(path.join(__dirname, 'dist')));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  });
+}
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[Server] Express server running on http://0.0.0.0:${PORT}`);
+});

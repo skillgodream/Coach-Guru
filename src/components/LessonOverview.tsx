@@ -153,6 +153,11 @@ export default function LessonOverview({
             <p className="text-xs font-semibold text-[#66726B] mt-1">
               {lesson.description}
             </p>
+            {lesson.sourceMeta && (
+              <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold shadow-2xs">
+                <span>Source: {lesson.sourceMeta.filename} · Version: {lesson.sourceMeta.version} ({lesson.sourceMeta.confirmationText})</span>
+              </div>
+            )}
           </div>
 
           {/* Metric Rows */}

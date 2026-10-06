@@ -1,0 +1,267 @@
+/**
+ * Document Extractor Utility
+ * Unicode-preserving extraction pipeline for PDF, DOCX, TXT, MD, and Image documents.
+ * Preserves international scripts, accents, curly quotes, dashes, bullets, and symbols.
+ * Strips ONLY non-printable binary control artifacts.
+ */
+
+import { analyzeDocumentCharacters } from './characterDiagnostic';
+
+export interface ExtractionDiagnostics {
+  totalChars: number;
+  readableChars: number;
+  controlChars: number;
+  replacementChars: number;
+  wordCount: number;
+  pageCount: number;
+}
+
+export interface ExtractedDocument {
+  filename: string;
+  rawText: string;
+  wordCount: number;
+  pageCount: number;
+  fileHash: string;
+  confirmationText: string;
+  mimeType: string;
+  extractedAt: string;
+  diagnostics: ExtractionDiagnostics;
+  fileBase64?: string;
+}
+
+/**
+ * Deterministic string hash function (Fowler-Noll-Vo / FNV-1a 32-bit hex)
+ */
+export function computeDeterministicHash(str: string): string {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+/**
+ * Normalizes text to Unicode NFC and strips ONLY non-printable control characters.
+ * Preserves all valid Unicode scripts (Latin, Devanagari, Cyrillic, CJK),
+ * curly quotes (“ ” ‘ ’), dashes (– —), bullets (•), accents (é ñ ü), and symbols.
+ */
+export function normalizeUnicodeText(input: string): { normalizedText: string; diagnostics: ExtractionDiagnostics } {
+  // 1. Unicode NFC Normalization
+  let text = input.normalize('NFC');
+
+  const totalChars = text.length;
+
+  // Count replacement characters (U+FFFD )
+  const replacementMatch = text.match(/\uFFFD/g);
+  const replacementChars = replacementMatch ? replacementMatch.length : 0;
+
+  // Count control characters (\x00-\x08, \x0B-\x0C, \x0E-\x1F, \x7F-\x9F)
+  const controlMatch = text.match(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]/g);
+  const controlChars = controlMatch ? controlMatch.length : 0;
+
+  // 2. Remove ONLY non-printable control bytes, preserving \n, \r, \t and all Unicode
+  text = text.replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]/g, ' ');
+
+  // Normalize excessive horizontal whitespace (preserve paragraph newlines)
+  text = text.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+
+  const words = text.split(/\s+/).filter((w) => w.length > 0);
+  const wordCount = words.length;
+  const pageCount = Math.max(1, Math.ceil(wordCount / 220));
+
+  // Count readable characters (letters, numbers, punctuation, spaces across all Unicode blocks)
+  const readableMatch = text.match(/[\p{L}\p{N}\p{P}\p{S}\s]/gu);
+  const readableChars = readableMatch ? readableMatch.length : 0;
+
+  const diagnostics: ExtractionDiagnostics = {
+    totalChars,
+    readableChars,
+    controlChars,
+    replacementChars,
+    wordCount,
+    pageCount,
+  };
+
+  return { normalizedText: text, diagnostics };
+}
+
+/**
+ * Converts File object to base64 string
+ */
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = reader.result as string;
+      const base64 = res.includes(',') ? res.split(',')[1] : res;
+      resolve(base64);
+    };
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Clean text from PDF streams while preserving full Unicode text literals
+ */
+function cleanPdfStreamText(rawPdfText: string): string {
+  if (rawPdfText.includes('%PDF-') || rawPdfText.includes('/FlateDecode') || rawPdfText.includes('ReportLab')) {
+    const matches: string[] = [];
+    const regex = /\(([^()]{2,})\)/g;
+    let match;
+    while ((match = regex.exec(rawPdfText)) !== null) {
+      const candidate = match[1].trim();
+      if (
+        !candidate.match(/^(Helvetica|Times|Courier|Font|Page|Catalog|Parent|Type|MediaBox|ProcSet|Encoding|WinAnsiEncoding|PDF|Identity-H|FlateDecode|Length|Filter|Root|Info|Size|Prev|XRef)/i) &&
+        !candidate.match(/^[0-9\s\.\,\-\+\/]+$/) &&
+        candidate.length > 2
+      ) {
+        matches.push(candidate);
+      }
+    }
+
+    if (matches.length >= 3) {
+      return matches.join(' ');
+    }
+
+    const cleaned = rawPdfText
+      .replace(/%PDF-[\d\.]+/gi, ' ')
+      .replace(/ReportLab Generated PDF document [^\n]*/gi, ' ')
+      .replace(/<<[^>]*>>/g, ' ')
+      .replace(/\b(obj|endobj|stream|endstream|xref|trailer|startxref|FlateDecode|Filter|Length|Page|Pages|Catalog|Font|Type|MediaBox|ProcSet|Encoding|WinAnsiEncoding)\b/gi, ' ')
+      .replace(/[\/\\][A-Za-z0-9\+\-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    return cleaned;
+  }
+
+  return rawPdfText;
+}
+
+/**
+ * Extracts plain text and metadata from an uploaded File or text buffer
+ */
+export async function extractDocumentContent(file: File | { name: string; content: string }): Promise<ExtractedDocument> {
+  let rawText = '';
+  let filename = file.name || 'uploaded_document.txt';
+  let mimeType = 'text/plain';
+  let fileBase64: string | undefined;
+
+  if ('content' in file && typeof file.content === 'string') {
+    rawText = file.content;
+  } else if (file instanceof File) {
+    filename = file.name;
+    mimeType = file.type || 'text/plain';
+
+    try {
+      fileBase64 = await fileToBase64(file);
+    } catch {
+      console.warn('[DocumentExtractor] Could not convert file to base64');
+    }
+
+    const isExtractableViaServer =
+      fileBase64 &&
+      (filename.toLowerCase().endsWith('.pdf') ||
+        filename.toLowerCase().endsWith('.docx') ||
+        filename.toLowerCase().endsWith('.doc') ||
+        mimeType.includes('pdf') ||
+        mimeType.includes('image') ||
+        mimeType.includes('word'));
+
+    if (isExtractableViaServer && fileBase64) {
+      try {
+        console.log(`[DocumentExtractor] Invoking server extraction endpoint for '${filename}'...`);
+        const res = await fetch('/api/pdf/extract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileBase64,
+            mimeType: mimeType || 'application/pdf',
+            filename,
+          }),
+        });
+        const data = await res.json();
+        if (data.success && data.extractedText && data.extractedText.trim().length > 10) {
+          rawText = data.extractedText;
+          console.log(`[DocumentExtractor SUCCESS] Server extracted ${data.wordCount} words from '${filename}'`);
+        }
+      } catch (err) {
+        console.warn('[DocumentExtractor] Server extraction failed, attempting local decode:', err);
+      }
+    }
+
+    if (!rawText) {
+      const lowerName = filename.toLowerCase();
+      if (mimeType.includes('text') || lowerName.endsWith('.txt') || lowerName.endsWith('.md') || lowerName.endsWith('.json') || lowerName.endsWith('.csv')) {
+        rawText = await file.text();
+      } else if (lowerName.endsWith('.docx') || lowerName.endsWith('.doc')) {
+        try {
+          const buffer = await file.arrayBuffer();
+          const decoder = new TextDecoder('utf-8', { fatal: false });
+          const text = decoder.decode(buffer);
+          
+          // Match Word XML text nodes <w:t>...</w:t>
+          const xmlMatches = text.match(/<w:t[^>]*>(.*?)<\/w:t>/g);
+          if (xmlMatches && xmlMatches.length > 0) {
+            rawText = xmlMatches.map((node) => node.replace(/<[^>]+>/g, '')).join(' ');
+          } else {
+            rawText = text.replace(/<[^>]+>/g, ' ').replace(/[^\x20-\x7E\n\r\t]/g, ' ').trim();
+          }
+        } catch {
+          rawText = await file.text();
+        }
+      } else if (lowerName.endsWith('.pdf') || mimeType.includes('pdf')) {
+        try {
+          const buffer = await file.arrayBuffer();
+          const decoder = new TextDecoder('utf-8', { fatal: false });
+          const text = decoder.decode(buffer);
+          rawText = cleanPdfStreamText(text);
+        } catch {
+          rawText = await file.text();
+        }
+      } else {
+        rawText = await file.text();
+      }
+    }
+  }
+
+  // Sanity check for raw PDF stream syntax
+  if (rawText.startsWith('%PDF-') || rawText.includes('/FlateDecode')) {
+    rawText = cleanPdfStreamText(rawText);
+  }
+
+  // Perform character-by-character code point analysis & logging
+  analyzeDocumentCharacters(rawText, filename);
+
+  // Normalize Unicode text and compute diagnostics
+  const { normalizedText, diagnostics } = normalizeUnicodeText(rawText);
+
+  const pipelineVersion = 'v1.1';
+  const fileHash = computeDeterministicHash(`${normalizedText}||${filename}||${pipelineVersion}`);
+  const confirmationText = `We read ${diagnostics.pageCount} page${diagnostics.pageCount > 1 ? 's' : ''} · ${diagnostics.wordCount.toLocaleString()} words`;
+
+  const result: ExtractedDocument = {
+    filename,
+    rawText: normalizedText,
+    wordCount: diagnostics.wordCount,
+    pageCount: diagnostics.pageCount,
+    fileHash,
+    confirmationText,
+    mimeType,
+    extractedAt: new Date().toISOString(),
+    diagnostics,
+    fileBase64,
+  };
+
+  // Diagnostic Audit Logging
+  console.log('[SOP Pipeline] Unicode Document Extracted:', {
+    filename: result.filename,
+    fileHash: result.fileHash,
+    diagnostics: result.diagnostics,
+    sample: normalizedText.slice(0, 160) + '...',
+  });
+
+  return result;
+}

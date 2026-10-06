@@ -117,6 +117,29 @@ class SoundEngine {
     }
   }
 
+  playFanfare() {
+    if (!this.soundEnabled) return;
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + i * 0.1);
+        gain.gain.setValueAtTime(0.2, now + i * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.1);
+        osc.stop(now + i * 0.1 + 0.35);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
   speak(text: string, onEnd?: () => void) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     try {

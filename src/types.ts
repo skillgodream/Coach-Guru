@@ -4,6 +4,141 @@ export type CategoryType = 'All' | 'Picking' | 'Packing' | 'Safety' | 'Inventory
 
 export type ExperienceLevel = 'new' | 'some' | 'experienced';
 
+export interface SourceMeta {
+  filename: string;
+  version: string;
+  fileHash: string;
+  pageCount: number;
+  wordCount: number;
+  confirmationText: string;
+  rawText?: string;
+}
+
+export interface OperationalSourceRef {
+  page_or_section: string;
+  source_ref: string;
+  source_text: string;
+}
+
+export type StepCategoryType = 'KNOW' | 'DO' | 'DECIDE' | 'RESPOND' | 'CHECK' | 'RECOVER' | 'ESCALATE';
+
+export interface OperationalBlueprintItem {
+  instruction: string;
+  category: StepCategoryType;
+  source: OperationalSourceRef;
+  why_it_matters?: string;
+  action_verb?: string;
+  critical_control?: boolean;
+}
+
+export interface SopKnowledgeModel {
+  document: {
+    id: string;
+    filename: string;
+    version: string;
+    pages: number;
+    extractedText: string;
+  };
+  identity: {
+    title: string;
+    organization?: string;
+    department?: string;
+    role: string;
+    process: string;
+  };
+  purpose: string;
+  scope: string;
+  whyItMatters: string;
+
+  prerequisites: { text: string; sourceEvidence: string }[];
+  tools: { name: string; purpose: string; neverDo: string; sourceEvidence: string }[];
+  systems: { name: string; purpose: string; sourceEvidence: string }[];
+  terminology: { term: string; meaning: string; sourceEvidence: string }[];
+
+  steps: {
+    id: number;
+    action: string;
+    expectedOutcome: string;
+    sourceEvidence: string;
+    pageOrSection: string;
+    sourceRef: string;
+  }[];
+
+  decisionPoints: {
+    id: number;
+    situation: string;
+    options: string[];
+    correctDecision: string;
+    rationale: string;
+    sourceEvidence: string;
+  }[];
+
+  exceptions: {
+    situation: string;
+    response: string;
+    sourceEvidence: string;
+  }[];
+
+  escalations: {
+    trigger: string;
+    action: string;
+    escalationTarget: string;
+    sourceEvidence: string;
+  }[];
+
+  criticalControls: string[];
+  safetyRules: string[];
+  qualityRules: string[];
+
+  commonMistakes: string[];
+  customerImpact: string;
+  businessImpact: string;
+
+  confidence: number;
+}
+
+export interface TrainingPlanItem {
+  id: string;
+  objective: string;
+  type: 'teach' | 'demonstrate' | 'practice' | 'decision' | 'exception' | 'test';
+  instruction: string;
+  expectedBehavior: string;
+  whyItMatters: string;
+  sourceEvidence: string;
+  difficulty: 'basic' | 'intermediate' | 'advanced';
+}
+
+export interface OperationalBlueprint {
+  document_identity: {
+    doc_title: string;
+    doc_ref?: string;
+    version?: string;
+    department?: string;
+  };
+  role: string;
+  process: string;
+  purpose: string;
+  scope: string;
+
+  prerequisites: { text: string; source_ref: string; source_text: string }[];
+  tools_and_systems: { name: string; purpose: string; never_do: string; source_ref: string; source_text: string }[];
+  terminology: { term: string; meaning: string; source_ref: string; source_text: string }[];
+
+  operational_steps: OperationalBlueprintItem[];
+  decision_points: { situation: string; decision: string; action: string; source_ref: string; source_text: string }[];
+  exceptions: { trigger: string; resolution: string; source_ref: string; source_text: string }[];
+  escalations: { situation: string; contact_or_action: string; source_ref: string; source_text: string }[];
+
+  critical_controls: { rule: string; rationale: string; source_ref: string; source_text: string }[];
+  safety_rules: { rule: string; source_ref: string; source_text: string }[];
+  quality_rules: { rule: string; source_ref: string; source_text: string }[];
+  customer_or_business_impact: { impact: string; source_ref: string; source_text: string }[];
+  common_mistakes: { mistake: string; prevention: string; source_ref: string; source_text: string }[];
+
+  source_evidence: { id: string; page_or_section: string; excerpt: string }[];
+  confidence: number;
+}
+
 export interface Lesson {
   id: string;
   title: string;
@@ -18,6 +153,12 @@ export interface Lesson {
   masteryPercentage: number;
   artType: 'scanner' | 'box' | 'tote' | 'safety' | 'clipboard' | 'trolley';
   description: string;
+  sourceMeta?: SourceMeta;
+  blueprint?: BlueprintV1;
+  passport?: ProcessPassport;
+  operationalBlueprint?: OperationalBlueprint;
+  knowledgeModel?: SopKnowledgeModel;
+  trainingPlan?: TrainingPlanItem[];
 }
 
 export interface ToolItem {
@@ -54,6 +195,9 @@ export interface SimulatorStep {
   why: string;
   coachTip: string;
   hint: string;
+  source_ref?: string;
+  page_or_section?: string;
+  evidence?: string;
 }
 
 export interface ExperiencedCheckQuestion {

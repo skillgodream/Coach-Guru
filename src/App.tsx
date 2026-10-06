@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import BottomNav from './components/BottomNav';
 import ScanModal from './components/ScanModal';
 import UploadModal from './components/UploadModal';
@@ -19,13 +19,18 @@ import LibraryView from './components/LibraryView';
 import ProgressView from './components/ProgressView';
 import ProfileView from './components/ProfileView';
 import BentoArchitectureShowcase from './components/BentoArchitectureShowcase';
+import ValidationErrorModal from './components/ValidationErrorModal';
 import { MeetGurujiScreen } from './screens/MeetGurujiScreen';
+import { HomeScreen } from './screens/HomeScreen';
 
 import { INITIAL_LESSONS } from './data/lessonsData';
 import ProcessPassportModal from './components/ProcessPassportModal';
-import { buildProcessPassport, perceiveImage, buildBlueprintV1 } from './utils/blueprintEngine';
+import { buildProcessPassport, perceiveImage } from './utils/blueprintEngine';
 import { ProcessPassport, PerceiveObservation, TabType, Lesson, ExperienceLevel } from './types';
 import { sounds } from './utils/audio';
+import { ExtractedDocument } from './utils/documentExtractor';
+import { validateSourceFidelity } from './utils/sourceValidator';
+import { generateDomainNeutralLesson } from './utils/domainNeutralGenerator';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
@@ -37,8 +42,17 @@ export default function App() {
   const [isScanOpen, setIsScanOpen] = useState<boolean>(false);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
 
-  // AI Pipeline (P0 Passport, P1 Perceive, P2 Blueprint):
-  const [analyzingSop, setAnalyzingSop] = useState<{ title: string; lesson: Lesson } | null>(null);
+  // Validation Error State:
+  const [validationError, setValidationError] = useState<{ filename: string; reason: string } | null>(null);
+
+  // AI Pipeline State:
+  const [analyzingSop, setAnalyzingSop] = useState<{
+    title: string;
+    lesson: Lesson;
+    confirmationText?: string;
+    filename?: string;
+  } | null>(null);
+
   const [activePassport, setActivePassport] = useState<ProcessPassport>(() =>
     buildProcessPassport('Warehouse Order Picking', 'Picker')
   );
@@ -47,14 +61,12 @@ export default function App() {
   );
   const [isPassportModalOpen, setIsPassportModalOpen] = useState<boolean>(false);
 
-  // Step 3: Learner Journey Onboarding:
+  // Onboarding Journey States:
   const [welcomeLesson, setWelcomeLesson] = useState<Lesson | null>(null);
   const [isExperiencedCheckOpen, setIsExperiencedCheckOpen] = useState<boolean>(false);
-
-  // Step 4: Choose 1 of 4 Learning Modes
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
 
-  // Step 5: Active Learning Modes
+  // Active Learning Mode States:
   const [isIntroDeckOpen, setIsIntroDeckOpen] = useState<boolean>(false);
   const [activeSimulator, setActiveSimulator] = useState<Lesson | null>(null);
   const [simulatorPhase, setSimulatorPhase] = useState<number>(1);
@@ -62,21 +74,144 @@ export default function App() {
   // Omnipresent Stage Controls:
   const [isTrainerModalOpen, setIsTrainerModalOpen] = useState<boolean>(false);
   const [isMicroLessonOpen, setIsMicroLessonOpen] = useState<boolean>(false);
-  const [currentContextTitle, setCurrentContextTitle] = useState<string>('Warehouse Picking Floor');
+  const [currentContextTitle, setCurrentContextTitle] = useState<string>('Standard Operating Procedure');
 
-  // Flow Handler: User picks an SOP -> AI Observes & Understands -> Welcome Onboarding
+  const isPipelineProcessingRef = useRef<boolean>(false);
+
+  /**
+   * AUTHORITATIVE SOP PIPELINE HANDLER
+   * Extracted Document -> Validation -> Domain Neutral Generator -> Lesson Generation -> Play Lesson
+   */
+  const handleProcessExtractedDocument = useCallback(async (extractedDoc: ExtractedDocument) => {
+    if (isPipelineProcessingRef.current) {
+      console.warn('[SOP Pipeline] Transition already in progress, ignoring duplicate trigger.');
+      return;
+    }
+    isPipelineProcessingRef.current = true;
+    console.log('[SOP Pipeline START] Processing extracted document:', extractedDoc.filename);
+
+    try {
+      // 1. CLEAR PREVIOUS SESSION STATE (Cross-session contamination protection)
+      setSelectedLesson(null);
+      setActiveSimulator(null);
+      setWelcomeLesson(null);
+      setIsIntroDeckOpen(false);
+      setIsExperiencedCheckOpen(false);
+      setValidationError(null);
+
+      // 2. SOURCE FIDELITY VALIDATION
+      const validation = validateSourceFidelity(extractedDoc);
+
+      if (!validation.isValid) {
+        console.error('[SOP Pipeline REJECTED]:', validation.errorReason);
+        setValidationError({
+          filename: extractedDoc.filename,
+          reason: validation.errorReason || 'Unusable or corrupt document.',
+        });
+        return; // STOP IMMEDIATELY! NEVER FALLBACK TO PICKER OR DEFAULT LESSON!
+      }
+
+      // 3. GENERATE OPERATIONAL BLUEPRINT VIA SERVER LLM OR LOCAL BRAIN
+      let opBlueprint;
+      try {
+        const res = await fetch('/api/gemini/generate-blueprint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            rawText: extractedDoc.rawText,
+            fileBase64: extractedDoc.fileBase64,
+            mimeType: extractedDoc.mimeType,
+            filename: extractedDoc.filename,
+            fileHash: extractedDoc.fileHash,
+            pageCount: extractedDoc.pageCount,
+            wordCount: extractedDoc.wordCount,
+          }),
+        });
+        const data = await res.json();
+        if (data.success && data.blueprint && data.blueprint.operational_steps) {
+          console.log('[SOP Pipeline SUCCESS] Generated Operational Blueprint via Gemini Server LLM');
+          opBlueprint = data.blueprint;
+        }
+      } catch (err) {
+        console.warn('[SOP Pipeline] Server LLM unavailable, using local operational brain');
+      }
+
+      // 4. DOMAIN-NEUTRAL BLUEPRINT & LESSON GENERATION
+      const { lesson, passport, blueprint } = generateDomainNeutralLesson(extractedDoc, opBlueprint);
+
+      // 5. SECONDARY FIDELITY CHECK ON GENERATED LESSON
+      const lessonValidation = validateSourceFidelity(extractedDoc, lesson, blueprint, passport);
+      if (!lessonValidation.isValid) {
+        console.error('[SOP Pipeline REJECTED Lesson]:', lessonValidation.errorReason);
+        setValidationError({
+          filename: extractedDoc.filename,
+          reason: lessonValidation.errorReason || 'Generated lesson failed source fidelity validation.',
+        });
+        return; // STOP IMMEDIATELY! NEVER FALLBACK TO PICKER OR DEFAULT LESSON!
+      }
+
+      // Update state with newly generated document-driven lesson
+      setCurrentContextTitle(lesson.title);
+      setActivePassport(passport);
+      setPerceiveObservation(perceiveImage(`${extractedDoc.filename}`));
+
+      setLessons((prev) => {
+        const exists = prev.some((l) => l.id === lesson.id);
+        if (exists) {
+          return prev.map((l) => (l.id === lesson.id ? lesson : l));
+        }
+        return [lesson, ...prev];
+      });
+
+      setAnalyzingSop({
+        title: lesson.title,
+        lesson,
+        confirmationText: extractedDoc.confirmationText,
+        filename: extractedDoc.filename,
+      });
+    } finally {
+      isPipelineProcessingRef.current = false;
+    }
+  }, []);
+
+  // Preset SOP selection from Library / Demo
   const handleSelectSop = (lessonId: string, customTitle?: string) => {
     const lesson = lessons.find((l) => l.id === lessonId) || lessons[0];
     const title = customTitle || lesson.title;
     setCurrentContextTitle(title);
 
-    // Run P0 Passport draft & P1 Perceive observation
-    const draftPassport = buildProcessPassport(title, 'Picker');
-    const p1Result = perceiveImage(`${title}_SOP.png`);
-    setActivePassport(draftPassport);
-    setPerceiveObservation(p1Result);
+    // Clear previous simulation state
+    setSelectedLesson(null);
+    setActiveSimulator(null);
+    setIsIntroDeckOpen(false);
 
-    setAnalyzingSop({ title, lesson });
+    if (lesson.sourceMeta?.rawText) {
+      handleProcessExtractedDocument({
+        filename: lesson.sourceMeta.filename,
+        rawText: lesson.sourceMeta.rawText,
+        wordCount: lesson.sourceMeta.wordCount,
+        pageCount: lesson.sourceMeta.pageCount,
+        fileHash: lesson.sourceMeta.fileHash,
+        confirmationText: lesson.sourceMeta.confirmationText,
+        diagnostics: {
+          totalChars: lesson.sourceMeta.rawText.length,
+          readableChars: lesson.sourceMeta.rawText.length,
+          controlChars: 0,
+          replacementChars: 0,
+          wordCount: lesson.sourceMeta.wordCount,
+          pageCount: lesson.sourceMeta.pageCount,
+        },
+        mimeType: 'text/plain',
+        extractedAt: new Date().toISOString(),
+      });
+    } else {
+      setAnalyzingSop({
+        title,
+        lesson,
+        confirmationText: 'Loaded verified SOP checklist',
+        filename: lesson.title,
+      });
+    }
   };
 
   const handleAiUnderstandComplete = () => {
@@ -88,8 +223,6 @@ export default function App() {
   };
 
   // Learner Journey Start-point Branching:
-  // New / Some -> KNOW IT
-  // Experienced -> 4-Question Check
   const handleSelectExperienceLevel = (level: ExperienceLevel) => {
     const target = welcomeLesson || lessons[0];
     setWelcomeLesson(null);
@@ -97,32 +230,25 @@ export default function App() {
     if (level === 'experienced') {
       setIsExperiencedCheckOpen(true);
     } else {
-      // New / Some -> Route to Know It (cards -> tool explorer -> quick check -> ready)
       setSelectedLesson(target);
       setIsIntroDeckOpen(true);
     }
   };
 
-  // 4-Question Check: Pass >= 75% -> Skip cards to Show Me / Guide Me
   const handleExperiencedCheckPass = () => {
     const target = welcomeLesson || selectedLesson || lessons[0];
     setIsExperiencedCheckOpen(false);
     setSelectedLesson(target);
-    handleStartSimulation(0, target); // Launch Show Me demo
+    handleStartSimulation(0, target);
   };
 
-  // 4-Question Check: Fail < 75% -> Route to Know It
   const handleExperiencedCheckFail = () => {
     const target = welcomeLesson || selectedLesson || lessons[0];
     setIsExperiencedCheckOpen(false);
     setSelectedLesson(target);
-    setIsIntroDeckOpen(true); // Route to Know It
+    setIsIntroDeckOpen(true);
   };
 
-  // Launch Simulator with specific phase:
-  // 0: Show Me (Demo)
-  // 1: Guide Me (Guided Practice)
-  // 2: Test Me (Solo Assessment)
   const handleStartSimulation = (phase: number = 1, targetLesson?: Lesson) => {
     const lesson = targetLesson || selectedLesson || lessons[0];
     setSimulatorPhase(phase);
@@ -162,7 +288,7 @@ export default function App() {
             }}
           />
 
-          {/* Frosted Glass SOP Selection Drawer when 'Tap to explore' is tapped */}
+          {/* Frosted Glass SOP Selection Drawer */}
           {isSopOptionsOpen && (
             <div className="fixed inset-0 z-50 bg-[#0E1116]/60 backdrop-blur-md flex items-end justify-center p-0 sm:p-4 animate-in fade-in duration-200">
               <div className="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl space-y-4 animate-in slide-in-from-bottom-8 duration-200">
@@ -175,7 +301,7 @@ export default function App() {
                   </div>
                   <button
                     onClick={() => setIsSopOptionsOpen(false)}
-                    className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200"
+                    className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 cursor-pointer"
                     aria-label="Close"
                   >
                     ✕
@@ -183,7 +309,6 @@ export default function App() {
                 </div>
 
                 <div className="space-y-3 pt-1">
-                  {/* Option 1: Scan the SOP */}
                   <button
                     onClick={() => {
                       sounds.playTap();
@@ -196,7 +321,6 @@ export default function App() {
                     <span>1. Scan the SOP</span>
                   </button>
 
-                  {/* Option 2: Upload the SOP */}
                   <button
                     onClick={() => {
                       sounds.playTap();
@@ -209,16 +333,15 @@ export default function App() {
                     <span>2. Upload the SOP</span>
                   </button>
 
-                  {/* Link to existing SOPs in Library */}
                   <button
                     onClick={() => {
                       sounds.playTap();
                       setIsSopOptionsOpen(false);
                       setActiveTab('library');
                     }}
-                    className="w-full py-3 text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-colors"
+                    className="w-full py-3 text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <span>Browse existing warehouse SOPs in Library →</span>
+                    <span>Browse existing domain SOPs in Library →</span>
                   </button>
                 </div>
               </div>
@@ -228,30 +351,36 @@ export default function App() {
       )}
 
       {activeTab === 'library' && (
-        <LibraryView
-          lessons={lessons}
-          onSelectLesson={(lesson) => {
-            handleSelectSop(lesson.id, lesson.title);
-          }}
-        />
+        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+          <LibraryView
+            lessons={lessons}
+            onSelectLesson={(lesson) => {
+              handleSelectSop(lesson.id, lesson.title);
+            }}
+          />
+        </main>
       )}
 
       {activeTab === 'progress' && (
-        <ProgressView
-          lessons={lessons}
-          onStartSimulation={(lessonId) => {
-            const found = lessons.find((l) => l.id === lessonId) || lessons[0];
-            handleSelectSop(found.id, found.title);
-          }}
-        />
+        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+          <ProgressView
+            lessons={lessons}
+            onStartSimulation={(lessonId) => {
+              const found = lessons.find((l) => l.id === lessonId) || lessons[0];
+              handleSelectSop(found.id, found.title);
+            }}
+          />
+        </main>
       )}
 
       {activeTab === 'profile' && (
-        <ProfileView
-          onResetData={handleResetData}
-          onOpenBentoShowcase={() => setShowBentoShowcase(true)}
-          onOpenPassport={() => setIsPassportModalOpen(true)}
-        />
+        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+          <ProfileView
+            onResetData={handleResetData}
+            onOpenBentoShowcase={() => setShowBentoShowcase(true)}
+            onOpenPassport={() => setIsPassportModalOpen(true)}
+          />
+        </main>
       )}
 
       {/* Floating Bottom Navigation Bar */}
@@ -261,9 +390,9 @@ export default function App() {
       <ScanModal
         isOpen={isScanOpen}
         onClose={() => setIsScanOpen(false)}
-        onScanSuccess={(lessonId) => {
+        onScanSuccess={(extractedDoc) => {
           setIsScanOpen(false);
-          handleSelectSop(lessonId);
+          handleProcessExtractedDocument(extractedDoc);
         }}
       />
 
@@ -271,9 +400,21 @@ export default function App() {
       <UploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onUploadSuccess={(title, lessonId) => {
+        onUploadSuccess={(extractedDoc) => {
           setIsUploadOpen(false);
-          handleSelectSop(lessonId, title);
+          handleProcessExtractedDocument(extractedDoc);
+        }}
+      />
+
+      {/* SOURCE FIDELITY VALIDATION ERROR MODAL */}
+      <ValidationErrorModal
+        isOpen={validationError !== null}
+        filename={validationError?.filename || 'Document'}
+        errorReason={validationError?.reason || 'Content cannot be used.'}
+        onClose={() => setValidationError(null)}
+        onTryAnother={() => {
+          setValidationError(null);
+          setIsUploadOpen(true);
         }}
       />
 
@@ -281,6 +422,8 @@ export default function App() {
       <AiUnderstandModal
         isOpen={analyzingSop !== null}
         sopTitle={analyzingSop?.title || ''}
+        confirmationText={analyzingSop?.confirmationText}
+        filename={analyzingSop?.filename}
         onComplete={handleAiUnderstandComplete}
       />
 
@@ -295,7 +438,7 @@ export default function App() {
         />
       )}
 
-      {/* STEP 2 (Experienced branch): 4-Question Check (Pass >= 75% -> Skip to Show Me) */}
+      {/* STEP 2 (Experienced branch): 4-Question Check */}
       <ExperiencedCheckModal
         isOpen={isExperiencedCheckOpen}
         onClose={() => setIsExperiencedCheckOpen(false)}
@@ -318,8 +461,9 @@ export default function App() {
       {/* MODE 1: KNOW IT (cards -> tool explorer -> golden rules -> ready) */}
       {isIntroDeckOpen && (
         <IntroSlideDeck
+          lesson={selectedLesson || undefined}
           onClose={() => setIsIntroDeckOpen(false)}
-          onStartSimulation={() => handleStartSimulation(0)} // advances to SHOW ME
+          onStartSimulation={() => handleStartSimulation(0)}
           onAskTrainer={() => setIsTrainerModalOpen(true)}
         />
       )}
@@ -328,6 +472,8 @@ export default function App() {
       {activeSimulator && (
         <SimulatorScreen
           initialPhase={simulatorPhase}
+          lesson={activeSimulator}
+          sourceMeta={activeSimulator.sourceMeta}
           onClose={() => setActiveSimulator(null)}
           onFinish={handleSimulationFinish}
           onOpenBasics={() => {
@@ -337,7 +483,7 @@ export default function App() {
         />
       )}
 
-      {/* OMNIPRESENT: Ask My Trainer Modal (Accessible in EVERY stage) */}
+      {/* OMNIPRESENT: Ask My Trainer Modal */}
       <AskTrainerModal
         isOpen={isTrainerModalOpen}
         onClose={() => setIsTrainerModalOpen(false)}
@@ -355,7 +501,7 @@ export default function App() {
         }}
       />
 
-      {/* OMNIPRESENT: On The Floor "Stuck? Ask Guruji" Quick Micro-Lessons */}
+      {/* OMNIPRESENT: On The Floor Quick Micro-Lessons */}
       <MicroLessonSheet
         isOpen={isMicroLessonOpen}
         onClose={() => setIsMicroLessonOpen(false)}

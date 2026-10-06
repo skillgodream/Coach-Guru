@@ -17,7 +17,7 @@ export default function BottomNav({ activeTab, onSelectTab }: BottomNavProps) {
   ];
 
   return (
-    <nav className="fixed bottom-6 left-6 right-6 h-[72px] bg-white rounded-full shadow-[0_8px_32px_rgba(16,24,40,0.12)] flex items-center justify-around px-3 z-30 border border-[#E6E8EC]/80 backdrop-blur-md">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md h-[68px] bg-white/95 rounded-full shadow-[0_8px_32px_rgba(16,24,40,0.12)] flex items-center justify-around px-3 z-40 border border-[#E6E8EC]/80 backdrop-blur-md">
       {items.map((item) => {
         const isActive = activeTab === item.id;
         const Icon = item.icon;

@@ -1,40 +1,76 @@
 import React, { useState } from 'react';
-import { X, Upload, FileText, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, Upload, FileText, Sparkles, Check, ArrowRight } from 'lucide-react';
 import { sounds } from '../utils/audio';
+import { extractDocumentContent, ExtractedDocument } from '../utils/documentExtractor';
 
 interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUploadSuccess: (sopTitle: string, lessonId: string) => void;
+  onUploadSuccess: (extracted: ExtractedDocument) => void;
 }
 
 export default function UploadModal({ isOpen, onClose, onUploadSuccess }: UploadModalProps) {
-  const [selectedDoc, setSelectedDoc] = useState<string | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [pastedText, setPastedText] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'file' | 'paste'>('file');
 
   if (!isOpen) return null;
 
-  const sampleSops = [
-    { id: 'picking-101', title: 'SOP-WH-042: High-Velocity Order Picking.pdf', category: 'Picking' },
-    { id: 'safety-first', title: 'SOP-SAF-018: Aisle Safety & PPE Protocol.docx', category: 'Safety' },
-    { id: 'packing-basics', title: 'SOP-PCK-007: Pack Station Handover & Sealing.pdf', category: 'Packing' },
-  ];
-
-  const handleSelectDoc = (title: string, lessonId: string) => {
-    sounds.playTap();
-    setSelectedDoc(title);
-    sounds.playCorrect();
-    setTimeout(() => {
-      onUploadSuccess(title, lessonId);
-      onClose();
-      setSelectedDoc(null);
-    }, 500);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleSelectDoc(file.name, 'picking-101');
+      sounds.playTap();
+      setSelectedFileName(file.name);
+      setIsProcessing(true);
+      sounds.playCorrect();
+
+      const extracted = await extractDocumentContent(file);
+
+      setTimeout(() => {
+        setIsProcessing(false);
+        onUploadSuccess(extracted);
+        onClose();
+        setSelectedFileName(null);
+      }, 400);
     }
+  };
+
+  const handlePastedTextSubmit = async () => {
+    if (!pastedText.trim()) return;
+    sounds.playTap();
+    setIsProcessing(true);
+    sounds.playCorrect();
+
+    const text = pastedText.trim();
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    const pageCount = Math.max(1, Math.ceil(wordCount / 220));
+
+    const extracted: ExtractedDocument = {
+      filename: 'Custom_Pasted_SOP.txt',
+      rawText: text,
+      wordCount,
+      pageCount,
+      fileHash: `hash_${Date.now()}`,
+      confirmationText: `We read 1 page · ${wordCount} words`,
+      diagnostics: {
+        totalChars: text.length,
+        readableChars: text.length,
+        controlChars: 0,
+        replacementChars: 0,
+        wordCount,
+        pageCount,
+      },
+      mimeType: 'text/plain',
+      extractedAt: new Date().toISOString(),
+    };
+
+    setTimeout(() => {
+      setIsProcessing(false);
+      onUploadSuccess(extracted);
+      onClose();
+      setPastedText('');
+    }, 400);
   };
 
   return (
@@ -43,12 +79,12 @@ export default function UploadModal({ isOpen, onClose, onUploadSuccess }: Upload
         {/* Top Header */}
         <div className="p-6 bg-white border-b border-[#E6E8EC] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FFE6D2] text-[#F27A1A] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[#DCEBFF] text-[#2F6FED] flex items-center justify-center">
               <Upload size={20} />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-[#0E1116]">Upload SOP</h2>
-              <p className="text-xs font-semibold text-[#66726B]">PDF, DOCX, or text procedure</p>
+              <h2 className="text-xl font-bold text-[#0E1116]">Upload Universal SOP</h2>
+              <p className="text-xs font-semibold text-[#66726B]">Supports any domain or industry SOP</p>
             </div>
           </div>
           <button
@@ -56,61 +92,103 @@ export default function UploadModal({ isOpen, onClose, onUploadSuccess }: Upload
               sounds.playTap();
               onClose();
             }}
-            className="w-10 h-10 rounded-full bg-[#F7F7F5] border border-[#E6E8EC] flex items-center justify-center text-[#0E1116] hover:bg-[#E6E8EC]"
+            className="w-10 h-10 rounded-full bg-[#F7F7F5] border border-[#E6E8EC] flex items-center justify-center text-[#0E1116] hover:bg-[#E6E8EC] cursor-pointer"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Upload Body */}
-        <div className="p-6 space-y-4 overflow-y-auto">
-          {/* File Dropzone */}
-          <label className="border-2 border-dashed border-[#E6E8EC] hover:border-[#0E1116] bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors active:scale-[0.99] block">
-            <input
-              type="file"
-              accept=".pdf,.docx,.doc,.txt"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-            <div className="w-12 h-12 rounded-full bg-[#DCEBFF] text-[#2F6FED] flex items-center justify-center mb-3">
-              <Upload size={24} />
-            </div>
-            <p className="text-sm font-bold text-[#0E1116]">Choose or drop your SOP file</p>
-            <p className="text-xs text-[#66726B] font-semibold mt-1">Tap to browse warehouse document</p>
-          </label>
+        {/* Tab Selector: Upload File vs Paste SOP Text */}
+        <div className="flex border-b border-[#E6E8EC] bg-white px-6 pt-2">
+          <button
+            onClick={() => {
+              sounds.playTap();
+              setActiveTab('file');
+            }}
+            className={`flex-1 py-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'file'
+                ? 'border-[#0E1116] text-[#0E1116]'
+                : 'border-transparent text-[#66726B] hover:text-[#0E1116]'
+            }`}
+          >
+            📄 Upload File (PDF / Word / Image)
+          </button>
+          <button
+            onClick={() => {
+              sounds.playTap();
+              setActiveTab('paste');
+            }}
+            className={`flex-1 py-3 text-xs font-bold border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'paste'
+                ? 'border-[#0E1116] text-[#0E1116]'
+                : 'border-transparent text-[#66726B] hover:text-[#0E1116]'
+            }`}
+          >
+            ✏️ Paste SOP Text
+          </button>
+        </div>
 
-          {/* Sample SOPs to pick immediately */}
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-[#66726B] mb-2.5">
-              Or pick an existing warehouse SOP:
-            </p>
-            <div className="space-y-2">
-              {sampleSops.map((sop) => (
-                <button
-                  key={sop.id}
-                  onClick={() => handleSelectDoc(sop.title, sop.id)}
-                  className={`w-full p-3.5 rounded-2xl border text-left flex items-center justify-between transition-all active:scale-98 ${
-                    selectedDoc === sop.title
-                      ? 'bg-[#DDF3E6] border-[#1FA55E] text-[#14532D]'
-                      : 'bg-white border-[#E6E8EC] text-[#0E1116] hover:border-[#0E1116]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <FileText size={18} className="text-[#2F6FED] shrink-0" />
-                    <div>
-                      <span className="text-xs font-bold block truncate max-w-[240px]">{sop.title}</span>
-                      <span className="text-[10px] font-semibold text-[#66726B] block">{sop.category} Standard Procedure</span>
-                    </div>
-                  </div>
-                  {selectedDoc === sop.title ? (
-                    <CheckCircle2 size={18} className="text-[#1FA55E]" />
-                  ) : (
-                    <ArrowRight size={16} className="text-[#66726B]" />
-                  )}
-                </button>
-              ))}
+        {/* Modal Content */}
+        <div className="p-6 space-y-4 overflow-y-auto">
+          {activeTab === 'file' ? (
+            <div className="space-y-3">
+              {/* File Dropzone */}
+              <label className="border-2 border-dashed border-[#E6E8EC] hover:border-[#0E1116] bg-white rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all active:scale-[0.99] block shadow-xs">
+                <input
+                  type="file"
+                  accept=".pdf,.docx,.doc,.txt,.md,.png,.jpg,.jpeg"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                  disabled={isProcessing}
+                />
+                <div className="w-14 h-14 rounded-full bg-[#DCEBFF] text-[#2F6FED] flex items-center justify-center mb-3">
+                  <Upload size={28} />
+                </div>
+                <p className="text-base font-bold text-[#0E1116]">
+                  {isProcessing
+                    ? `Reading ${selectedFileName || 'document'}...`
+                    : 'Choose or drop any SOP file'}
+                </p>
+                <p className="text-xs text-[#66726B] font-semibold mt-1 max-w-[260px]">
+                  PDF, DOCX, Word, Plain Text, or Scanned Image document from any field.
+                </p>
+              </label>
+
+              <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-start gap-3">
+                <Sparkles size={18} className="text-indigo-600 shrink-0 mt-0.5" />
+                <p className="text-xs text-indigo-950 font-medium leading-relaxed">
+                  <strong>Single Source of Truth:</strong> Guruji extracts the exact operational steps directly from your uploaded document without any domain assumptions.
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-3">
+              <label className="block text-xs font-bold text-[#0E1116]">
+                Paste your SOP document text:
+              </label>
+              <textarea
+                value={pastedText}
+                onChange={(e) => setPastedText(e.target.value)}
+                placeholder="Paste any procedure, workflow, or operating guidelines here..."
+                rows={7}
+                className="w-full p-4 rounded-2xl bg-white border border-[#E6E8EC] text-xs font-medium text-[#0E1116] focus:outline-none focus:border-[#0E1116] shadow-xs resize-none"
+              />
+              <button
+                onClick={handlePastedTextSubmit}
+                disabled={!pastedText.trim() || isProcessing}
+                className="w-full h-12 rounded-full bg-[#0E1116] hover:bg-black disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition-all cursor-pointer"
+              >
+                {isProcessing ? (
+                  <span>Generating Operational Blueprint...</span>
+                ) : (
+                  <>
+                    <span>Process SOP Text</span>
+                    <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
