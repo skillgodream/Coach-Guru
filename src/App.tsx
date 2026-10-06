@@ -163,6 +163,8 @@ export default function App() {
         return [lesson, ...prev];
       });
 
+      setSelectedLesson(lesson);
+
       setAnalyzingSop({
         title: lesson.title,
         lesson,
@@ -218,6 +220,7 @@ export default function App() {
     if (analyzingSop) {
       const targetLesson = analyzingSop.lesson;
       setAnalyzingSop(null);
+      setSelectedLesson(targetLesson);
       setWelcomeLesson(targetLesson);
     }
   };

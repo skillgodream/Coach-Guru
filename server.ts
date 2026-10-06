@@ -89,7 +89,7 @@ Do NOT summarize. Return JSON:
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: 'gemini-2.5-flash',
       contents: { parts: [docPart, { text: prompt }] },
       config: {
         responseMimeType: 'application/json',
@@ -222,7 +222,7 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
     parts.push({ text: textPrompt });
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: 'gemini-2.5-flash',
       contents: { parts },
       config: {
         systemInstruction,

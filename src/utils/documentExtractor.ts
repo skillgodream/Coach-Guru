@@ -213,14 +213,9 @@ export async function extractDocumentContent(file: File | { name: string; conten
           rawText = await file.text();
         }
       } else if (lowerName.endsWith('.pdf') || mimeType.includes('pdf')) {
-        try {
-          const buffer = await file.arrayBuffer();
-          const decoder = new TextDecoder('utf-8', { fatal: false });
-          const text = decoder.decode(buffer);
-          rawText = cleanPdfStreamText(text);
-        } catch {
-          rawText = await file.text();
-        }
+        // PDF binary files require proper stream extraction (server or PDF parser).
+        // Do NOT pass raw uncompressed binary PDF bytes as text.
+        rawText = '';
       } else {
         rawText = await file.text();
       }
