@@ -1,4 +1,4 @@
-export type TabType = 'home' | 'library' | 'progress' | 'profile';
+export type TabType = 'home' | 'library' | 'progress' | 'profile' | 'experiment';
 
 export type CategoryType = 'All' | 'Picking' | 'Packing' | 'Safety' | 'Inventory';
 
@@ -182,7 +182,7 @@ export interface SimulatorChoice {
 export interface SimulatorStep {
   id: number;
   title: string;
-  type: 'menu' | 'orders' | 'location' | 'scan' | 'sku' | 'qty' | 'shortage' | 'tote' | 'handover';
+  type: string;
   question: string;
   taskTitle: string;
   taskOrder: string;
@@ -191,6 +191,8 @@ export interface SimulatorStep {
   targetQty: number;
   sku: string;
   priority: string;
+  item?: string;
+  location?: string;
   choices: SimulatorChoice[];
   why: string;
   coachTip: string;

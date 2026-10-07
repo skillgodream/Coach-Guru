@@ -13,7 +13,6 @@ import ExperiencedCheckModal from './components/ExperiencedCheckModal';
 import AskTrainerModal from './components/AskTrainerModal';
 import MicroLessonSheet from './components/MicroLessonSheet';
 import LessonOverview from './components/LessonOverview';
-import IntroSlideDeck from './components/IntroSlideDeck';
 import SimulatorScreen from './components/SimulatorScreen';
 import LibraryView from './components/LibraryView';
 import ProgressView from './components/ProgressView';
@@ -28,6 +27,8 @@ import ProcessPassportModal from './components/ProcessPassportModal';
 import { buildProcessPassport, perceiveImage } from './utils/blueprintEngine';
 import { ProcessPassport, PerceiveObservation, TabType, Lesson, ExperienceLevel } from './types';
 import { sounds } from './utils/audio';
+import { ExperiencePlayer } from './experiment/ExperiencePlayer';
+import { planSlides } from './experiment/Planner';
 import { ExtractedDocument } from './utils/documentExtractor';
 import { validateSourceFidelity } from './utils/sourceValidator';
 import { generateDomainNeutralLesson } from './utils/domainNeutralGenerator';
@@ -230,21 +231,7 @@ export default function App() {
     }
   };
 
-  // ... inside App return block ...
 
-  {/* Ensure LessonOverview and following stages are visible regardless of activeTab */}
-  {selectedLesson && !activeSimulator && !isIntroDeckOpen && !isExperiencedCheckOpen && (
-    <LessonOverview
-      lesson={selectedLesson}
-      onBack={() => {
-        setSelectedLesson(null);
-        setWelcomeLesson(null);
-      }}
-      onOpenIntroDeck={() => setIsIntroDeckOpen(true)}
-      onStartSimulation={(phase) => handleStartSimulation(phase)}
-      onAskTrainer={() => setIsTrainerModalOpen(true)}
-    />
-  )}
 
   // Learner Journey Start-point Branching:
   const handleSelectExperienceLevel = (level: ExperienceLevel) => {
@@ -302,112 +289,131 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F7F7F5] text-[#0E1116] font-sans relative selection:bg-purple-100 selection:text-purple-900">
-      {/* Active Tab Screen Render */}
-      {activeTab === 'home' && (
-        <main className="flex-1 flex flex-col pb-24 max-w-lg mx-auto w-full animate-in fade-in duration-200">
-          <MeetGurujiScreen
-            onContinue={() => {
-              sounds.playTap();
-              setIsSopOptionsOpen(true);
-            }}
-          />
+      {/* Main Tab Views & Bottom Navigation (only rendered when NOT in an active lesson, deck, or simulation) */}
+      {!selectedLesson && !activeSimulator && !isIntroDeckOpen && (
+        <>
+          {activeTab === 'home' && (
+            <main className="flex-1 flex flex-col pb-24 max-w-lg mx-auto w-full animate-in fade-in duration-200">
+              <MeetGurujiScreen
+                onContinue={() => {
+                  sounds.playTap();
+                  setIsSopOptionsOpen(true);
+                }}
+              />
 
-          {/* Frosted Glass SOP Selection Drawer */}
-          {isSopOptionsOpen && (
-            <div className="fixed inset-0 z-50 bg-[#0E1116]/60 backdrop-blur-md flex items-end justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-              <div className="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl space-y-4 animate-in slide-in-from-bottom-8 duration-200">
-                <div className="flex items-center justify-between pb-1">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
-                      Step 1 of 4
-                    </span>
-                    <h3 className="text-xl font-black text-[#0E1116] mt-2">Choose an SOP to Begin</h3>
+              {/* Frosted Glass SOP Selection Drawer */}
+              {isSopOptionsOpen && (
+                <div className="fixed inset-0 z-50 bg-[#0E1116]/60 backdrop-blur-md flex items-end justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+                  <div className="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl space-y-4 animate-in slide-in-from-bottom-8 duration-200">
+                    <div className="flex items-center justify-between pb-1">
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+                          Step 1 of 4
+                        </span>
+                        <h3 className="text-xl font-black text-[#0E1116] mt-2">Choose an SOP to Begin</h3>
+                      </div>
+                      <button
+                        onClick={() => setIsSopOptionsOpen(false)}
+                        className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 cursor-pointer"
+                        aria-label="Close"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    <div className="space-y-3 pt-1">
+                      <button
+                        onClick={() => {
+                          sounds.playTap();
+                          setIsSopOptionsOpen(false);
+                          handleSelectSop('housekeeping_sanitization', 'Housekeeping: Room Sanitization');
+                        }}
+                        className="w-full h-16 rounded-full bg-[#3B4FE0] hover:bg-indigo-700 text-white flex items-center justify-center gap-3 text-base font-bold shadow-lg active:scale-98 transition-all cursor-pointer"
+                      >
+                        <span className="text-xl">🧹</span>
+                        <span>1. Housekeeping: Room Sanitization</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          sounds.playTap();
+                          setIsSopOptionsOpen(false);
+                          setIsScanOpen(true);
+                        }}
+                        className="w-full h-15 rounded-full bg-white border-2 border-slate-200 hover:border-slate-900 text-slate-900 flex items-center justify-center gap-3 text-base font-bold shadow-2xs active:scale-98 transition-all cursor-pointer"
+                      >
+                        <span className="text-xl">📷</span>
+                        <span>2. Scan an SOP</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          sounds.playTap();
+                          setIsSopOptionsOpen(false);
+                          setIsUploadOpen(true);
+                        }}
+                        className="w-full h-15 rounded-full bg-white border-2 border-slate-200 hover:border-slate-900 text-slate-900 flex items-center justify-center gap-3 text-base font-bold shadow-2xs active:scale-98 transition-all cursor-pointer"
+                      >
+                        <span className="text-xl">📄</span>
+                        <span>3. Upload an SOP</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          sounds.playTap();
+                          setIsSopOptionsOpen(false);
+                          setActiveTab('library');
+                        }}
+                        className="w-full py-3 text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>Browse existing domain SOPs in Library →</span>
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => setIsSopOptionsOpen(false)}
-                    className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 cursor-pointer"
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
                 </div>
-
-                <div className="space-y-3 pt-1">
-                  <button
-                    onClick={() => {
-                      sounds.playTap();
-                      setIsSopOptionsOpen(false);
-                      setIsScanOpen(true);
-                    }}
-                    className="w-full h-16 rounded-full bg-[#0E1116] hover:bg-black text-white flex items-center justify-center gap-3 text-base font-bold shadow-lg active:scale-98 transition-all cursor-pointer"
-                  >
-                    <span className="text-xl">📷</span>
-                    <span>1. Scan the SOP</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      sounds.playTap();
-                      setIsSopOptionsOpen(false);
-                      setIsUploadOpen(true);
-                    }}
-                    className="w-full h-15 rounded-full bg-white border-2 border-slate-200 hover:border-slate-900 text-slate-900 flex items-center justify-center gap-3 text-base font-bold shadow-2xs active:scale-98 transition-all cursor-pointer"
-                  >
-                    <span className="text-xl">📄</span>
-                    <span>2. Upload the SOP</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      sounds.playTap();
-                      setIsSopOptionsOpen(false);
-                      setActiveTab('library');
-                    }}
-                    className="w-full py-3 text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <span>Browse existing domain SOPs in Library →</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+              )}
+            </main>
           )}
-        </main>
+
+          {activeTab === 'library' && (
+            <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+              <LibraryView
+                lessons={lessons}
+                onSelectLesson={(lesson) => {
+                  handleSelectSop(lesson.id, lesson.title);
+                }}
+              />
+            </main>
+          )}
+
+          {activeTab === 'progress' && (
+            <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+              <ProgressView
+                lessons={lessons}
+                onStartSimulation={(lessonId) => {
+                  const found = lessons.find((l) => l.id === lessonId) || lessons[0];
+                  handleSelectSop(found.id, found.title);
+                }}
+              />
+            </main>
+          )}
+
+          {activeTab === 'profile' && (
+            <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
+              <ProfileView
+                onResetData={handleResetData}
+                onOpenBentoShowcase={() => setShowBentoShowcase(true)}
+                onOpenPassport={() => setIsPassportModalOpen(true)}
+              />
+            </main>
+          )}
+
+          {/* Floating Bottom Navigation Bar */}
+          <BottomNav activeTab={activeTab} onSelectTab={(tab) => setActiveTab(tab)} />
+        </>
       )}
 
-      {activeTab === 'library' && (
-        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
-          <LibraryView
-            lessons={lessons}
-            onSelectLesson={(lesson) => {
-              handleSelectSop(lesson.id, lesson.title);
-            }}
-          />
-        </main>
-      )}
-
-      {activeTab === 'progress' && (
-        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
-          <ProgressView
-            lessons={lessons}
-            onStartSimulation={(lessonId) => {
-              const found = lessons.find((l) => l.id === lessonId) || lessons[0];
-              handleSelectSop(found.id, found.title);
-            }}
-          />
-        </main>
-      )}
-
-      {activeTab === 'profile' && (
-        <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
-          <ProfileView
-            onResetData={handleResetData}
-            onOpenBentoShowcase={() => setShowBentoShowcase(true)}
-            onOpenPassport={() => setIsPassportModalOpen(true)}
-          />
-        </main>
-      )}
-
-      {/* Ensure LessonOverview and following stages are visible regardless of activeTab */}
+      {/* Ensure LessonOverview and following stages are visible */}
       {selectedLesson && !activeSimulator && !isIntroDeckOpen && !isExperiencedCheckOpen && (
         <LessonOverview
           lesson={selectedLesson}
@@ -420,9 +426,6 @@ export default function App() {
           onAskTrainer={() => setIsTrainerModalOpen(true)}
         />
       )}
-
-      {/* Floating Bottom Navigation Bar */}
-      <BottomNav activeTab={activeTab} onSelectTab={(tab) => setActiveTab(tab)} />
 
       {/* 1. STARTING OPTION: Scan the SOP Modal */}
       <ScanModal
@@ -488,13 +491,15 @@ export default function App() {
       {/* STEP 3: 4 LEARNING MODES SCREEN (Know It, Show Me, Guide Me, Test Me) 
           Handled globally via selectedLesson state */}
       
-      {/* MODE 1: KNOW IT (cards -> tool explorer -> golden rules -> ready) */}
-      {isIntroDeckOpen && (
-        <IntroSlideDeck
-          lesson={selectedLesson || undefined}
+      {/* MODE 1: KNOW IT (Universal Teach Me Slide Deck) */}
+      {isIntroDeckOpen && selectedLesson && (
+        <ExperiencePlayer
+          plan={planSlides(selectedLesson)}
           onClose={() => setIsIntroDeckOpen(false)}
-          onStartSimulation={() => handleStartSimulation(0)}
-          onAskTrainer={() => setIsTrainerModalOpen(true)}
+          onComplete={() => {
+            setIsIntroDeckOpen(false);
+            handleStartSimulation(1);
+          }}
         />
       )}
 
