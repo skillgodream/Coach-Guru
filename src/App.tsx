@@ -46,6 +46,7 @@ export default function App() {
   const [validationError, setValidationError] = useState<{ filename: string; reason: string } | null>(null);
 
   // AI Pipeline State:
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [analyzingSop, setAnalyzingSop] = useState<{
     title: string;
     lesson: Lesson;
@@ -88,6 +89,7 @@ export default function App() {
       return;
     }
     isPipelineProcessingRef.current = true;
+    setIsProcessing(true);
     console.log('[SOP Pipeline START] Processing extracted document:', extractedDoc.filename);
 
     try {
@@ -171,7 +173,11 @@ export default function App() {
         confirmationText: extractedDoc.confirmationText,
         filename: extractedDoc.filename,
       });
-    } finally {
+      setIsProcessing(false);
+      isPipelineProcessingRef.current = false;
+    } catch (err) {
+      console.error('[SOP Pipeline ERROR]:', err);
+      setIsProcessing(false);
       isPipelineProcessingRef.current = false;
     }
   }, []);
@@ -207,6 +213,7 @@ export default function App() {
         extractedAt: new Date().toISOString(),
       });
     } else {
+      setSelectedLesson(lesson);
       setAnalyzingSop({
         title,
         lesson,
@@ -218,12 +225,26 @@ export default function App() {
 
   const handleAiUnderstandComplete = () => {
     if (analyzingSop) {
-      const targetLesson = analyzingSop.lesson;
+      setSelectedLesson(analyzingSop.lesson);
       setAnalyzingSop(null);
-      setSelectedLesson(targetLesson);
-      setWelcomeLesson(targetLesson);
     }
   };
+
+  // ... inside App return block ...
+
+  {/* Ensure LessonOverview and following stages are visible regardless of activeTab */}
+  {selectedLesson && !activeSimulator && !isIntroDeckOpen && !isExperiencedCheckOpen && (
+    <LessonOverview
+      lesson={selectedLesson}
+      onBack={() => {
+        setSelectedLesson(null);
+        setWelcomeLesson(null);
+      }}
+      onOpenIntroDeck={() => setIsIntroDeckOpen(true)}
+      onStartSimulation={(phase) => handleStartSimulation(phase)}
+      onAskTrainer={() => setIsTrainerModalOpen(true)}
+    />
+  )}
 
   // Learner Journey Start-point Branching:
   const handleSelectExperienceLevel = (level: ExperienceLevel) => {
@@ -386,6 +407,20 @@ export default function App() {
         </main>
       )}
 
+      {/* Ensure LessonOverview and following stages are visible regardless of activeTab */}
+      {selectedLesson && !activeSimulator && !isIntroDeckOpen && !isExperiencedCheckOpen && (
+        <LessonOverview
+          lesson={selectedLesson}
+          onBack={() => {
+            setSelectedLesson(null);
+            setWelcomeLesson(null);
+          }}
+          onOpenIntroDeck={() => setIsIntroDeckOpen(true)}
+          onStartSimulation={(phase) => handleStartSimulation(phase)}
+          onAskTrainer={() => setIsTrainerModalOpen(true)}
+        />
+      )}
+
       {/* Floating Bottom Navigation Bar */}
       <BottomNav activeTab={activeTab} onSelectTab={(tab) => setActiveTab(tab)} />
 
@@ -450,17 +485,9 @@ export default function App() {
         onAskTrainer={() => setIsTrainerModalOpen(true)}
       />
 
-      {/* STEP 3: 4 LEARNING MODES SCREEN (Know It, Show Me, Guide Me, Test Me) */}
-      {selectedLesson && !activeSimulator && !isIntroDeckOpen && !isExperiencedCheckOpen && (
-        <LessonOverview
-          lesson={selectedLesson}
-          onBack={() => setSelectedLesson(null)}
-          onOpenIntroDeck={() => setIsIntroDeckOpen(true)}
-          onStartSimulation={(phase) => handleStartSimulation(phase)}
-          onAskTrainer={() => setIsTrainerModalOpen(true)}
-        />
-      )}
-
+      {/* STEP 3: 4 LEARNING MODES SCREEN (Know It, Show Me, Guide Me, Test Me) 
+          Handled globally via selectedLesson state */}
+      
       {/* MODE 1: KNOW IT (cards -> tool explorer -> golden rules -> ready) */}
       {isIntroDeckOpen && (
         <IntroSlideDeck
@@ -470,6 +497,7 @@ export default function App() {
           onAskTrainer={() => setIsTrainerModalOpen(true)}
         />
       )}
+
 
       {/* MODES 2, 3, 4: SHOW ME (0), GUIDE ME (1), TEST ME (2) */}
       {activeSimulator && (
@@ -518,6 +546,13 @@ export default function App() {
       {showBentoShowcase && (
         <div className="fixed inset-0 z-50 bg-[#F7F7F5] dark:bg-[#0A0D12] overflow-y-auto animate-in fade-in duration-200">
           <BentoArchitectureShowcase onClose={() => setShowBentoShowcase(false)} />
+        </div>
+      )}
+      {isProcessing && (
+        <div className="fixed inset-0 z-[60] bg-[#0E1116]/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
+           <div className="w-16 h-16 border-4 border-white/20 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
+           <h2 className="text-xl font-bold text-white mb-2">Analyzing document...</h2>
+           <p className="text-sm text-slate-300">Building your operational training experience.</p>
         </div>
       )}
     </div>

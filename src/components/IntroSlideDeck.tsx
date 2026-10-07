@@ -71,12 +71,7 @@ export default function IntroSlideDeck({ lesson, onClose, onStartSimulation, onA
         </div>
 
         {/* Source Filename Pill if Present */}
-        {lesson?.sourceMeta && (
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">
-            <FileText size={12} className="text-indigo-600" />
-            <span className="truncate max-w-[160px]">{lesson.sourceMeta.filename}</span>
-          </div>
-        )}
+
 
         {/* Slide Dots & Ask Trainer */}
         <div className="flex items-center gap-3">
