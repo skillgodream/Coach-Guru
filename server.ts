@@ -291,6 +291,8 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: 'application/json',
+          maxOutputTokens: 4000,
+          temperature: 0.2,
         },
       });
     } catch (primaryErr: any) {
@@ -301,6 +303,8 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: 'application/json',
+          maxOutputTokens: 4000,
+          temperature: 0.2,
         },
       });
     }
@@ -322,12 +326,100 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
     });
   } catch (err: any) {
     console.error('[Server /api/gemini/generate-blueprint Error]:', err?.message || err);
+    if (err instanceof SyntaxError) {
+      return res.status(502).json({
+        success: false,
+        useLocalGenerator: true,
+        error: 'JSON_PARSE_ERROR',
+        message: 'The model output was malformed or truncated.',
+        details: err.message,
+      });
+    }
     return res.json({
       success: false,
       useLocalGenerator: true,
       error: err?.message || 'Server error, falling back to local generator.',
     });
   }
+});
+
+// Generic /api/coach endpoint implementing developer guide specification
+app.post('/api/coach', async (req, res) => {
+  const { prompt, systemInstruction, maxOutputTokens = 4000, temperature = 0.3 } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: 'Missing prompt in request body' });
+  }
+
+  const aiClient = getGeminiClient();
+  if (!aiClient) {
+    console.error('[API Error] GEMINI_API_KEY is not defined in deployment environment variables.');
+    return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
+  }
+
+  try {
+    let response;
+    try {
+      response = await aiClient.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          systemInstruction: systemInstruction || 'You are an expert assistant. Respond strictly with valid JSON.',
+          responseMimeType: 'application/json',
+          maxOutputTokens,
+          temperature,
+        },
+      });
+    } catch (primaryErr: any) {
+      console.warn('[Server /api/coach] Primary model failed, trying fallback gemini-flash-latest:', primaryErr?.message);
+      response = await aiClient.models.generateContent({
+        model: 'gemini-flash-latest',
+        contents: prompt,
+        config: {
+          systemInstruction: systemInstruction || 'You are an expert assistant. Respond strictly with valid JSON.',
+          responseMimeType: 'application/json',
+          maxOutputTokens,
+          temperature,
+        },
+      });
+    }
+
+    const rawText = response.text || '';
+    const cleanedText = rawText
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+
+    if (!cleanedText) {
+      return res.status(502).json({ error: 'Empty response received from LLM' });
+    }
+
+    const parsedData = JSON.parse(cleanedText);
+    return res.status(200).json(parsedData);
+  } catch (error: any) {
+    console.error('[API Error] LLM generation failed:', error);
+    if (error instanceof SyntaxError) {
+      return res.status(502).json({
+        error: 'JSON_PARSE_ERROR',
+        message: 'The model output was malformed or truncated.',
+        details: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      error: 'LLM_PROVIDER_ERROR',
+      message: error.message || 'Failed to generate response',
+    });
+  }
+});
+
+// Explicitly prevent SPA route swallowing for all /api endpoints
+app.all('/api/*', (req, res) => {
+  res.status(404).json({
+    error: 'API_ENDPOINT_NOT_FOUND',
+    message: `API endpoint ${req.method} ${req.path} not found on server`,
+  });
 });
 
 // Static files in production / Vite middlewares in development

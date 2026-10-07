@@ -21,6 +21,7 @@ import BentoArchitectureShowcase from './components/BentoArchitectureShowcase';
 import ValidationErrorModal from './components/ValidationErrorModal';
 import { MeetGurujiScreen } from './screens/MeetGurujiScreen';
 import { HomeScreen } from './screens/HomeScreen';
+import { TempLlmTester } from './components/TempLlmTester';
 
 import { INITIAL_LESSONS } from './data/lessonsData';
 import ProcessPassportModal from './components/ProcessPassportModal';
@@ -130,13 +131,19 @@ export default function App() {
             wordCount: extractedDoc.wordCount,
           }),
         });
-        const data = await res.json();
-        if (data.success && data.blueprint && data.blueprint.operational_steps) {
-          console.log('[SOP Pipeline SUCCESS] Generated Operational Blueprint via Gemini Server LLM');
-          opBlueprint = data.blueprint;
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.blueprint && data.blueprint.operational_steps) {
+            console.log('[SOP Pipeline SUCCESS] Generated Operational Blueprint via Gemini Server LLM');
+            opBlueprint = data.blueprint;
+          } else {
+            console.warn('[SOP Pipeline] Server LLM returned:', data.error || data.reason || data.message);
+          }
+        } else {
+          console.warn('[SOP Pipeline] Server returned HTTP', res.status, res.statusText);
         }
       } catch (err) {
-        console.warn('[SOP Pipeline] Server LLM unavailable, using local operational brain');
+        console.warn('[SOP Pipeline] Server LLM call threw error, using local operational brain:', err);
       }
 
       // 4. DOMAIN-NEUTRAL BLUEPRINT & LESSON GENERATION
@@ -560,6 +567,9 @@ export default function App() {
            <p className="text-sm text-slate-300">Building your operational training experience.</p>
         </div>
       )}
+
+      {/* Temporary LLM Diagnostic & Testing Console */}
+      <TempLlmTester />
     </div>
   );
 }
