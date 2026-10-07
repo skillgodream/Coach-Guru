@@ -112,12 +112,14 @@ export default function App() {
           filename: extractedDoc.filename,
           reason: validation.errorReason || 'Unusable or corrupt document.',
         });
-        return; // STOP IMMEDIATELY! NEVER FALLBACK TO PICKER OR DEFAULT LESSON!
+        return; // STOP IMMEDIATELY! finally block will clear isProcessing
       }
 
       // 3. GENERATE OPERATIONAL BLUEPRINT VIA SERVER LLM OR LOCAL BRAIN
       let opBlueprint;
       try {
+        const bpController = new AbortController();
+        const bpTimeout = setTimeout(() => bpController.abort(), 15000);
         const res = await fetch('/api/gemini/generate-blueprint', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -130,9 +132,11 @@ export default function App() {
             pageCount: extractedDoc.pageCount,
             wordCount: extractedDoc.wordCount,
           }),
+          signal: bpController.signal,
         });
+        clearTimeout(bpTimeout);
         if (res.ok) {
-          const data = await res.json();
+          const data = await res.json().catch(() => ({}));
           if (data.success && data.blueprint && data.blueprint.operational_steps) {
             console.log('[SOP Pipeline SUCCESS] Generated Operational Blueprint via Gemini Server LLM');
             opBlueprint = data.blueprint;
@@ -142,14 +146,16 @@ export default function App() {
         } else {
           console.warn('[SOP Pipeline] Server returned HTTP', res.status, res.statusText);
         }
-      } catch (err) {
-        console.warn('[SOP Pipeline] Server LLM call threw error, using local operational brain:', err);
+      } catch (err: any) {
+        console.warn('[SOP Pipeline] Server LLM blueprint error or timeout:', err?.message || err);
       }
 
       // Secondary Fallback via /api/coach
       if (!opBlueprint) {
         try {
           console.log('[SOP Pipeline] Trying secondary endpoint /api/coach for blueprint generation...');
+          const coachController = new AbortController();
+          const coachTimeout = setTimeout(() => coachController.abort(), 15000);
           const coachRes = await fetch('/api/coach', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -158,7 +164,9 @@ export default function App() {
               systemInstruction: 'You are an instructional designer. Respond strictly with valid JSON with operational_steps.',
               maxOutputTokens: 4000,
             }),
+            signal: coachController.signal,
           });
+          clearTimeout(coachTimeout);
           if (coachRes.ok) {
             const coachData = await coachRes.json().catch(() => ({}));
             if (coachData.operational_steps) {
@@ -166,8 +174,8 @@ export default function App() {
               opBlueprint = coachData;
             }
           }
-        } catch (coachErr) {
-          console.warn('[SOP Pipeline] /api/coach fallback error:', coachErr);
+        } catch (coachErr: any) {
+          console.warn('[SOP Pipeline] /api/coach fallback error or timeout:', coachErr?.message || coachErr);
         }
       }
 
@@ -182,7 +190,7 @@ export default function App() {
           filename: extractedDoc.filename,
           reason: lessonValidation.errorReason || 'Generated lesson failed source fidelity validation.',
         });
-        return; // STOP IMMEDIATELY! NEVER FALLBACK TO PICKER OR DEFAULT LESSON!
+        return; // STOP IMMEDIATELY! finally block will clear isProcessing
       }
 
       // Update state with newly generated document-driven lesson
@@ -206,10 +214,9 @@ export default function App() {
         confirmationText: extractedDoc.confirmationText,
         filename: extractedDoc.filename,
       });
-      setIsProcessing(false);
-      isPipelineProcessingRef.current = false;
     } catch (err) {
       console.error('[SOP Pipeline ERROR]:', err);
+    } finally {
       setIsProcessing(false);
       isPipelineProcessingRef.current = false;
     }
@@ -586,10 +593,19 @@ export default function App() {
         </div>
       )}
       {isProcessing && (
-        <div className="fixed inset-0 z-[60] bg-[#0E1116]/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[60] bg-[#0E1116]/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300">
            <div className="w-16 h-16 border-4 border-white/20 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
            <h2 className="text-xl font-bold text-white mb-2">Analyzing document...</h2>
-           <p className="text-sm text-slate-300">Building your operational training experience.</p>
+           <p className="text-sm text-slate-300 max-w-xs mb-6">Building your operational training experience.</p>
+           <button
+             onClick={() => {
+               setIsProcessing(false);
+               isPipelineProcessingRef.current = false;
+             }}
+             className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 backdrop-blur-sm transition-all cursor-pointer"
+           >
+             Cancel
+           </button>
         </div>
       )}
 

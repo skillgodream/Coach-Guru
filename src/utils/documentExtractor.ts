@@ -173,6 +173,8 @@ export async function extractDocumentContent(file: File | { name: string; conten
     if (isExtractableViaServer && fileBase64) {
       try {
         console.log(`[DocumentExtractor] Invoking server extraction endpoint for '${filename}'...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
         const res = await fetch('/api/pdf/extract', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -181,7 +183,9 @@ export async function extractDocumentContent(file: File | { name: string; conten
             mimeType: mimeType || 'application/pdf',
             filename,
           }),
+          signal: controller.signal,
         });
+        clearTimeout(timeoutId);
         if (res.ok) {
           const data = await res.json().catch(() => ({}));
           if (data.success && data.extractedText && data.extractedText.trim().length > 10) {
@@ -191,14 +195,16 @@ export async function extractDocumentContent(file: File | { name: string; conten
         } else {
           console.warn(`[DocumentExtractor] /api/pdf/extract returned HTTP ${res.status}`);
         }
-      } catch (err) {
-        console.warn('[DocumentExtractor] /api/pdf/extract network error:', err);
+      } catch (err: any) {
+        console.warn('[DocumentExtractor] /api/pdf/extract error or timeout:', err?.message || err);
       }
 
       // Secondary Server Fallback: Try /api/coach (proven working on Vercel)
       if (!rawText) {
         try {
           console.log(`[DocumentExtractor] Attempting fallback extraction via /api/coach for '${filename}'...`);
+          const coachController = new AbortController();
+          const coachTimeoutId = setTimeout(() => coachController.abort(), 12000);
           const coachRes = await fetch('/api/coach', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -209,7 +215,9 @@ export async function extractDocumentContent(file: File | { name: string; conten
               mimeType: mimeType || 'application/pdf',
               maxOutputTokens: 4000,
             }),
+            signal: coachController.signal,
           });
+          clearTimeout(coachTimeoutId);
           if (coachRes.ok) {
             const coachData = await coachRes.json().catch(() => ({}));
             if (coachData.extractedText && coachData.extractedText.trim().length > 10) {
@@ -219,8 +227,8 @@ export async function extractDocumentContent(file: File | { name: string; conten
           } else {
             console.warn(`[DocumentExtractor] /api/coach returned HTTP ${coachRes.status}`);
           }
-        } catch (coachErr) {
-          console.warn('[DocumentExtractor] /api/coach fallback error:', coachErr);
+        } catch (coachErr: any) {
+          console.warn('[DocumentExtractor] /api/coach fallback error or timeout:', coachErr?.message || coachErr);
         }
       }
     }
