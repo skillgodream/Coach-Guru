@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slide } from '../types';
-import { SlideImage } from '../TeachMeIcons';
+import { SlideImage, TeachMeIcon } from '../TeachMeIcons';
 
 export const ObjectivesPage: React.FC<{
   slide: Slide;
@@ -18,20 +18,45 @@ export const ObjectivesPage: React.FC<{
   }
 
   return (
-    <>
-      <SlideImage
-        icon="target"
-        img={slide.img}
-        alt={slide.alt}
-      />
-      <h2>{slide.title}</h2>
-      <p className="sm">{lead}</p>
-      {items.map((item, j) => (
-        <div className="row" key={j}>
-          <span className="num">{j + 1}</span>
-          <span>{item}</span>
-        </div>
-      ))}
-    </>
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <span className="pill stage-orient-pill">
+          <TeachMeIcon name="target" className="w-3.5 h-3.5 inline mr-1" />
+          THE CURRENT STAGE: STAGE 1 OF 8 • ORIENT (What You Will Learn)
+        </span>
+      </div>
+
+      <h2 className="text-xl font-extrabold text-[#0F1B3D] tracking-tight leading-snug">
+        {slide.title || 'Lesson Objectives'}
+      </h2>
+      
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+        {lead}
+      </p>
+
+      {slide.img && (
+        <SlideImage
+          icon="target"
+          img={slide.img}
+          alt={slide.alt}
+        />
+      )}
+
+      <div className="space-y-2.5 mt-3">
+        {items.map((item, j) => (
+          <div 
+            key={j}
+            className="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-indigo-100/80 shadow-xs hover:border-indigo-200 transition-all"
+          >
+            <span className="flex-none w-7 h-7 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+              {j + 1}
+            </span>
+            <span className="text-sm font-semibold text-[#0F1B3D] leading-relaxed pt-0.5">
+              {item}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

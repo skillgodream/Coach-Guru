@@ -115,6 +115,48 @@
   padding: 5px 12px;
 }
 
+.teach-me-app .pill.stage-orient-pill {
+  background: #e0e7ff;
+  color: #3730a3;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-prepare-pill {
+  background: #d1fae5;
+  color: #065f46;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-perform-pill {
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-control-pill {
+  background: #ffe4e6;
+  color: #9f1239;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-decide-pill {
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-handle-pill {
+  background: #f3e8ff;
+  color: #6b21a8;
+  font-weight: 800;
+}
+
+.teach-me-app .pill.stage-prove-pill {
+  background: #fef9c3;
+  color: #854d0e;
+  font-weight: 800;
+}
+
 .teach-me-app h1,
 .teach-me-app h2 {
   color: var(--n);
@@ -277,6 +319,8 @@
   height: 20px;
   stroke-width: 2.4;
 }
+
+
 
 .teach-me-app .row {
   display: flex;

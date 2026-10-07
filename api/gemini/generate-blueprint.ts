@@ -136,7 +136,7 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: 'application/json',
-          maxOutputTokens: 4000,
+          maxOutputTokens: 8192,
           temperature: 0.2,
         },
       });
@@ -148,45 +148,141 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: 'application/json',
-          maxOutputTokens: 4000,
+          maxOutputTokens: 8192,
           temperature: 0.2,
         },
       });
     }
 
     const outputText = response.text || '';
-    const cleanedText = outputText
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/\s*```$/i, '')
-      .trim();
-
-    if (!cleanedText) {
-      return res.status(502).json({ success: false, error: 'Empty response received from LLM' });
+    if (!outputText.trim()) {
+      return res.status(200).json({ success: false, useLocalGenerator: true, error: 'Empty response received from LLM' });
     }
 
-    const parsedData = JSON.parse(cleanedText);
+    const parsedData = cleanAndRepairJson(outputText);
     return res.status(200).json({
       success: true,
       blueprint: parsedData,
     });
   } catch (error: any) {
     console.error('[API Error] Blueprint generation failed:', error);
-    if (error instanceof SyntaxError) {
-      return res.status(502).json({
-        success: false,
-        useLocalGenerator: true,
-        error: 'JSON_PARSE_ERROR',
-        message: 'The model output was malformed or truncated.',
-        details: error.message,
-      });
-    }
-
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
       useLocalGenerator: true,
-      error: 'LLM_PROVIDER_ERROR',
-      message: error.message || 'Blueprint generation failed',
+      error: 'LLM_PARSE_OR_PROVIDER_ERROR',
+      message: error?.message || 'Blueprint generation failed, falling back to domain-neutral generator.',
     });
+  }
+}
+
+function sanitizeJsonString(str: string): string {
+  let result = '';
+  let inString = false;
+  let isEscaped = false;
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (inString) {
+      if (isEscaped) {
+        result += ch;
+        isEscaped = false;
+      } else if (ch === '\\') {
+        result += ch;
+        isEscaped = true;
+      } else if (ch === '"') {
+        result += ch;
+        inString = false;
+      } else if (ch === '\n') {
+        result += '\\n';
+      } else if (ch === '\r') {
+        result += '\\r';
+      } else if (ch === '\t') {
+        result += '\\t';
+      } else {
+        result += ch;
+      }
+    } else {
+      result += ch;
+      if (ch === '"') {
+        inString = true;
+      }
+    }
+  }
+  return result;
+}
+
+function repairTruncatedJson(jsonStr: string): string {
+  let text = jsonStr.trim().replace(/[,:\s]+$/, '');
+  let inString = false;
+  let isEscaped = false;
+  const stack: string[] = [];
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      if (isEscaped) {
+        isEscaped = false;
+      } else if (ch === '\\') {
+        isEscaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+    } else {
+      if (ch === '"') {
+        inString = true;
+      } else if (ch === '{' || ch === '[') {
+        stack.push(ch);
+      } else if (ch === '}' || ch === ']') {
+        stack.pop();
+      }
+    }
+  }
+
+  if (inString) {
+    text += '"';
+  }
+  text = text.replace(/[,:\s]+$/, '');
+
+  while (stack.length > 0) {
+    const opening = stack.pop();
+    if (opening === '{') {
+      text += '}';
+    } else if (opening === '[') {
+      text += ']';
+    }
+  }
+
+  return text;
+}
+
+function cleanAndRepairJson(rawText: string): any {
+  if (!rawText) throw new Error('Empty text response from model');
+
+  let text = rawText.trim();
+  if (text.startsWith('```json')) {
+    text = text.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
+  } else if (text.startsWith('```')) {
+    text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
+  }
+
+  if (!text.startsWith('{') && text.includes('{')) {
+    text = text.slice(text.indexOf('{'));
+    const lastBrace = text.lastIndexOf('}');
+    if (lastBrace !== -1) {
+      text = text.slice(0, lastBrace + 1);
+    }
+  }
+
+  const sanitized = sanitizeJsonString(text);
+
+  try {
+    return JSON.parse(sanitized);
+  } catch (parseErr) {
+    try {
+      const repaired = repairTruncatedJson(sanitized);
+      return JSON.parse(repaired);
+    } catch (repairErr) {
+      throw parseErr;
+    }
   }
 }

@@ -210,6 +210,15 @@ export default function SimulatorScreen({
     }
   };
 
+  const handlePrevStep = () => {
+    sounds.playTap();
+    if (stepIndex > 0) {
+      setStepIndex((prev) => prev - 1);
+    } else {
+      onClose();
+    }
+  };
+
   const handleRestartFull = (targetPhase: number = 1) => {
     sounds.playTap();
     setPhase(targetPhase);
@@ -419,8 +428,26 @@ export default function SimulatorScreen({
           {/* Header */}
           <header className="header">
             <div className="brand">
-              <button onClick={onClose} className="exit-btn" aria-label="Exit simulator">
-                Exit
+              <button
+                type="button"
+                onClick={handlePrevStep}
+                className="back-btn"
+                aria-label="Go back to previous step"
+                title="Go back"
+              >
+                ← Back
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playTap();
+                  onClose();
+                }}
+                className="cancel-btn"
+                aria-label="Cancel session"
+                title="Cancel session"
+              >
+                ✕ Cancel
               </button>
               <span>GURUJI · WORK COACH</span>
             </div>
@@ -571,17 +598,39 @@ export default function SimulatorScreen({
           <div className="bottom">
             {phase === 1 && (
               <button className="showMe" onClick={handleShowMe}>
-                Show me
+                Show me hint
               </button>
             )}
 
-            <button
-              className="next"
-              onClick={handleNextStep}
-              disabled={isNextDisabled}
-            >
-              {stepIndex === activeStepPool.length - 1 ? 'Finish' : 'Continue'}
-            </button>
+            <div className="bottom-controls">
+              <button
+                type="button"
+                className="btn-back-action"
+                onClick={handlePrevStep}
+                aria-label="Back to previous step"
+              >
+                ← Back
+              </button>
+              <button
+                type="button"
+                className="btn-cancel-action"
+                onClick={() => {
+                  sounds.playTap();
+                  onClose();
+                }}
+                aria-label="Cancel session"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="next"
+                onClick={handleNextStep}
+                disabled={isNextDisabled}
+              >
+                {stepIndex === activeStepPool.length - 1 ? 'Finish' : 'Continue →'}
+              </button>
+            </div>
           </div>
         </div>
 

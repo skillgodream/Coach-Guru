@@ -1,7 +1,32 @@
 import React from 'react';
+import * as LucideIcons from 'lucide-react';
 
 export type IconKey =
-  | 'target'
+  | 'ShieldAlert'
+  | 'ScanBarcode'
+  | 'Thermometer'
+  | 'Microscope'
+  | 'Boxes'
+  | 'FileCheck'
+  | 'Droplets'
+  | 'Sparkles'
+  | 'SprayCan'
+  | 'Syringe'
+  | 'ClipboardCheck'
+  | 'Users'
+  | 'CheckCircle'
+  | 'AlertTriangle'
+  | 'Zap'
+  | 'Scale'
+  | 'Truck'
+  | 'Lock'
+  | 'Settings'
+  | 'Target'
+  | 'Lightbulb'
+  | 'ArrowRight'
+  | 'GraduationCap'
+  | 'PartyPopper'
+  | 'Prohibited'
   | 'bottle'
   | 'spray'
   | 'room'
@@ -13,107 +38,51 @@ export type IconKey =
   | 'arrow'
   | 'cap'
   | 'party'
-  | 'slash';
+  | 'slash'
+  | string;
+
+// Legacy alias map to modern Lucide components
+const legacyAliasMap: Record<string, string> = {
+  bottle: 'Droplets',
+  spray: 'SprayCan',
+  room: 'Home',
+  warn: 'AlertTriangle',
+  wipe: 'Sparkles',
+  check: 'CheckCircle',
+  x: 'XCircle',
+  bulb: 'Lightbulb',
+  arrow: 'ArrowRight',
+  cap: 'GraduationCap',
+  party: 'PartyPopper',
+  slash: 'Ban',
+  target: 'Target',
+};
 
 export const TeachMeIcon: React.FC<{
   name: IconKey | string;
   className?: string;
   style?: React.CSSProperties;
-}> = ({ name, className = '', style }) => {
-  const combinedClass = `ic ${className}`.trim();
+  size?: number;
+}> = ({ name, className = '', style, size = 20 }) => {
+  const normalizedKey = (name || 'CheckCircle').trim();
+  
+  // Resolve alias or normalize pascal case
+  let targetIconName = legacyAliasMap[normalizedKey.toLowerCase()] || normalizedKey;
 
-  switch (name) {
-    case 'target':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="5" />
-          <circle cx="12" cy="12" r="1.5" />
-        </svg>
-      );
-    case 'bottle':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M10 2h4v3l2 3v13a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V8l2-3z" />
-          <path d="M8 13h8" />
-        </svg>
-      );
-    case 'spray':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M4 10h8v10H4zM12 12h5M17 9l4-1M17 12h4M17 15l4 1M7 10V6h6" />
-        </svg>
-      );
-    case 'room':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M3 19v-7h18v7M3 12V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5M3 19v2M21 19v2M7 12V9h4v3" />
-        </svg>
-      );
-    case 'warn':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M12 3l10 18H2z" />
-          <path d="M12 10v5M12 18h.01" />
-        </svg>
-      );
-    case 'wipe':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M4 16l7-11 4 3-7 11zM15 9l5 3" />
-          <path d="M3 21h8" />
-        </svg>
-      );
-    case 'check':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M5 12l5 5 9-10" />
-        </svg>
-      );
-    case 'x':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      );
-    case 'bulb':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11c1 1 1 2 1 3h4c0-1 0-2 1-3a6 6 0 0 0-3-11z" />
-        </svg>
-      );
-    case 'arrow':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M5 12h14M13 6l6 6-6 6" />
-        </svg>
-      );
-    case 'cap':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M2 9l10-5 10 5-10 5zM6 11v5c3 2 9 2 12 0v-5" />
-        </svg>
-      );
-    case 'party':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <path d="M4 21l5-14 10 10zM14 5l1-2M18 8l2-1M17 3l.5 1.5M20 12l2 .5" />
-        </svg>
-      );
-    case 'slash':
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M5.6 5.6l12.8 12.8" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className={combinedClass} style={style} viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9" />
-        </svg>
-      );
+  // Convert snake_case or kebab-case to PascalCase (e.g. scan_barcode -> ScanBarcode)
+  if (targetIconName.includes('-') || targetIconName.includes('_')) {
+    targetIconName = targetIconName
+      .split(/[-_]+/)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join('');
   }
+
+  // Attempt to load from LucideIcons library
+  const LucideComponent = (LucideIcons as any)[targetIconName] || 
+    (LucideIcons as any)[targetIconName.charAt(0).toUpperCase() + targetIconName.slice(1)] || 
+    LucideIcons.CheckCircle;
+
+  return <LucideComponent className={className} style={style} size={size} />;
 };
 
 export const SlideImage: React.FC<{
@@ -129,14 +98,14 @@ export const SlideImage: React.FC<{
       {img ? (
         <img src={img} alt={alt || ''} />
       ) : (
-        <TeachMeIcon name={icon} className="ic" />
+        <TeachMeIcon name={icon} className="ic" size={24} />
       )}
       {fl && fl.length > 0 && (
         <div className="fl">
           {fl.map((item, idx) => (
             <div key={idx}>
               <span className="tk">
-                <TeachMeIcon name="check" className="ic" />
+                <TeachMeIcon name="check" className="ic" size={14} />
               </span>
               <span>{item}</span>
             </div>
@@ -145,7 +114,7 @@ export const SlideImage: React.FC<{
       )}
       {Boolean(slash) && (
         <div className="slash">
-          <TeachMeIcon name="slash" className="ic" />
+          <TeachMeIcon name="Ban" className="ic" size={24} />
         </div>
       )}
     </div>

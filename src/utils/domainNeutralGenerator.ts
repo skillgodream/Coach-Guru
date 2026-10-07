@@ -54,30 +54,15 @@ export function buildSopKnowledgeModel(extracted: ExtractedDocument): SopKnowled
   let process = extracted.filename.replace(/\.(txt|pdf|docx)$/i, '');
   let department = 'Operations';
 
-  if (lowerText.includes('housekeeping') || lowerText.includes('cleaning') || lowerText.includes('residential') || lowerText.includes('urban home')) {
-    role = 'Residential Housekeeping Specialist';
-    process = 'Residential Cleaning, Safety Inspection & Handover Protocol';
-    department = 'Urban Home Housekeeping';
-  } else if (lowerText.includes('phlebotomy') || lowerText.includes('patient') || lowerText.includes('lab') || lowerText.includes('blood') || lowerText.includes('tube')) {
-    role = 'Front Desk / Phlebotomy Technician';
-    process = 'Patient Registration & Blood Sample Collection';
-    department = 'Diagnostic Laboratory';
-  } else if (lowerText.includes('front office') || lowerText.includes('orchid suite') || lowerText.includes('guest') || lowerText.includes('hotel')) {
-    role = 'Hotel Front Office Agent';
-    process = 'Guest Check-In & Suite Amenity Protocol';
-    department = 'Hotel Front Desk';
-  } else if (lowerText.includes('return') || lowerText.includes('refund') || lowerText.includes('retail') || lowerText.includes('pos')) {
-    role = 'Retail Cashier / Service Associate';
-    process = 'Customer Merchandise Return & POS Processing';
-    department = 'Retail Customer Service';
-  } else if (lowerText.includes('kitchen') || lowerText.includes('food') || lowerText.includes('temperature') || lowerText.includes('sanitize')) {
-    role = 'Commercial Kitchen Specialist';
-    process = 'Food Prep Hygiene & Cold Storage Logging';
-    department = 'Kitchen Operations';
-  } else if (lowerText.includes('picking') || lowerText.includes('wms') || lowerText.includes('warehouse')) {
-    role = 'Fulfillment Operator';
-    process = 'Order Picking & Inventory Verification';
-    department = 'Warehouse Logistics';
+  if (lowerText.includes('housekeeping') || lowerText.includes('cleaning') || lowerText.includes('residential') || lowerText.includes('janitorial')) {
+    role = 'Housekeeping Attendant';
+    department = 'Housekeeping';
+  } else if (lowerText.includes('warehouse') || lowerText.includes('inventory') || lowerText.includes('stock')) {
+    role = 'Warehouse Associate';
+    department = 'Logistics';
+  } else if (lowerText.includes('safety') || lowerText.includes('hazard') || lowerText.includes('ppe')) {
+    role = 'Safety Inspector';
+    department = 'EHS';
   }
 
   const rawLines = rawText
@@ -376,53 +361,14 @@ function createScenarioQuestionFromStep(
 ) {
   const instruction = item.instruction;
   const words = instruction.split(/\s+/);
-  const title = `${item.action_verb || 'Execute'} ${words.slice(1, 4).join(' ')}`.slice(0, 28).trim();
-
-  let question = `When performing ${process} as a ${role}: What is your required action?`;
-  const lower = instruction.toLowerCase();
-
-  if (lower.includes('greet') || lower.includes('arrival') || lower.includes('intake')) {
-    question = `A customer or patient arrives at your station for ${process}. What is your first action?`;
-  } else if (lower.includes('verify') || lower.includes('check') || lower.includes('identify')) {
-    question = `Before taking the next step, what details must you verify?`;
-  } else if (lower.includes('sanitize') || lower.includes('prep') || lower.includes('glove')) {
-    question = `When preparing your workstation prior to execution, what hygiene step is required?`;
-  } else if (lower.includes('collect') || lower.includes('draw') || lower.includes('scan') || lower.includes('fold')) {
-    question = `How should you complete this core task step?`;
-  } else if (lower.includes('label') || lower.includes('barcode') || lower.includes('attach')) {
-    question = `When handling labels or documentation for this item, what rule applies?`;
-  } else if (lower.includes('reject') || lower.includes('discard') || lower.includes('escalate')) {
-    question = `If an anomaly or compromised item is detected, what must you do?`;
-  }
-
-  const choiceCorrect = instruction;
-
-  let choiceDistractor1 = `Skip ${words.slice(0, 3).join(' ')} and proceed without verification.`;
-  let choiceDistractor2 = `Use unverified manual shortcut or proceed without required check.`;
-
-  if (lower.includes('verify') || lower.includes('identify')) {
-    choiceDistractor1 = `Rely on verbal confirmation without checking photo ID or order requisition.`;
-    choiceDistractor2 = `Skip identity verification if the person appears in a rush.`;
-  } else if (lower.includes('sanitize') || lower.includes('glove')) {
-    choiceDistractor1 = `Begin task directly without sanitizing station or wearing fresh gloves.`;
-    choiceDistractor2 = `Re-use single-use protective gloves from a previous task.`;
-  } else if (lower.includes('collect') || lower.includes('draw') || lower.includes('scan')) {
-    choiceDistractor1 = `Perform step out of sequence or record completion before physical check.`;
-    choiceDistractor2 = `Execute step using unapproved containers or non-standard tools.`;
-  } else if (lower.includes('label') || lower.includes('barcode')) {
-    choiceDistractor1 = `Apply labels away from the workstation prior to physical task completion.`;
-    choiceDistractor2 = `Handwrite label details manually without scanning barcode.`;
-  } else if (lower.includes('reject') || lower.includes('escalate')) {
-    choiceDistractor1 = `Ignore the anomaly and attempt to process item despite compliance error.`;
-    choiceDistractor2 = `Store compromised item without logging issue or notifying supervisor.`;
-  }
+  const title = `${item.action_verb || 'Execute'} ${words.slice(0, 3).join(' ')}`.slice(0, 30);
 
   return {
     title,
-    question,
-    choiceCorrect,
-    choiceDistractor1,
-    choiceDistractor2,
+    question: item.scenario_question || `How do you execute: ${instruction}?`,
+    choiceCorrect: item.choices?.[0]?.text || instruction,
+    choiceDistractor1: item.choices?.[1]?.text || `Skip ${words.slice(0, 2).join(' ')} to speed up shift completion`,
+    choiceDistractor2: item.choices?.[2]?.text || `Perform ${words.slice(0, 2).join(' ')} without checking workstation equipment`,
   };
 }
 
@@ -443,7 +389,7 @@ export function generateLessonFromOperationalBlueprint(
   const lessonId = `doc-${extracted.fileHash}`;
 
   const steps = opBlueprint.operational_steps.length > 0
-    ? opBlueprint.operational_steps.slice(0, 6)
+    ? opBlueprint.operational_steps.slice(0, 9)
     : [
         {
           instruction: `Execute ${process} according to written operational specifications.`,
@@ -459,26 +405,33 @@ export function generateLessonFromOperationalBlueprint(
     const stepNum = idx + 1;
     const scenario = createScenarioQuestionFromStep(item, role, process, idx);
 
+    // Prefer high-fidelity AI-extracted question and choices when available
+    const question = item.scenario_question || scenario.question;
+    const title = item.task_title || scenario.title;
+    const choices = (item.choices && item.choices.length >= 2)
+      ? item.choices
+      : [
+          { id: 'c1', title: scenario.choiceCorrect, subtitle: `${role} SOP Standard Procedure`, isCorrect: true },
+          { id: 'c2', title: scenario.choiceDistractor1, subtitle: `Non-compliant Shortcut / Risk`, isCorrect: false },
+          { id: 'c3', title: scenario.choiceDistractor2, subtitle: `Unapproved Workaround / Safety Violation`, isCorrect: false },
+        ];
+
     return {
       id: stepNum,
-      title: scenario.title,
+      title,
       type: 'location',
-      question: scenario.question,
+      question,
       taskTitle: process,
       taskOrder: `SOP Step ${stepNum}`,
       taskItem: item.instruction,
-      targetCode: `REF-${stepNum}0${idx + 1}`,
+      targetCode: item.target_code || `REF-${stepNum}0${idx + 1}`,
       targetQty: 1,
       sku: `SRC-${stepNum}`,
       priority: item.critical_control ? 'High Priority' : 'Standard',
-      choices: [
-        { id: 'c1', title: scenario.choiceCorrect, subtitle: `${role} SOP Standard`, isCorrect: true },
-        { id: 'c2', title: scenario.choiceDistractor1, subtitle: `Non-compliant Action`, isCorrect: false },
-        { id: 'c3', title: scenario.choiceDistractor2, subtitle: `Unapproved Procedure`, isCorrect: false },
-      ],
+      choices,
       why: item.why_it_matters || `SOP Requirement: ${item.source.source_text}`,
-      coachTip: `Operational Rule: ${item.instruction}`,
-      hint: `Refer to ${item.source.page_or_section} in ${extracted.filename}`,
+      coachTip: item.coach_tip || `Operational Rule: ${item.instruction}`,
+      hint: item.hint || `Refer to ${item.source.page_or_section} in ${extracted.filename}`,
       source_ref: item.source.source_ref,
       page_or_section: item.source.page_or_section,
       evidence: item.source.source_text,
@@ -488,7 +441,7 @@ export function generateLessonFromOperationalBlueprint(
   const stepObjects: StepObject[] = simulatorSteps.map((simStep, idx) => ({
     id: `step_${idx + 1}`,
     order: idx + 1,
-    title: simStep.title.split(' ').slice(0, 4).join(' '),
+    title: simStep.title,
     icon: '📋',
     purpose: idx % 2 === 0 ? 'skill' : 'understanding',
     component: 'choice_list',
@@ -496,19 +449,20 @@ export function generateLessonFromOperationalBlueprint(
       header: `Step ${idx + 1}: ${simStep.title}`,
       info: simStep.evidence || simStep.why,
     },
-    coach_say: `Follow the written ${role} procedure rule.`,
-    question: simStep.question.length > 60 ? simStep.question.slice(0, 57) + '...' : simStep.question,
-    options: [
-      { id: 'o1', label: simStep.choices[0].title.split(' ').slice(0, 6).join(' ') },
-      { id: 'o2', label: simStep.choices[1].title.split(' ').slice(0, 6).join(' ') },
-    ],
+    coach_say: simStep.coachTip || `Follow the written ${role} procedure rule.`,
+    question: simStep.question,
+    options: simStep.choices.map((c, cIdx) => ({
+      id: `o${cIdx + 1}`,
+      label: c.title,
+    })),
     correct: 'o1',
-    why: simStep.why.split(' ').slice(0, 12).join(' '),
+    why: simStep.why,
     wrong_feedback: {
-      o2: `Incorrect action. Refer to written ${role} SOP rule.`,
+      o2: simStep.choices[1]?.subtitle || `Incorrect action. Violates ${role} SOP standard.`,
+      o3: simStep.choices[2]?.subtitle || `Unapproved procedure. Review written procedure rules.`,
     },
-    wrong_default: `Check written SOP text.`,
-    hint: simStep.hint.split(' ').slice(0, 12).join(' '),
+    wrong_default: simStep.choices[1]?.subtitle || `Check written SOP text.`,
+    hint: simStep.hint,
     reshow_card: null,
     scan_required: false,
     risk: simStep.priority === 'High Priority' ? 'compliance' : 'normal',
@@ -575,7 +529,7 @@ export function generateLessonFromOperationalBlueprint(
         source_ref: 'S1.workflow',
         status: 'approved',
       },
-      tools: opBlueprint.tools_and_systems.map((t) => ({
+      tools: (opBlueprint.tools_and_systems || []).map((t) => ({
         name: t.name,
         what_it_is: `${role} operational system/tool.`,
         purpose: t.purpose,
@@ -585,24 +539,24 @@ export function generateLessonFromOperationalBlueprint(
         basis: 'from_source' as const,
         status: 'approved' as const,
       })),
-      terms: opBlueprint.terminology.map((t) => ({
+      terms: (opBlueprint.terminology || []).map((t) => ({
         term: t.term,
         meaning: t.meaning,
         source_ref: t.source_ref,
         status: 'approved',
       })),
-      golden_rules: opBlueprint.critical_controls.map((c) => ({
+      golden_rules: (opBlueprint.critical_controls || []).map((c) => ({
         text: c.rule,
         source_ref: c.source_ref,
         status: 'approved',
       })),
-      safety_notes: opBlueprint.safety_rules.map((s) => ({
+      safety_notes: (opBlueprint.safety_rules || []).map((s) => ({
         text: s.rule,
         source_ref: s.source_ref,
         status: 'approved',
       })),
       escalation: {
-        text: opBlueprint.escalations[0]?.contact_or_action || 'Contact lead supervisor immediately upon anomaly.',
+        text: (opBlueprint.escalations || [])[0]?.contact_or_action || 'Contact lead supervisor immediately upon anomaly.',
         source_ref: 'S1.escalation',
         basis: 'from_source',
         status: 'approved',

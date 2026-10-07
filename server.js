@@ -145,7 +145,7 @@ app.post("/api/gemini/generate-blueprint", async (req, res) => {
       });
     }
     const parts = [];
-    const docText = rawText ? rawText.slice(0, 16e3) : "";
+    const docText = rawText ? rawText.slice(0, 48e3) : "";
     if (docText && docText.length > 50) {
     } else if (fileBase64 && typeof fileBase64 === "string") {
       parts.push({
@@ -155,19 +155,29 @@ app.post("/api/gemini/generate-blueprint", async (req, res) => {
         }
       });
     }
-    const systemInstruction = `You are a Lead Operational Intelligence Engineer and Instructional Designer.
-Your task is to transform an uploaded Standard Operating Procedure (SOP) into a structured OPERATIONAL BLUEPRINT.
+    const systemInstruction = `You are a World-Class Lead Operational Intelligence Engineer and Instructional Designer for Guruji Work Coach.
+Your task is to transform an uploaded Standard Operating Procedure (SOP) into a deep, high-fidelity, simulation-grade OPERATIONAL BLUEPRINT.
 
-CRITICAL RULES:
-1. DISTINGUISH METADATA VS OPERATIONAL CONTENT:
-   - METADATA (DO NOT MAKE INTO STEPS): Document titles, REF codes ("DOCUMENT REF: SOP-HTL-101"), Version numbers ("VERSION 1.0"), Effective dates, Approvals, Section headers.
+CRITICAL ARCHITECTURAL RULES:
+1. DEEP REALISM & UNCOMPROMISING SPECIFICITY:
+   - Ground ALL extractions strictly and verbatim in the provided SOP document.
+   - Extract the TRUE frontline role (e.g. Quick Commerce Picker, Phlebotomist, Residential Housekeeping Specialist, Retail Cashier).
+   - Every scenario question must put the worker in a concrete, high-stakes operational situation directly based on the SOP details (specific product names, equipment, barcodes, shelf codes, temperatures, error codes, edge cases, exceptions).
+   - NEVER generate generic questions like "What is your required action?" or "How should you complete this task?" or "Before taking the next step, what details must you verify?".
+   - NEVER generate generic choices like "Skip step and proceed" or "Use unverified shortcut". Create REALISTIC frontline errors, tempting shortcuts, and common mistakes that real workers actually make on the floor!
+2. THREE NUANCED CHOICES WITH EXPLICIT FAILURE MODES:
+   - For EACH operational step, you MUST generate exactly 3 nuanced choices:
+     * Choice 1 (isCorrect: true): The precise, compliant SOP action with actionable steps. Subtitle explaining why this is correct per SOP.
+     * Choice 2 (isCorrect: false): A realistic, tempting operational shortcut or common rushed mistake that workers often make. Subtitle explicitly details the failure consequence (e.g., inventory mismatch, customer complaint, safety hazard).
+     * Choice 3 (isCorrect: false): An unapproved workaround or procedural bypass. Subtitle details the regulatory, safety, or quality violation.
+3. EXPERT COACH TIPS & SPECIFIC HINTS:
+   - coach_tip: Guruji's practical wisdom directly referencing the subtle details, pitfalls, or mnemonic tips from the SOP.
+   - hint: Specific reference to the SOP document section, visual cues, or indicators.
+   - target_code: Authentic code extracted from or reflecting the SOP (e.g., LOC-A02-04, SKU-88421, FORM-Q7).
+4. METADATA VS OPERATIONAL CONTENT:
+   - METADATA (DO NOT MAKE INTO STEPS): Administrative headers, document approval tables, version histories, ISO reference codes.
    - OPERATIONAL CONTENT (MUST DRIVE BLUEPRINT): Physical actions, system entries, verbal communications, verifications, decision points, exception handling, escalations.
-2. BEHAVIOR CHANGE TEST: Ask: "If this item were removed from the SOP, would the worker's actual physical, verbal, system or decision-making behavior change?"
-   - YES -> Candidate operational content
-   - NO -> Metadata / background context
-3. SOURCE GROUNDING: Ground ALL outputs strictly in the provided SOP text. Retain source quotes and references for EVERY operational step, decision, and rule.
-4. ZERO DOMAIN FALLBACKS: Extract the REAL role and domain (e.g., Phlebotomy Technician, Retail Cashier, Hotel Front Office Agent). NEVER fall back to generic warehouse/picking terms unless in source text.
-5. NO GENERIC TEMPLATE STRINGS: Do NOT output strings like "frontline specialist duties", "Follow written operational procedure guidelines carefully", "Approved Operational Rule", "Non-compliant action". Be specific to the SOP!`;
+5. MANDATORY OUTPUT FORMAT: Respond strictly with valid, un-truncated JSON conforming to the requested schema.`;
     const textPrompt = `Uploaded SOP Document: "${filename}" (${pageCount || 1} pages, ${wordCount || 100} words)
 ${docText ? `Document Text:
 """
@@ -180,10 +190,11 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
   "document_identity": {
     "doc_title": "${filename ? filename.replace(/\.(txt|pdf|docx)$/i, "") : "Operational Procedure"}",
     "doc_ref": "Extracted document reference or empty",
-    "version": "Extracted version or empty"
+    "version": "Extracted version or empty",
+    "department": "Extracted department or operations division"
   },
-  "role": "Exact worker role described in SOP (e.g., Phlebotomy Technician, Retail Cashier, Hotel Front Office Agent)",
-  "process": "Exact core operational process (e.g., Patient Registration & Blood Collection, POS Return Processing, Guest Check-In)",
+  "role": "Exact worker role described in SOP (e.g., Quick Commerce Picker, Phlebotomy Technician, Retail Cashier)",
+  "process": "Exact core operational process (e.g., Order Picking & Cold Chain Packing, Blood Sample Collection)",
   "purpose": "1-2 sentence primary operational goal for the worker",
   "scope": "Applicable department or workspace boundaries",
   "prerequisites": [
@@ -197,12 +208,41 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
   ],
   "operational_steps": [
     {
-      "instruction": "Specific, clear workplace action (e.g., Verify patient full name and date of birth against photo ID)",
+      "instruction": "Specific, clear workplace action grounded in the SOP (e.g., Verify tote barcode against PDA screen before placing picked items)",
       "category": "DO" | "CHECK" | "KNOW" | "DECIDE" | "RESPOND" | "RECOVER" | "ESCALATE",
-      "why_it_matters": "Operational reason or consequence",
-      "action_verb": "Action verb",
+      "action_verb": "Primary action verb (e.g., Scan, Verify, Inspect, Place)",
+      "task_title": "Concise 2-4 word operational action title (e.g., Scan Tote Barcode, Check Expiry Date, Inspect Packaging)",
+      "target_code": "Realistic barcode / SKU / rack / equipment or form code from SOP (e.g., TOTE-B12, SKU-4029, LOC-A02-04)",
+      "why_it_matters": "Specific operational reason and consequence on safety, quality, or process compliance",
       "critical_control": true/false,
-      "source": { "page_or_section": "Page 1 \xB7 Section 1", "source_ref": "S1.sec1", "source_text": "Exact quote from document" }
+      "scenario_question": "Authentic, vivid frontline workplace simulation question putting the worker directly into the dilemma or execution moment with exact details from the SOP",
+      "choices": [
+        {
+          "id": "c1",
+          "title": "Exact correct operational procedure according to the SOP",
+          "subtitle": "Compliant SOP standard procedure",
+          "isCorrect": true
+        },
+        {
+          "id": "c2",
+          "title": "Tempting shortcut or common frontline worker mistake",
+          "subtitle": "Failure mode: causes inventory discrepancy / customer complaint / quality defect",
+          "isCorrect": false
+        },
+        {
+          "id": "c3",
+          "title": "Unapproved workaround or bypassed safety/compliance check",
+          "subtitle": "Safety/compliance hazard: violates mandatory protocol",
+          "isCorrect": false
+        }
+      ],
+      "coach_tip": "Master Coach Guruji tip explaining insider nuances, physical dexterity, memory cues, or compliance wisdom from the SOP",
+      "hint": "Specific clue pointing directly to the relevant section or physical indicator in the SOP",
+      "source": {
+        "page_or_section": "Page 1 \xB7 Section 2",
+        "source_ref": "S1.sec1",
+        "source_text": "Exact verbatim quote from document text"
+      }
     }
   ],
   "decision_points": [
@@ -233,7 +273,9 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
     { "id": "E1", "page_or_section": "Page 1", "excerpt": "Document excerpt" }
   ],
   "confidence": 0.98
-}`;
+}
+
+Generate between 5 to 9 comprehensive operational_steps covering the entire lifecycle of the SOP.`;
     parts.push({ text: textPrompt });
     let response;
     try {
@@ -243,8 +285,8 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: "application/json",
-          maxOutputTokens: 4e3,
-          temperature: 0.2
+          maxOutputTokens: 8192,
+          temperature: 0.25
         }
       });
     } catch (primaryErr) {
@@ -255,8 +297,8 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
         config: {
           systemInstruction,
           responseMimeType: "application/json",
-          maxOutputTokens: 4e3,
-          temperature: 0.2
+          maxOutputTokens: 8192,
+          temperature: 0.25
         }
       });
     }
@@ -267,8 +309,15 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
     } else if (cleanJson.startsWith("```")) {
       cleanJson = cleanJson.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
+    if (!cleanJson.startsWith("{") && cleanJson.includes("{")) {
+      cleanJson = cleanJson.slice(cleanJson.indexOf("{"));
+      const lastBrace = cleanJson.lastIndexOf("}");
+      if (lastBrace !== -1) {
+        cleanJson = cleanJson.slice(0, lastBrace + 1);
+      }
+    }
     const parsedData = JSON.parse(cleanJson);
-    console.log(`[Server /api/gemini/generate-blueprint SUCCESS] Extracted ${parsedData.operational_steps?.length || 0} operational steps from '${filename}'`);
+    console.log(`[Server /api/gemini/generate-blueprint SUCCESS] Extracted ${parsedData.operational_steps?.length || 0} high-fidelity steps from '${filename}'`);
     return res.json({
       success: true,
       blueprint: parsedData

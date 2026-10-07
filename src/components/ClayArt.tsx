@@ -199,9 +199,12 @@ export default function ClayArt({ type, size = 120, className = '' }: ClayArtPro
       return (
         <div className={`relative flex items-center justify-center ${className}`} style={{ width: size, height: size }}>
           <img
-            src={koalaImg}
-            alt="Guruji Koala Coach"
+            src="/Coachguru.png"
+            alt="Coach Guru Home Page Character"
             className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)]"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = koalaImg;
+            }}
           />
         </div>
       );

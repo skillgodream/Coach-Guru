@@ -107,6 +107,46 @@
   background: rgba(0, 0, 0, 0.12);
 }
 
+.guruji-coach-app .back-btn {
+  background: rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #2b3a4a;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.guruji-coach-app .back-btn:hover {
+  background: rgba(0, 0, 0, 0.14);
+  color: #000;
+}
+
+.guruji-coach-app .cancel-btn {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #b91c1c;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.guruji-coach-app .cancel-btn:hover {
+  background: rgba(220, 38, 38, 0.18);
+  color: #991b1b;
+}
+
 .guruji-coach-app .live {
   font-size: 9px !important;
   font-weight: 800;
@@ -676,8 +716,62 @@
   filter: brightness(1.08);
 }
 
-.guruji-coach-app .next {
+.guruji-coach-app .bottom-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
+}
+
+.guruji-coach-app .btn-back-action {
+  flex: 1;
+  min-height: 52px !important;
+  border-radius: 19px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #2b374e !important;
+  font-weight: 800;
+  font-size: 14px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guruji-coach-app .btn-back-action:hover {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+.guruji-coach-app .btn-cancel-action {
+  flex: 1;
+  min-height: 52px !important;
+  border-radius: 19px !important;
+  background: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
+  color: #dc2626 !important;
+  font-weight: 800;
+  font-size: 14px !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05) !important;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guruji-coach-app .btn-cancel-action:hover {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+.guruji-coach-app .bottom-controls .next,
+.guruji-coach-app .next {
+  flex: 2;
+  width: auto;
   min-height: 56px !important;
   border: 0;
   border-radius: 19px !important;

@@ -6,8 +6,7 @@ export const WelcomePage: React.FC<{
   slide: Slide;
   onNext: () => void;
 }> = ({ slide, onNext }) => {
-  const tag = slide.tag || 'Teach Me';
-  const role = slide.role || 'Role: Housekeeping Attendant';
+  const role = slide.role || 'Role: Frontline Specialist';
   const body = slide.content;
   const cta = slide.cta || "Let's Begin";
 
@@ -16,8 +15,8 @@ export const WelcomePage: React.FC<{
       <div className="art">
         <TeachMeIcon name="room" className="ic" />
       </div>
-      <span className="pill" style={{ marginBottom: '12px' }}>
-        {tag}
+      <span className="pill stage-orient-pill" style={{ marginBottom: '12px' }}>
+        THE CURRENT STAGE: STAGE 1 OF 8 • ORIENT
       </span>
       <h1>{slide.title}</h1>
       <p>
@@ -31,3 +30,4 @@ export const WelcomePage: React.FC<{
     </div>
   );
 };
+

@@ -36,10 +36,13 @@ export const MeetGurujiScreen: React.FC<MeetGurujiScreenProps> = ({ onContinue }
           className="relative z-10 w-52 h-52 sm:w-64 sm:h-64 flex items-center justify-center -mb-6 overflow-visible"
         >
           <img
-            src={gurujiImg || "/guruji 1.png"}
+            src="/Coachguru.png"
             alt="Guruji Coach"
             referrerPolicy="no-referrer"
             className="w-full h-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.18)]"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = gurujiImg || "/guruji 1.png";
+            }}
           />
         </motion.div>
       </div>

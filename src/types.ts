@@ -29,6 +29,12 @@ export interface OperationalBlueprintItem {
   why_it_matters?: string;
   action_verb?: string;
   critical_control?: boolean;
+  scenario_question?: string;
+  choices?: { id: string; title: string; subtitle: string; isCorrect: boolean }[];
+  coach_tip?: string;
+  hint?: string;
+  task_title?: string;
+  target_code?: string;
 }
 
 export interface SopKnowledgeModel {

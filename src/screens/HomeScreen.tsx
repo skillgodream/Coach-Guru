@@ -31,9 +31,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <div className="relative w-20 h-20 shrink-0">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400 to-purple-500 animate-pulse opacity-40 blur-sm" />
             <img
-              src={gurujiImg || "/guruji 1.png"}
+              src="/Coachguru.png"
               alt="Guruji AI Coach"
               className="w-full h-full object-contain relative z-10 drop-shadow-md"
+              onError={(e) => {
+                // Fallback to gurujiImg if Coachguru.png is unavailable
+                (e.target as HTMLImageElement).src = gurujiImg || "/guruji 1.png";
+              }}
             />
           </div>
 

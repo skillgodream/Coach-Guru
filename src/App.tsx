@@ -119,7 +119,7 @@ export default function App() {
       let opBlueprint;
       try {
         const bpController = new AbortController();
-        const bpTimeout = setTimeout(() => bpController.abort(), 15000);
+        const bpTimeout = setTimeout(() => bpController.abort(), 60000);
         const res = await fetch('/api/gemini/generate-blueprint', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -138,7 +138,7 @@ export default function App() {
         if (res.ok) {
           const data = await res.json().catch(() => ({}));
           if (data.success && data.blueprint && data.blueprint.operational_steps) {
-            console.log('[SOP Pipeline SUCCESS] Generated Operational Blueprint via Gemini Server LLM');
+            console.log('[SOP Pipeline SUCCESS] Generated Deep Operational Blueprint via Gemini Server LLM');
             opBlueprint = data.blueprint;
           } else {
             console.warn('[SOP Pipeline] Server LLM returned:', data.error || data.reason || data.message);
@@ -155,14 +155,14 @@ export default function App() {
         try {
           console.log('[SOP Pipeline] Trying secondary endpoint /api/coach for blueprint generation...');
           const coachController = new AbortController();
-          const coachTimeout = setTimeout(() => coachController.abort(), 15000);
+          const coachTimeout = setTimeout(() => coachController.abort(), 60000);
           const coachRes = await fetch('/api/coach', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              prompt: `Transform this SOP ("${extractedDoc.filename}") into an OPERATIONAL BLUEPRINT. Return JSON with document_identity, role, process, purpose, scope, operational_steps (with instruction, category, why_it_matters, action_verb, critical_control, source), decision_points, critical_controls, safety_rules. Document text:\n"""\n${extractedDoc.rawText.slice(0, 15000)}\n"""`,
-              systemInstruction: 'You are an instructional designer. Respond strictly with valid JSON with operational_steps.',
-              maxOutputTokens: 4000,
+              prompt: `Transform this SOP ("${extractedDoc.filename}") into a high-fidelity OPERATIONAL BLUEPRINT. For EACH operational step, generate a realistic workplace scenario question, 3 nuanced choices with compliant rationale and realistic failure modes (subtitle), pro coach tip, and hint. Return JSON with document_identity, role, process, purpose, scope, operational_steps (instruction, category, why_it_matters, scenario_question, task_title, target_code, choices: [{id, title, subtitle, isCorrect}], coach_tip, hint, critical_control, source), decision_points, critical_controls, safety_rules, tools_and_systems, terminology. Document text:\n"""\n${extractedDoc.rawText.slice(0, 32000)}\n"""`,
+              systemInstruction: 'You are an expert instructional designer and workplace assessment engineer. Generate deep, authentic frontline questions grounded strictly in the SOP with realistic failure distractors. Respond strictly with valid JSON.',
+              maxOutputTokens: 6000,
             }),
             signal: coachController.signal,
           });
