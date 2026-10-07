@@ -1,122 +1,86 @@
-import express from 'express';
-import { GoogleGenAI } from '@google/genai';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
+import express from "express";
+import { GoogleGenAI } from "@google/genai";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const app = express();
-const PORT: number = Number(process.env.PORT) || 3000;
-
-app.use(express.json({ limit: '15mb' }));
-
-/**
- * Resolves the Gemini API Key dynamically from environment variables.
- * Checks GEMINI_API_KEY, GOOGLE_API_KEY, GEMINI_KEY, VITE_GEMINI_API_KEY, API_KEY.
- * Trims whitespace and quotes.
- */
-function getApiKey(): string | undefined {
-  const rawKey = (
-    process.env.GEMINI_API_KEY ||
-    process.env.GOOGLE_API_KEY ||
-    process.env.GEMINI_KEY ||
-    process.env.VITE_GEMINI_API_KEY ||
-    process.env.API_KEY ||
-    ''
-  ).trim();
-
-  // Strip accidental surrounding single or double quotes
-  const cleanKey = rawKey.replace(/^["']|["']$/g, '').trim();
-  return cleanKey || undefined;
+const PORT = Number(process.env.PORT) || 3e3;
+app.use(express.json({ limit: "15mb" }));
+function getApiKey() {
+  const rawKey = (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GEMINI_KEY || process.env.VITE_GEMINI_API_KEY || process.env.API_KEY || "").trim();
+  const cleanKey = rawKey.replace(/^["']|["']$/g, "").trim();
+  return cleanKey || void 0;
 }
-
-/**
- * Returns an initialized GoogleGenAI client instance or null if no key is present.
- */
-function getGeminiClient(): GoogleGenAI | null {
+function getGeminiClient() {
   const apiKey = getApiKey();
   if (!apiKey) return null;
-
   return new GoogleGenAI({
     apiKey,
     httpOptions: {
       headers: {
-        'User-Agent': 'aistudio-build',
-      },
-    },
-  });
-}
-
-// Health check endpoint to diagnose deployment status and API key detection
-app.get('/api/health', (_req, res) => {
-  const key = getApiKey();
-  res.json({
-    status: 'ok',
-    hasGeminiKey: Boolean(key && key.length > 5),
-    keyPrefix: key ? `${key.slice(0, 4)}...${key.slice(-4)}` : null,
-    nodeEnv: process.env.NODE_ENV || 'development',
-    time: new Date().toISOString(),
-  });
-});
-
-// API Route: Extract Text from PDF/Image using Gemini Server Multimodal Engine
-app.post('/api/pdf/extract', async (req, res) => {
-  try {
-    const { fileBase64, mimeType = 'application/pdf', filename = 'uploaded_document.pdf' } = req.body;
-
-    if (!fileBase64 || typeof fileBase64 !== 'string') {
-      return res.status(400).json({ success: false, error: 'No fileBase64 data provided.' });
-    }
-
-    const aiClient = getGeminiClient();
-    if (!aiClient) {
-      console.warn('[Server PDF Extract] No Gemini API key detected on server.');
-      return res.json({ success: false, useLocal: true, reason: 'GEMINI_API_KEY missing on server' });
-    }
-
-    let docPart: any;
-    let textDirect: string | null = null;
-
-    const lowerName = filename.toLowerCase();
-    const isDocx = lowerName.endsWith('.docx') || lowerName.endsWith('.doc') || mimeType.includes('word') || mimeType.includes('openxmlformats');
-
-    if (isDocx) {
-      try {
-        const decodedStr = Buffer.from(fileBase64, 'base64').toString('utf-8');
-        const xmlMatches = decodedStr.match(/<w:t[^>]*>(.*?)<\/w:t>/g);
-        if (xmlMatches && xmlMatches.length > 0) {
-          textDirect = xmlMatches.map((node) => node.replace(/<[^>]+>/g, '')).join(' ');
-        }
-      } catch (e) {
-        console.warn('[Server DOCX Extract] Direct buffer decode failed:', e);
+        "User-Agent": "aistudio-build"
       }
     }
-
+  });
+}
+app.get("/api/health", (_req, res) => {
+  const key = getApiKey();
+  res.json({
+    status: "ok",
+    hasGeminiKey: Boolean(key && key.length > 5),
+    keyPrefix: key ? `${key.slice(0, 4)}...${key.slice(-4)}` : null,
+    nodeEnv: process.env.NODE_ENV || "development",
+    time: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
+app.post("/api/pdf/extract", async (req, res) => {
+  try {
+    const { fileBase64, mimeType = "application/pdf", filename = "uploaded_document.pdf" } = req.body;
+    if (!fileBase64 || typeof fileBase64 !== "string") {
+      return res.status(400).json({ success: false, error: "No fileBase64 data provided." });
+    }
+    const aiClient = getGeminiClient();
+    if (!aiClient) {
+      console.warn("[Server PDF Extract] No Gemini API key detected on server.");
+      return res.json({ success: false, useLocal: true, reason: "GEMINI_API_KEY missing on server" });
+    }
+    let docPart;
+    let textDirect = null;
+    const lowerName = filename.toLowerCase();
+    const isDocx = lowerName.endsWith(".docx") || lowerName.endsWith(".doc") || mimeType.includes("word") || mimeType.includes("openxmlformats");
+    if (isDocx) {
+      try {
+        const decodedStr = Buffer.from(fileBase64, "base64").toString("utf-8");
+        const xmlMatches = decodedStr.match(/<w:t[^>]*>(.*?)<\/w:t>/g);
+        if (xmlMatches && xmlMatches.length > 0) {
+          textDirect = xmlMatches.map((node) => node.replace(/<[^>]+>/g, "")).join(" ");
+        }
+      } catch (e) {
+        console.warn("[Server DOCX Extract] Direct buffer decode failed:", e);
+      }
+    }
     if (textDirect && textDirect.trim().length > 10) {
-      const extractedText = textDirect.trim();
-      const wordCount = extractedText.split(/\s+/).filter(Boolean).length;
-      const pageCount = Math.max(1, Math.ceil(wordCount / 220));
-      console.log(`[Server /api/pdf/extract SUCCESS] Direct XML decoded ${wordCount} words from '${filename}'`);
+      const extractedText2 = textDirect.trim();
+      const wordCount2 = extractedText2.split(/\s+/).filter(Boolean).length;
+      const pageCount2 = Math.max(1, Math.ceil(wordCount2 / 220));
+      console.log(`[Server /api/pdf/extract SUCCESS] Direct XML decoded ${wordCount2} words from '${filename}'`);
       return res.json({
         success: true,
-        extractedText,
-        wordCount,
-        pageCount,
+        extractedText: extractedText2,
+        wordCount: wordCount2,
+        pageCount: pageCount2
       });
     }
-
-    const cleanMime = mimeType.includes('image') ? mimeType : mimeType.includes('text') ? 'text/plain' : 'application/pdf';
+    const cleanMime = mimeType.includes("image") ? mimeType : mimeType.includes("text") ? "text/plain" : "application/pdf";
     docPart = {
       inlineData: {
         mimeType: cleanMime,
-        data: fileBase64,
-      },
+        data: fileBase64
+      }
     };
-
     const prompt = `You are a High-Fidelity Document & OCR Extraction Engine.
 Extract the COMPLETE human-readable text from this document ("${filename}") word-for-word.
 Preserve paragraph structure, headers, section numbers, bullet points, and original Unicode typography (curly quotes, dashes, accents, symbols).
@@ -126,84 +90,71 @@ Do NOT summarize. Return JSON:
   "pageCount": estimated total pages as integer,
   "wordCount": estimated total words as integer
 }`;
-
     let response;
     try {
       response = await aiClient.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: "gemini-3.8-flash",
         contents: { parts: [docPart, { text: prompt }] },
         config: {
-          responseMimeType: 'application/json',
-        },
+          responseMimeType: "application/json"
+        }
       });
-    } catch (primaryErr: any) {
-      console.warn('[Server PDF Extract] Primary model gemini-3.8-flash failed, trying gemini-flash-latest:', primaryErr?.message);
+    } catch (primaryErr) {
+      console.warn("[Server PDF Extract] Primary model gemini-3.8-flash failed, trying gemini-flash-latest:", primaryErr?.message);
       response = await aiClient.models.generateContent({
-        model: 'gemini-flash-latest',
+        model: "gemini-flash-latest",
         contents: { parts: [docPart, { text: prompt }] },
         config: {
-          responseMimeType: 'application/json',
-        },
+          responseMimeType: "application/json"
+        }
       });
     }
-
-    const outputText = response.text || '';
+    const outputText = response.text || "";
     let cleanJson = outputText.trim();
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-    } else if (cleanJson.startsWith('```')) {
-      cleanJson = cleanJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    if (cleanJson.startsWith("```json")) {
+      cleanJson = cleanJson.replace(/^```json\s*/i, "").replace(/\s*```$/, "");
+    } else if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
-
     const parsed = JSON.parse(cleanJson);
-    const extractedText = parsed.extractedText || '';
+    const extractedText = parsed.extractedText || "";
     const wordCount = parsed.wordCount || extractedText.split(/\s+/).filter(Boolean).length;
     const pageCount = parsed.pageCount || Math.max(1, Math.ceil(wordCount / 220));
-
     console.log(`[Server /api/pdf/extract SUCCESS] Extracted ${wordCount} words from '${filename}' (${pageCount} pages)`);
-
     return res.json({
       success: true,
       extractedText,
       wordCount,
-      pageCount,
+      pageCount
     });
-  } catch (err: any) {
-    console.error('[Server /api/pdf/extract Error]:', err?.message || err);
-    return res.json({ success: false, error: err?.message || 'Server PDF extraction failed' });
+  } catch (err) {
+    console.error("[Server /api/pdf/extract Error]:", err?.message || err);
+    return res.json({ success: false, error: err?.message || "Server PDF extraction failed" });
   }
 });
-
-// API Route: Generate Blueprint & Lesson from SOP Source Document
-app.post('/api/gemini/generate-blueprint', async (req, res) => {
+app.post("/api/gemini/generate-blueprint", async (req, res) => {
   try {
     const { rawText, fileBase64, mimeType, filename, fileHash, pageCount, wordCount } = req.body;
-
     const aiClient = getGeminiClient();
     if (!aiClient) {
-      console.warn('[Server /api/gemini/generate-blueprint] No Gemini API key found in environment.');
+      console.warn("[Server /api/gemini/generate-blueprint] No Gemini API key found in environment.");
       return res.json({
         success: false,
         useLocalGenerator: true,
-        reason: 'GEMINI_API_KEY is not configured on server. Fallback to local domain-neutral generator.',
+        reason: "GEMINI_API_KEY is not configured on server. Fallback to local domain-neutral generator."
       });
     }
-
-    const parts: any[] = [];
-    const docText = rawText ? rawText.slice(0, 16000) : '';
-
-    // If text was already extracted, prioritize sending text directly (much faster and avoids payload limits)
+    const parts = [];
+    const docText = rawText ? rawText.slice(0, 16e3) : "";
     if (docText && docText.length > 50) {
-      // Document text is available in docText
-    } else if (fileBase64 && typeof fileBase64 === 'string') {
+    } else if (fileBase64 && typeof fileBase64 === "string") {
       parts.push({
         inlineData: {
-          mimeType: mimeType || 'application/pdf',
-          data: fileBase64,
-        },
+          mimeType: mimeType || "application/pdf",
+          data: fileBase64
+        }
       });
     }
-
     const systemInstruction = `You are a Lead Operational Intelligence Engineer and Instructional Designer.
 Your task is to transform an uploaded Standard Operating Procedure (SOP) into a structured OPERATIONAL BLUEPRINT.
 
@@ -217,14 +168,17 @@ CRITICAL RULES:
 3. SOURCE GROUNDING: Ground ALL outputs strictly in the provided SOP text. Retain source quotes and references for EVERY operational step, decision, and rule.
 4. ZERO DOMAIN FALLBACKS: Extract the REAL role and domain (e.g., Phlebotomy Technician, Retail Cashier, Hotel Front Office Agent). NEVER fall back to generic warehouse/picking terms unless in source text.
 5. NO GENERIC TEMPLATE STRINGS: Do NOT output strings like "frontline specialist duties", "Follow written operational procedure guidelines carefully", "Approved Operational Rule", "Non-compliant action". Be specific to the SOP!`;
-
     const textPrompt = `Uploaded SOP Document: "${filename}" (${pageCount || 1} pages, ${wordCount || 100} words)
-${docText ? `Document Text:\n"""\n${docText}\n"""\n` : ''}
+${docText ? `Document Text:
+"""
+${docText}
+"""
+` : ""}
 
 Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
 {
   "document_identity": {
-    "doc_title": "${filename ? filename.replace(/\.(txt|pdf|docx)$/i, '') : 'Operational Procedure'}",
+    "doc_title": "${filename ? filename.replace(/\.(txt|pdf|docx)$/i, "") : "Operational Procedure"}",
     "doc_ref": "Extracted document reference or empty",
     "version": "Extracted version or empty"
   },
@@ -248,7 +202,7 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
       "why_it_matters": "Operational reason or consequence",
       "action_verb": "Action verb",
       "critical_control": true/false,
-      "source": { "page_or_section": "Page 1 · Section 1", "source_ref": "S1.sec1", "source_text": "Exact quote from document" }
+      "source": { "page_or_section": "Page 1 \xB7 Section 1", "source_ref": "S1.sec1", "source_text": "Exact quote from document" }
     }
   ],
   "decision_points": [
@@ -280,73 +234,64 @@ Extract the complete OPERATIONAL BLUEPRINT as JSON with this exact schema:
   ],
   "confidence": 0.98
 }`;
-
     parts.push({ text: textPrompt });
-
     let response;
     try {
       response = await aiClient.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: "gemini-3.8-flash",
         contents: { parts },
         config: {
           systemInstruction,
-          responseMimeType: 'application/json',
-        },
+          responseMimeType: "application/json"
+        }
       });
-    } catch (primaryErr: any) {
-      console.warn('[Server LLM Blueprint] Primary model gemini-3.8-flash failed, trying gemini-flash-latest:', primaryErr?.message);
+    } catch (primaryErr) {
+      console.warn("[Server LLM Blueprint] Primary model gemini-3.8-flash failed, trying gemini-flash-latest:", primaryErr?.message);
       response = await aiClient.models.generateContent({
-        model: 'gemini-flash-latest',
+        model: "gemini-flash-latest",
         contents: { parts },
         config: {
           systemInstruction,
-          responseMimeType: 'application/json',
-        },
+          responseMimeType: "application/json"
+        }
       });
     }
-
-    const outputText = response.text || '';
+    const outputText = response.text || "";
     let cleanJson = outputText.trim();
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-    } else if (cleanJson.startsWith('```')) {
-      cleanJson = cleanJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    if (cleanJson.startsWith("```json")) {
+      cleanJson = cleanJson.replace(/^```json\s*/i, "").replace(/\s*```$/, "");
+    } else if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
-
     const parsedData = JSON.parse(cleanJson);
     console.log(`[Server /api/gemini/generate-blueprint SUCCESS] Extracted ${parsedData.operational_steps?.length || 0} operational steps from '${filename}'`);
-
     return res.json({
       success: true,
-      blueprint: parsedData,
+      blueprint: parsedData
     });
-  } catch (err: any) {
-    console.error('[Server /api/gemini/generate-blueprint Error]:', err?.message || err);
+  } catch (err) {
+    console.error("[Server /api/gemini/generate-blueprint Error]:", err?.message || err);
     return res.json({
       success: false,
       useLocalGenerator: true,
-      error: err?.message || 'Server error, falling back to local generator.',
+      error: err?.message || "Server error, falling back to local generator."
     });
   }
 });
-
-// Static files in production / Vite middlewares in development
-const distPath = path.resolve(process.cwd(), 'dist');
-
-if (process.env.NODE_ENV === 'production') {
+const distPath = path.resolve(process.cwd(), "dist");
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(distPath));
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
   });
 } else {
-  const { createServer: createViteServer } = await import('vite');
+  const { createServer: createViteServer } = await import("vite");
   const vite = await createViteServer({
     server: { middlewareMode: true },
-    appType: 'spa',
+    appType: "spa"
   });
   app.use(vite.middlewares);
 }
-
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`[Server] Express server running on http://0.0.0.0:${PORT}`);
 });
