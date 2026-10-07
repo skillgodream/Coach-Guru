@@ -146,6 +146,31 @@ export default function App() {
         console.warn('[SOP Pipeline] Server LLM call threw error, using local operational brain:', err);
       }
 
+      // Secondary Fallback via /api/coach
+      if (!opBlueprint) {
+        try {
+          console.log('[SOP Pipeline] Trying secondary endpoint /api/coach for blueprint generation...');
+          const coachRes = await fetch('/api/coach', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: `Transform this SOP ("${extractedDoc.filename}") into an OPERATIONAL BLUEPRINT. Return JSON with document_identity, role, process, purpose, scope, operational_steps (with instruction, category, why_it_matters, action_verb, critical_control, source), decision_points, critical_controls, safety_rules. Document text:\n"""\n${extractedDoc.rawText.slice(0, 15000)}\n"""`,
+              systemInstruction: 'You are an instructional designer. Respond strictly with valid JSON with operational_steps.',
+              maxOutputTokens: 4000,
+            }),
+          });
+          if (coachRes.ok) {
+            const coachData = await coachRes.json().catch(() => ({}));
+            if (coachData.operational_steps) {
+              console.log('[SOP Pipeline SUCCESS via /api/coach] Generated Operational Blueprint');
+              opBlueprint = coachData;
+            }
+          }
+        } catch (coachErr) {
+          console.warn('[SOP Pipeline] /api/coach fallback error:', coachErr);
+        }
+      }
+
       // 4. DOMAIN-NEUTRAL BLUEPRINT & LESSON GENERATION
       const { lesson, passport, blueprint } = generateDomainNeutralLesson(extractedDoc, opBlueprint);
 

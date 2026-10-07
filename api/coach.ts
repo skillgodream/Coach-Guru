@@ -23,7 +23,7 @@ export default async function handler(req: any, res: any) {
     return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
   }
 
-  const { prompt, systemInstruction, maxOutputTokens = 4000, temperature = 0.3 } = req.body;
+  const { prompt, systemInstruction, fileBase64, mimeType = 'application/pdf', maxOutputTokens = 4000, temperature = 0.3 } = req.body;
 
   if (!prompt) {
     return res.status(400).json({ error: 'Missing prompt in request body' });
@@ -39,11 +39,29 @@ export default async function handler(req: any, res: any) {
       },
     });
 
+    const parts: any[] = [];
+    if (fileBase64 && typeof fileBase64 === 'string') {
+      const cleanMime = mimeType.includes('image')
+        ? mimeType
+        : mimeType.includes('text')
+        ? 'text/plain'
+        : 'application/pdf';
+      parts.push({
+        inlineData: {
+          mimeType: cleanMime,
+          data: fileBase64,
+        },
+      });
+    }
+    parts.push({ text: prompt });
+
+    const contentsPayload = parts.length > 1 ? { parts } : prompt;
+
     let response;
     try {
       response = await ai.models.generateContent({
         model: 'gemini-3.8-flash',
-        contents: prompt,
+        contents: contentsPayload,
         config: {
           systemInstruction: systemInstruction || 'You are an expert assistant. Respond strictly with valid JSON.',
           responseMimeType: 'application/json',
@@ -55,7 +73,7 @@ export default async function handler(req: any, res: any) {
       console.warn('[api/coach] Primary model failed, trying fallback gemini-flash-latest:', primaryErr?.message);
       response = await ai.models.generateContent({
         model: 'gemini-flash-latest',
-        contents: prompt,
+        contents: contentsPayload,
         config: {
           systemInstruction: systemInstruction || 'You are an expert assistant. Respond strictly with valid JSON.',
           responseMimeType: 'application/json',

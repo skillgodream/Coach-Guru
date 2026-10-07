@@ -182,13 +182,46 @@ export async function extractDocumentContent(file: File | { name: string; conten
             filename,
           }),
         });
-        const data = await res.json();
-        if (data.success && data.extractedText && data.extractedText.trim().length > 10) {
-          rawText = data.extractedText;
-          console.log(`[DocumentExtractor SUCCESS] Server extracted ${data.wordCount} words from '${filename}'`);
+        if (res.ok) {
+          const data = await res.json().catch(() => ({}));
+          if (data.success && data.extractedText && data.extractedText.trim().length > 10) {
+            rawText = data.extractedText;
+            console.log(`[DocumentExtractor SUCCESS] Server extracted ${data.wordCount} words from '${filename}'`);
+          }
+        } else {
+          console.warn(`[DocumentExtractor] /api/pdf/extract returned HTTP ${res.status}`);
         }
       } catch (err) {
-        console.warn('[DocumentExtractor] Server extraction failed, attempting local decode:', err);
+        console.warn('[DocumentExtractor] /api/pdf/extract network error:', err);
+      }
+
+      // Secondary Server Fallback: Try /api/coach (proven working on Vercel)
+      if (!rawText) {
+        try {
+          console.log(`[DocumentExtractor] Attempting fallback extraction via /api/coach for '${filename}'...`);
+          const coachRes = await fetch('/api/coach', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: `You are an expert Document & OCR text extraction engine. Extract the complete text from this document ("${filename}") word-for-word. Return JSON: {"extractedText": "full text content here...", "wordCount": number, "pageCount": number}`,
+              systemInstruction: 'You are an accurate OCR engine. Respond strictly with valid JSON.',
+              fileBase64,
+              mimeType: mimeType || 'application/pdf',
+              maxOutputTokens: 4000,
+            }),
+          });
+          if (coachRes.ok) {
+            const coachData = await coachRes.json().catch(() => ({}));
+            if (coachData.extractedText && coachData.extractedText.trim().length > 10) {
+              rawText = coachData.extractedText;
+              console.log(`[DocumentExtractor SUCCESS via /api/coach] Extracted ${coachData.wordCount || 0} words from '${filename}'`);
+            }
+          } else {
+            console.warn(`[DocumentExtractor] /api/coach returned HTTP ${coachRes.status}`);
+          }
+        } catch (coachErr) {
+          console.warn('[DocumentExtractor] /api/coach fallback error:', coachErr);
+        }
       }
     }
 
@@ -213,9 +246,46 @@ export async function extractDocumentContent(file: File | { name: string; conten
           rawText = await file.text();
         }
       } else if (lowerName.endsWith('.pdf') || mimeType.includes('pdf')) {
-        // PDF binary files require proper stream extraction (server or PDF parser).
-        // Do NOT pass raw uncompressed binary PDF bytes as text.
-        rawText = '';
+        // Local PDF binary stream decoder fallback
+        try {
+          const buffer = await file.arrayBuffer();
+          const decoder = new TextDecoder('latin1');
+          const pdfContent = decoder.decode(buffer);
+          
+          const textChunks: string[] = [];
+          
+          // Match standard PDF literal text operators: (text) Tj
+          const tjMatches = pdfContent.match(/\(([^)]{2,})\)\s*(?:Tj|'|")/g);
+          if (tjMatches && tjMatches.length > 0) {
+            tjMatches.forEach((m) => {
+              const inner = m.replace(/\s*(?:Tj|'|")$/, '').replace(/^\(/, '').replace(/\)$/, '');
+              if (inner.trim().length > 0 && !/^[\x00-\x1F]+$/.test(inner)) {
+                textChunks.push(inner);
+              }
+            });
+          }
+
+          // Match array text operators: [(text) 10 (text)] TJ
+          const arrayMatches = pdfContent.match(/\[([^\]]{2,})\]\s*TJ/g);
+          if (arrayMatches && arrayMatches.length > 0) {
+            arrayMatches.forEach((m) => {
+              const inParens = m.match(/\(([^)]{2,})\)/g);
+              if (inParens) {
+                inParens.forEach((p) => {
+                  const cleaned = p.slice(1, -1);
+                  if (cleaned.trim()) textChunks.push(cleaned);
+                });
+              }
+            });
+          }
+
+          if (textChunks.length >= 3) {
+            rawText = textChunks.join(' ').replace(/\s+/g, ' ').trim();
+            console.log(`[DocumentExtractor Local PDF Stream Decode] Extracted ${rawText.split(/\s+/).length} words from PDF text chunks`);
+          }
+        } catch (pdfErr) {
+          console.warn('[DocumentExtractor Local PDF Decode Error]:', pdfErr);
+        }
       } else {
         rawText = await file.text();
       }
