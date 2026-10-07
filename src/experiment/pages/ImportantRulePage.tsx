@@ -6,17 +6,21 @@ export const ImportantRulePage: React.FC<{
   slide: Slide;
   onNext?: () => void;
 }> = ({ slide }) => {
-  const why =
+  let why =
     slide.why ||
     slide.gurujiCoaching?.whyItMatters ||
     'Safety and compliance boundary. Never bypass standard verification checks.';
+
+  if (slide.title && why.trim().toLowerCase() === slide.title.trim().toLowerCase()) {
+    why = 'Non-negotiable operational control: skipping this check leads to compliance violations, inventory/process discrepancies, and safety risks.';
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <span className="pill stage-control-pill">
           <TeachMeIcon name="warn" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 4 OF 8 • CONTROL (Quality Limits & Critical Rules)
+          Mandatory Quality Rule
         </span>
       </div>
 

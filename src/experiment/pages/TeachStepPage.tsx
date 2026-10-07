@@ -25,9 +25,9 @@ export const TeachStepPage: React.FC<{
       <div className="flex items-center justify-between">
         <span className="pill stage-perform-pill">
           <TeachMeIcon name="arrow" className="w-3.5 h-3.5 inline mr-1 rotate-90" />
-          THE CURRENT STAGE: STAGE 3 OF 8 • PERFORM ({slide.step || 'Operational Step'})
+          {slide.step || 'Standard Operational Protocol'}
         </span>
-        {slide.evidenceSource && (
+        {slide.evidenceSource && !slide.evidenceSource.startsWith('S1.') && !slide.evidenceSource.startsWith('S2.') && (
           <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-full">
             {slide.evidenceSource}
           </span>

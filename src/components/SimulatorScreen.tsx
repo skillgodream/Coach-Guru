@@ -36,6 +36,35 @@ export default function SimulatorScreen({
       ? initialPhase === 0
         ? lesson.blueprint.scenarios.watch
         : lesson.blueprint.scenarios.practice
+      : lesson?.stepObjects && lesson.stepObjects.length > 0
+      ? lesson.stepObjects.map((so: any, idx: number) => ({
+          id: idx + 1,
+          title: so.title || `Step ${idx + 1}`,
+          type: 'check',
+          question: so.question || `How do you execute step ${idx + 1}?`,
+          taskTitle: lesson.title,
+          taskOrder: `SOP Step ${idx + 1}`,
+          taskItem: so.screen?.info || so.title,
+          targetCode: `STEP-${idx + 1}`,
+          targetQty: 1,
+          sku: `SOP-${idx + 1}`,
+          choices: (so.options && so.options.length >= 2)
+            ? so.options.map((opt: any, oIdx: number) => ({
+                id: opt.id || `c${oIdx + 1}`,
+                title: opt.label || opt.text,
+                subtitle: oIdx === 0 ? 'Compliant SOP Standard' : 'Non-compliant Action',
+                isCorrect: opt.id === so.correct || oIdx === 0,
+              }))
+            : [
+                { id: 'c1', title: so.title || 'Execute compliant SOP step', subtitle: `${lesson.title} Standard Procedure`, isCorrect: true },
+                { id: 'c2', title: `Skip step ${idx + 1} to save time`, subtitle: 'Non-compliant Shortcut', isCorrect: false },
+                { id: 'c3', title: `Bypass verification check`, subtitle: 'Unapproved Workaround', isCorrect: false },
+              ],
+          why: so.why || 'Follow standard operating procedure guidelines.',
+          coachTip: so.coach_say || 'Verify required criteria before proceeding.',
+          hint: so.hint || `Refer to ${lesson.title} written SOP`,
+          priority: 'Standard',
+        }))
       : initialPhase === 0
       ? SIMULATION_STEPS
       : SIMULATION_STEPS_B);
@@ -250,61 +279,43 @@ export default function SimulatorScreen({
     return map[type?.toLowerCase()] || (priority?.toLowerCase().includes('crit') ? '!' : '▣');
   };
 
-  // Visual slot renderer (Screenshot 3 & HUD)
+  // Visual slot renderer (Domain-Aware Cards)
   const renderVisualSlot = (currentStep: SimulatorStep) => {
     const type = currentStep.type?.toLowerCase();
+    const isLogistics =
+      type === 'tote' ||
+      (type === 'sku' && currentStep.sku?.startsWith('SKU')) ||
+      (currentStep.targetCode && currentStep.targetCode.startsWith('LOC-'));
 
-    if (type === 'location' || currentStep.location) {
-      const loc = currentStep.targetCode || currentStep.location || 'A-03-14';
+    if (isLogistics) {
+      const loc = currentStep.targetCode || 'LOC-A01';
       return (
         <div className="visual">
-          <img
-            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'><rect width='400' height='120' fill='%23102334'/><rect x='20' y='20' width='360' height='80' rx='8' fill='%2319354d'/><rect x='180' y='35' width='160' height='50' rx='4' fill='%23d9b036'/><rect x='190' y='45' width='6' height='30' fill='%23111'/><rect x='202' y='45' width='4' height='30' fill='%23111'/><rect x='210' y='45' width='10' height='30' fill='%23111'/><rect x='225' y='45' width='4' height='30' fill='%23111'/><rect x='233' y='45' width='8' height='30' fill='%23111'/><text x='250' y='68' font-family='monospace' font-weight='900' font-size='18' fill='%23111'>A-03-14</text></svg>"
-            alt="Location Target"
-          />
-          <div className="visualOverlay">
-            <div className="visualLabel">
-              <small>Find the location</small>
-              <strong>{loc}</strong>
+          <div className="visualOverlay p-3 bg-slate-900 border border-slate-700 rounded-xl">
+            <div className="flex items-center justify-between text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">
+              <span>LOCATION TARGET</span>
+              <span>LOGISTICS</span>
             </div>
+            <div className="text-lg font-black text-white">{loc}</div>
           </div>
         </div>
       );
     }
 
-    if (type === 'scan' || type === 'sku') {
-      const code = currentStep.sku || currentStep.targetCode || 'SKU NB-A5-BL';
-      return (
-        <div className="scanner">
-          <div className="scannerTop">
-            <span>WMS · ITEM VERIFY</span>
-            <span>READY</span>
-          </div>
-          <div className="scannerBar"></div>
-          <div className="scannerValue">
-            Task SKU <b>{code}</b>
-          </div>
-        </div>
-      );
-    }
+    // Default Domain-Neutral SOP Protocol Card (Teachers, Healthcare, Housekeeping, Retail, EHS, Operations)
+    const code = currentStep.targetCode || `STEP-${stepIndex + 1}`;
+    const taskTitle = currentStep.taskTitle || lesson?.title || 'Operational Protocol';
 
-    if (type === 'tote') {
-      const toteCode = currentStep.targetCode || 'T-221';
-      return (
-        <div className="scanner">
-          <div className="scannerTop">
-            <span>ORDER INTEGRITY</span>
-            <span>WMS BUFFER</span>
-          </div>
-          <div className="scannerBar"></div>
-          <div className="scannerValue">
-            Order <b>{(currentStep as any).taskOrder || 'SO-4471'}</b> · Tote <b>{toteCode}</b>
-          </div>
-        </div>
-      );
-    }
-
-    return null;
+    return (
+      <div className="w-full flex items-center justify-between px-3 py-2 bg-slate-900/90 border border-slate-700/80 rounded-xl mb-3 shadow-xs">
+        <span className="text-[11px] font-black tracking-wider text-indigo-300 uppercase truncate">
+          {taskTitle}
+        </span>
+        <span className="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-md border border-indigo-800/60 font-mono text-[10px] font-bold shrink-0">
+          {code}
+        </span>
+      </div>
+    );
   };
 
   // Phase Title Helper

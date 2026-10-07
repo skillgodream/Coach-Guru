@@ -162,6 +162,26 @@ export function validateSourceFidelity(
       }
     }
 
+    // Title Leak & Document Header Validation Rule
+    const docTitleLower = extracted.filename.replace(/\.(txt|pdf|docx)$/i, '').toLowerCase();
+    const stepObjectsList = (lesson as any)?.stepObjects || [];
+    if (stepObjectsList.length > 0) {
+      for (const stepObj of stepObjectsList) {
+        const titleLower = (stepObj.title || '').toLowerCase();
+        if (titleLower.startsWith('sop —') || titleLower.startsWith('sop -') || titleLower === docTitleLower) {
+          console.error(`[SourceValidator FAIL - Title Leak] Step title contains unparsed document header: "${stepObj.title}"`);
+          return {
+            isValid: false,
+            errorCategory: 'content_failure',
+            errorReason: `Extracted step title contains unparsed document header ("${stepObj.title}"). Steps must be operational action titles.`,
+            sourceRefMatches: 0,
+            evidenceQuotesFound: 0,
+            domainName,
+          };
+        }
+      }
+    }
+
     // Canary Phrase Verification (if document has "folding towels in the Orchid Suite")
     if (lowerText.includes('orchid suite') || lowerText.includes('folding towels')) {
       const hasCanaryInLesson = lessonContentStr.includes('orchid suite') || lessonContentStr.includes('towel');

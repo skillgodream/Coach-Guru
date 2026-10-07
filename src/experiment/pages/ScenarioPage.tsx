@@ -14,7 +14,7 @@ export const ScenarioPage: React.FC<{
       <div className="flex items-center gap-2">
         <span className="pill stage-decide-pill">
           <TeachMeIcon name="bulb" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 5 OF 8 • DECIDE (Frontline Workplace Scenario)
+          Frontline Workplace Scenario
         </span>
       </div>
 

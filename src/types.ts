@@ -165,6 +165,7 @@ export interface Lesson {
   operationalBlueprint?: OperationalBlueprint;
   knowledgeModel?: SopKnowledgeModel;
   trainingPlan?: TrainingPlanItem[];
+  stepObjects?: StepObject[];
 }
 
 export interface ToolItem {

@@ -20,7 +20,7 @@ export const DoDontPage: React.FC<{
       <div className="flex items-center gap-2">
         <span className="pill stage-control-pill">
           <TeachMeIcon name="check" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 4 OF 8 • CONTROL (Do and Don’t Boundaries)
+          Operational Boundaries
         </span>
       </div>
 

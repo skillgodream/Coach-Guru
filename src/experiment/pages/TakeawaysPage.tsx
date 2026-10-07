@@ -19,7 +19,7 @@ export const TakeawaysPage: React.FC<{
       <div className="flex items-center gap-2">
         <span className="pill stage-prove-pill">
           <TeachMeIcon name="bulb" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 8 OF 8 • PROVE (Recall & Retention Check)
+          Key Takeaways
         </span>
       </div>
 

@@ -16,7 +16,7 @@ export const WelcomePage: React.FC<{
         <TeachMeIcon name="room" className="ic" />
       </div>
       <span className="pill stage-orient-pill" style={{ marginBottom: '12px' }}>
-        THE CURRENT STAGE: STAGE 1 OF 8 • ORIENT
+        Module Overview
       </span>
       <h1>{slide.title}</h1>
       <p>

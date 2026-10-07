@@ -22,6 +22,8 @@ import {
 
 const METADATA_PATTERNS = [
   /^standard operating procedure/i,
+  /^sop\s*[\—\-\:]/i,
+  /^sop\s+-\s+/i,
   /^document ref/i,
   /^sop-/i,
   /^version/i,
@@ -34,12 +36,26 @@ const METADATA_PATTERNS = [
   /^section \d+:/i,
   /^chapter \d+:/i,
   /^part \d+:/i,
+  /sop page \d+/i,
+  /fulfilment sop/i,
+  /fulfillment sop/i,
+  /sop document/i,
+  /title:/i,
+  /process name:/i,
+  /operating procedure/i,
+  /primary school teacher/i,
 ];
 
-function isOperationalContent(line: string): boolean {
+function isOperationalContent(line: string, filename?: string): boolean {
   const trimmed = line.trim();
   if (trimmed.length < 10) return false;
   if (METADATA_PATTERNS.some((p) => p.test(trimmed))) return false;
+  if (filename) {
+    const cleanFilename = filename.replace(/\.(txt|pdf|docx)$/i, '').toLowerCase();
+    if (trimmed.toLowerCase().includes(cleanFilename) || cleanFilename.includes(trimmed.toLowerCase())) {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -350,6 +366,41 @@ export function buildTrainingPlanFromBlueprint(blueprint: OperationalBlueprint):
   });
 }
 
+const TRAILING_STOP_WORDS = new Set([
+  'and', 'or', 'to', 'with', 'for', 'of', 'in', 'on', 'at', 'by',
+  'a', 'an', 'the', 'is', 'are', 'prior', 'before', 'after', 'if', 'when',
+  'that', 'which', 'than', 'into', 'onto', 'from', 'as', 'via'
+]);
+
+export function toActionTitle(str: string, maxWords: number = 14): string {
+  if (!str) return 'Execute SOP Standard';
+  
+  let clean = str.trim()
+    .replace(/^[\d\.\-\*\•\:]\s*/, '')
+    .replace(/^(please|ensure|always|must|should|verify that|make sure to)\s+/i, '');
+  
+  if (clean.length > 0) {
+    clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+  }
+
+  const words = clean.split(/\s+/);
+  if (words.length <= maxWords) return clean;
+
+  const clauseMatch = clean.match(/^([^,;\.\—\–]+)[,;\.\—\–]/);
+  if (clauseMatch && clauseMatch[1] && clauseMatch[1].split(/\s+/).length >= 3 && clauseMatch[1].split(/\s+/).length <= maxWords) {
+    clean = clauseMatch[1].trim();
+  } else {
+    let slicedWords = words.slice(0, maxWords);
+    while (slicedWords.length > 3 && TRAILING_STOP_WORDS.has(slicedWords[slicedWords.length - 1].toLowerCase().replace(/[^\w]/g, ''))) {
+      slicedWords.pop();
+    }
+    clean = slicedWords.join(' ');
+  }
+
+  clean = clean.replace(/[\s,;\:\—\–\.\-]+$/, '');
+  return clean;
+}
+
 /**
  * Generates frontline scenario question and specific distractors (no generic template text)
  */
@@ -359,16 +410,26 @@ function createScenarioQuestionFromStep(
   process: string,
   index: number
 ) {
-  const instruction = item.instruction;
-  const words = instruction.split(/\s+/);
-  const title = `${item.action_verb || 'Execute'} ${words.slice(0, 3).join(' ')}`.slice(0, 30);
+  let instruction = item.instruction || `Execute ${process} operational step ${index + 1}`;
+  if (
+    instruction.toLowerCase().startsWith('sop') ||
+    (instruction.toLowerCase().includes(process.toLowerCase()) && instruction.length < process.length + 20)
+  ) {
+    instruction = `Execute ${process} protocol according to written SOP`;
+  }
+
+  const choiceCorrectTitle = toActionTitle(item.choices?.[0]?.title || (item.choices?.[0] as any)?.text || instruction, 14);
+  const choiceDistractor1Title = toActionTitle(item.choices?.[1]?.title || (item.choices?.[1] as any)?.text || `Skip step ${index + 1} to save time`, 14);
+  const choiceDistractor2Title = toActionTitle(item.choices?.[2]?.title || (item.choices?.[2] as any)?.text || `Bypass check and report later`, 14);
+
+  const title = item.task_title || toActionTitle(`${item.action_verb || 'Execute'} ${instruction}`, 6);
 
   return {
     title,
-    question: item.scenario_question || `How do you execute: ${instruction}?`,
-    choiceCorrect: item.choices?.[0]?.text || instruction,
-    choiceDistractor1: item.choices?.[1]?.text || `Skip ${words.slice(0, 2).join(' ')} to speed up shift completion`,
-    choiceDistractor2: item.choices?.[2]?.text || `Perform ${words.slice(0, 2).join(' ')} without checking workstation equipment`,
+    question: item.scenario_question || `How do you execute step ${index + 1}: ${toActionTitle(instruction, 10)}?`,
+    choiceCorrect: choiceCorrectTitle,
+    choiceDistractor1: choiceDistractor1Title,
+    choiceDistractor2: choiceDistractor2Title,
   };
 }
 
@@ -384,12 +445,30 @@ export function generateLessonFromOperationalBlueprint(
   blueprint: BlueprintV1;
   stepObjects: StepObject[];
 } {
-  const role = opBlueprint.role;
-  const process = opBlueprint.process;
+  const role = opBlueprint.role || 'Frontline Worker';
+  const process = opBlueprint.process || extracted.filename.replace(/\.(txt|pdf|docx)$/i, '');
   const lessonId = `doc-${extracted.fileHash}`;
 
-  const steps = opBlueprint.operational_steps.length > 0
-    ? opBlueprint.operational_steps.slice(0, 9)
+  const isLogisticsDomain =
+    `${process} ${role}`.toLowerCase().includes('picker') ||
+    `${process} ${role}`.toLowerCase().includes('warehouse') ||
+    `${process} ${role}`.toLowerCase().includes('inventory') ||
+    `${process} ${role}`.toLowerCase().includes('tote') ||
+    `${process} ${role}`.toLowerCase().includes('outbound') ||
+    `${process} ${role}`.toLowerCase().includes('fulfillment');
+
+  const rawSteps = opBlueprint.operational_steps || [];
+  // Filter out any step that is just the document title or starting with "SOP —"
+  const validSteps = rawSteps.filter((s) => {
+    const text = (s.instruction || '').trim().toLowerCase();
+    if (text.length < 10) return false;
+    if (text.startsWith('sop') && text.includes('—')) return false;
+    if (text === process.toLowerCase()) return false;
+    return true;
+  });
+
+  const steps = validSteps.length > 0
+    ? validSteps.slice(0, 9)
     : [
         {
           instruction: `Execute ${process} according to written operational specifications.`,
@@ -409,32 +488,52 @@ export function generateLessonFromOperationalBlueprint(
     const question = item.scenario_question || scenario.question;
     const title = item.task_title || scenario.title;
     const choices = (item.choices && item.choices.length >= 2)
-      ? item.choices
+      ? item.choices.map((c, cIdx) => ({
+          id: c.id || `c${cIdx + 1}`,
+          title: toActionTitle(c.title || (c as any).text || item.instruction),
+          subtitle: c.subtitle || (c.isCorrect ? 'Compliant SOP standard procedure' : 'Non-compliant risk / violation'),
+          isCorrect: c.isCorrect,
+        }))
       : [
           { id: 'c1', title: scenario.choiceCorrect, subtitle: `${role} SOP Standard Procedure`, isCorrect: true },
           { id: 'c2', title: scenario.choiceDistractor1, subtitle: `Non-compliant Shortcut / Risk`, isCorrect: false },
           { id: 'c3', title: scenario.choiceDistractor2, subtitle: `Unapproved Workaround / Safety Violation`, isCorrect: false },
         ];
 
+    // Determine domain-accurate step type
+    let stepType = 'check';
+    const textLower = item.instruction.toLowerCase();
+    if (isLogisticsDomain) {
+      if (textLower.includes('tote')) stepType = 'tote';
+      else if (textLower.includes('scan') || textLower.includes('sku')) stepType = 'sku';
+      else stepType = 'location';
+    } else {
+      if (textLower.includes('spray') || textLower.includes('clean') || textLower.includes('sanitize')) stepType = 'spray';
+      else if (item.critical_control || textLower.includes('safety') || textLower.includes('rule')) stepType = 'safety';
+      else stepType = 'check';
+    }
+
+    const defaultCode = isLogisticsDomain ? `LOC-A0${stepNum}` : `STEP-${stepNum}`;
+
     return {
       id: stepNum,
       title,
-      type: 'location',
+      type: stepType,
       question,
       taskTitle: process,
       taskOrder: `SOP Step ${stepNum}`,
       taskItem: item.instruction,
-      targetCode: item.target_code || `REF-${stepNum}0${idx + 1}`,
+      targetCode: item.target_code || defaultCode,
       targetQty: 1,
-      sku: `SRC-${stepNum}`,
+      sku: isLogisticsDomain ? `SKU-${stepNum}` : `SOP-${stepNum}`,
       priority: item.critical_control ? 'High Priority' : 'Standard',
       choices,
-      why: item.why_it_matters || `SOP Requirement: ${item.source.source_text}`,
+      why: item.why_it_matters || `SOP Requirement: ${item.source?.source_text || item.instruction}`,
       coachTip: item.coach_tip || `Operational Rule: ${item.instruction}`,
-      hint: item.hint || `Refer to ${item.source.page_or_section} in ${extracted.filename}`,
-      source_ref: item.source.source_ref,
-      page_or_section: item.source.page_or_section,
-      evidence: item.source.source_text,
+      hint: item.hint || `Refer to ${item.source?.page_or_section || 'SOP Section'} in ${extracted.filename}`,
+      source_ref: item.source?.source_ref || 'S1',
+      page_or_section: item.source?.page_or_section || 'Page 1',
+      evidence: item.source?.source_text || item.instruction,
     };
   });
 
@@ -470,13 +569,16 @@ export function generateLessonFromOperationalBlueprint(
     hotspots: null,
   }));
 
+  const customerImpact = (opBlueprint.customer_or_business_impact || [])[0]?.impact || `Adhering to ${process} ensures service quality and safety.`;
+  const criticalControlRule = (opBlueprint.critical_controls || [])[0]?.rule || `Never bypass mandatory verification steps or operate outside written guidelines.`;
+
   const orientationCards: OrientationCard[] = [
     {
       id: 'card_overview',
       kind: 'what',
       title: `What is ${process}?`,
-      body: opBlueprint.purpose,
-      audio_text: `Role: ${role}. Purpose: ${opBlueprint.purpose}`,
+      body: opBlueprint.purpose || `Core operational procedure for ${role}.`,
+      audio_text: `Role: ${role}. Purpose: ${opBlueprint.purpose || process}`,
       visual: { type: 'icon', ref: 'clipboard' },
       must_view: true,
       source_ref: 'S1.overview',
@@ -485,8 +587,8 @@ export function generateLessonFromOperationalBlueprint(
       id: 'card_purpose',
       kind: 'why',
       title: 'Why This Matters',
-      body: opBlueprint.customer_or_business_impact[0]?.impact || `Adhering to ${process} ensures service quality and safety.`,
-      audio_text: opBlueprint.customer_or_business_impact[0]?.impact || `Adhering to ${process} ensures service quality and safety.`,
+      body: customerImpact,
+      audio_text: customerImpact,
       visual: { type: 'icon', ref: 'safety' },
       must_view: true,
       source_ref: 'S1.impact',
@@ -495,8 +597,8 @@ export function generateLessonFromOperationalBlueprint(
       id: 'card_compliance',
       kind: 'rule',
       title: 'Critical Control Rule',
-      body: opBlueprint.critical_controls[0]?.rule || `Never bypass mandatory verification steps or operate outside written guidelines.`,
-      audio_text: opBlueprint.critical_controls[0]?.rule || `Never bypass mandatory verification steps or operate outside written guidelines.`,
+      body: criticalControlRule,
+      audio_text: criticalControlRule,
       visual: { type: 'icon', ref: 'rule' },
       must_view: true,
       source_ref: 'S1.control',
@@ -516,7 +618,7 @@ export function generateLessonFromOperationalBlueprint(
       why_it_matters: [
         {
           who_depends: 'Frontline Teams & Customers',
-          impact: opBlueprint.customer_or_business_impact[0]?.impact || 'Maintains strict service accuracy and safety.',
+          impact: customerImpact,
           source_ref: 'S1.why',
           basis: 'from_source',
           status: 'approved',
@@ -595,7 +697,7 @@ export function generateLessonFromOperationalBlueprint(
       cards: orientationCards,
       tool_explorer: {
         enabled: true,
-        items: opBlueprint.tools_and_systems.map((t) => ({
+        items: (opBlueprint.tools_and_systems || []).map((t) => ({
           tool_name: t.name,
           card_id: `card_overview`,
         })),
@@ -618,8 +720,8 @@ export function generateLessonFromOperationalBlueprint(
       behaviour: s.why,
       source_ref: s.source_ref || 'S1',
     })),
-    takeaways: opBlueprint.critical_controls.map((c) => c.rule),
-    common_mistakes: opBlueprint.common_mistakes.map((m) => m.mistake),
+    takeaways: (opBlueprint.critical_controls || []).map((c) => c.rule || String(c)),
+    common_mistakes: (opBlueprint.common_mistakes || []).map((m) => m.mistake || String(m)),
   };
 
   let category: 'All' | 'Picking' | 'Packing' | 'Safety' | 'Inventory' = 'Safety';

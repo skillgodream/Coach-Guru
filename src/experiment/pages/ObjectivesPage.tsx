@@ -22,7 +22,7 @@ export const ObjectivesPage: React.FC<{
       <div className="flex items-center gap-2">
         <span className="pill stage-orient-pill">
           <TeachMeIcon name="target" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 1 OF 8 • ORIENT (What You Will Learn)
+          What You Will Learn
         </span>
       </div>
 

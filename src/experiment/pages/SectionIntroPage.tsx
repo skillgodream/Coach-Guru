@@ -8,39 +8,56 @@ export const SectionIntroPage: React.FC<{
 }> = ({ slide }) => {
   const sec = slide.sec || 'PREPARE • Prerequisites';
 
-  // Sample checklist items with right-hand visual cards matching Screenshot 1
-  const defaultItems = [
-    {
-      title: 'Dilute Sanitizer (1:10 ratio)',
-      subtitle: 'Measure chemical accurately into blue applicator bottle.',
-      img: 'https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=300&q=80',
-      status: 'check',
-    },
-    {
-      title: 'Microfibre Cloths Ready',
-      subtitle: 'Color-coded microfibre cloths for surface sanitization.',
-      img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=300&q=80',
-      status: 'check',
-    },
-    {
-      title: 'Never Spray Directly Over Dirt',
-      subtitle: 'Wipe visible debris before applying disinfectant spray.',
-      img: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=300&q=80',
-      status: 'prohibited',
-    },
-  ];
-
-  // Process slide fl items
+  // Process slide fl items dynamically from extracted SOP
   const rawItems: string[] = slide.fl || [
-    'Gloves on & PPE active',
-    'Sanitizer 1:10 in blue bottle',
-    'Microfibre cloths ready',
+    'Workstation & SOP guide verified',
+    'Required equipment and tools active',
+    'Safety checks & credentials cleared',
   ];
 
-  const items = defaultItems.slice(0, rawItems.length).map((def, idx) => ({
-    ...def,
-    title: rawItems[idx] || def.title,
-  }));
+  const fallbackImages = [
+    'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=300&q=80',
+    'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=300&q=80',
+    'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=300&q=80',
+  ];
+
+  const items = rawItems.map((raw, idx) => {
+    const parts = raw.split(/[:\-\–]\s*/);
+    let title = '';
+    let subtitle = '';
+
+    if (parts.length > 1 && parts[0].trim().length < 50) {
+      title = parts[0]?.trim();
+      subtitle = parts.slice(1).join(' ').trim();
+    } else {
+      const words = raw.trim().split(/\s+/);
+      if (words.length > 6) {
+        title = words.slice(0, 5).join(' ');
+        subtitle = words.slice(5).join(' ');
+      } else {
+        title = raw.trim();
+        subtitle = 'Mandatory SOP prerequisite verification before starting execution.';
+      }
+    }
+
+    // Ensure title and subtitle are properly formatted and distinct
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+    subtitle = subtitle.charAt(0).toUpperCase() + subtitle.slice(1);
+
+    const isProhibited =
+      raw.toLowerCase().includes('never') ||
+      raw.toLowerCase().includes('do not') ||
+      raw.toLowerCase().includes('don\'t') ||
+      raw.toLowerCase().includes('prohibit') ||
+      raw.toLowerCase().includes('bypass');
+
+    return {
+      title,
+      subtitle,
+      img: slide.img || fallbackImages[idx % fallbackImages.length],
+      status: isProhibited ? 'prohibited' : 'check',
+    };
+  });
 
   return (
     <div className="space-y-4">
@@ -48,7 +65,7 @@ export const SectionIntroPage: React.FC<{
       <div className="flex items-center gap-2">
         <span className="pill stage-prepare-pill">
           <TeachMeIcon name="check" className="w-3.5 h-3.5 inline mr-1" />
-          THE CURRENT STAGE: STAGE 2 OF 8 • PREPARE (Prerequisites & Setup)
+          Prerequisites & Preparation
         </span>
       </div>
 

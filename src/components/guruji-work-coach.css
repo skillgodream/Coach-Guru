@@ -596,6 +596,9 @@
   line-height: 1.22 !important;
   font-weight: 800;
   display: block;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .guruji-coach-app .choice small {
@@ -604,6 +607,9 @@
   color: var(--lux-muted);
   margin-top: 3px;
   font-weight: 600;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 .guruji-coach-app .choice.correct {

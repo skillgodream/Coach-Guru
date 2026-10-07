@@ -205,30 +205,44 @@ app.post('/api/gemini/generate-blueprint', async (req, res) => {
     }
 
     const systemInstruction = `You are a World-Class Lead Operational Intelligence Engineer and Instructional Designer for Guruji Work Coach.
-Your task is to transform an uploaded Standard Operating Procedure (SOP) into a deep, high-fidelity, simulation-grade OPERATIONAL BLUEPRINT using the 8-Stage Universal SOP Training Flow Framework:
+LAW 3 — UNIVERSAL 8-STAGE OPERATIONAL LEARNING FRAMEWORK
+The 8 stages are the Brain's universal framework for analysing and organising ANY SOP.
+They are NOT a mandatory 8-slide structure.
+The Brain must examine the SOP through all 8 stages and use only the stages that contain meaningful source-supported content. It may combine, expand or skip stages depending on the SOP.
 
-THE 8 UNIVERSAL SOP STAGES TO EXTRACT & SYNTHESIZE:
-1. ORIENT: Job role, core process, primary purpose, and explicit learner expected outcomes upon completion.
-2. PREPARE: Prerequisites, order checks, tools & systems setup, pre-execution verifications.
-3. PERFORM: Sequential step protocol using active imperative verbs, task titles, and target codes.
-4. CONTROL: Safety boundaries, quality controls, critical rules, and side-by-side Do's & Don'ts.
-5. DECIDE: Frontline judgment points, scenario questions putting the worker in exact execution moments with 3 choices.
-6. HANDLE: Exception procedures for non-standard conditions (e.g. mismatched ID, unfasted patient, system error).
-7. ESCALATE: Non-negotiable Stop & Escalate boundaries (when execution MUST halt and supervisor contact).
-8. PROVE: Key takeaways, retention checks, and transition to hands-on practice.
+1. ORIENT: What is the job/task? Why is it being done? What is the expected outcome? What is the worker responsible for?
+2. PREPARE: What must the worker check, arrange, confirm or understand before starting? (Tools, information, prerequisites, environment, customer/patient/order details).
+3. PERFORM: What does the worker actually do? Extract the real operational steps and preserve their correct sequence.
+4. CONTROL: What must the worker verify while performing the task? Include safety, quality, accuracy, compliance, customer, equipment or other critical controls.
+5. DECIDE: Where does the worker need to make a judgement? Identify the condition, available actions and the correct SOP-supported response.
+6. HANDLE: What happens when the normal process does not go as expected? Include exceptions, unusual conditions, missing information, failed checks or process deviations.
+7. ESCALATE: When is the issue beyond the worker's authority or capability? Identify when to stop, who/what to escalate to and what must happen before continuing.
+8. PROVE: What does the worker need to demonstrate to show that the critical learning has been understood? Use the most important steps, controls, decisions or exceptions from the SOP.
+
+SYNTHESIS RULE:
+SOP → analyse through 8 stages → identify meaningful content → remove duplication → preserve critical details → arrange progressively → create the required training pages.
+- Do NOT force an SOP into all 8 stages.
+- Do NOT create empty pages just because a stage exists.
+- Do NOT invent content to fill a stage.
+- The 8 stages control the Brain's thinking and sequencing; the SOP controls the actual content.
 
 CRITICAL ARCHITECTURAL RULES:
-1. DEEP REALISM & UNCOMPROMISING SPECIFICITY:
-   - Ground ALL extractions strictly and verbatim in the provided SOP document.
-   - Extract the TRUE frontline role (e.g. Quick Commerce Picker, Phlebotomist, Residential Housekeeping Specialist, Retail Cashier).
-   - Every scenario question must put the worker in a concrete, high-stakes operational situation directly based on the SOP details (specific product names, equipment, barcodes, shelf codes, temperatures, error codes, edge cases, exceptions).
+1. CONCISE WORKPLACE LANGUAGE (NO RAW TEXT DUMPS):
+   - NEVER output long, run-on paragraph sentences concatenating multiple SOP lines.
+   - Summarize every choice title into a crisp, COMPLETE, 5-12 word action statement written in natural workplace language.
+   - NEVER end a choice title on a dangling conjunction or preposition (e.g., 'and', 'or', 'to', 'with', 'for'). Ensure every title is a full, grammatically complete action phrase.
+   - Keep scenario questions under 2 concise sentences focused on a single execution dilemma.
+2. DEEP REALISM & UNCOMPROMISING SPECIFICITY:
+   - Ground ALL extractions strictly in the operational facts of the provided SOP document.
+   - Extract the TRUE frontline role (e.g. Quick Commerce Picker, Phlebotomist, Residential Housekeeping Specialist, Retail Cashier, Primary School Teacher, Aviation Gate Agent).
+   - Every scenario question must put the worker in a concrete, high-stakes operational situation directly based on the SOP details (specific equipment, classroom prep, barcodes, shelf codes, temperatures, error codes, edge cases, exceptions).
    - NEVER generate generic questions like "What is your required action?" or "How should you complete this task?" or "Before taking the next step, what details must you verify?".
    - NEVER generate generic choices like "Skip step and proceed" or "Use unverified shortcut". Create REALISTIC frontline errors, tempting shortcuts, and common mistakes that real workers actually make on the floor!
-2. THREE NUANCED CHOICES WITH EXPLICIT FAILURE MODES:
-   - For EACH operational step, you MUST generate exactly 3 nuanced choices:
-     * Choice 1 (isCorrect: true): The precise, compliant SOP action with actionable steps. Subtitle explaining why this is correct per SOP.
-     * Choice 2 (isCorrect: false): A realistic, tempting operational shortcut or common rushed mistake that workers often make. Subtitle explicitly details the failure consequence (e.g., inventory mismatch, customer complaint, safety hazard).
-     * Choice 3 (isCorrect: false): An unapproved workaround or procedural bypass. Subtitle details the regulatory, safety, or quality violation.
+3. THREE NUANCED CHOICES WITH EXPLICIT FAILURE MODES:
+   - For EACH operational step, you MUST generate exactly 3 nuanced choices with short, complete, clear titles (5 to 12 words):
+     * Choice 1 (isCorrect: true): Concise, complete, compliant SOP action title. Subtitle explaining why this is correct per SOP.
+     * Choice 2 (isCorrect: false): Concise, complete, tempting operational shortcut title. Subtitle explicitly details the failure consequence (e.g., inventory mismatch, customer complaint, safety hazard).
+     * Choice 3 (isCorrect: false): Concise, complete, unapproved workaround title. Subtitle details the regulatory, safety, or quality violation.
 3. EXPERT COACH TIPS, SPECIFIC HINTS & LUCIDE VECTOR ICONS:
    - coach_tip: Guruji's practical wisdom directly referencing the subtle details, pitfalls, or mnemonic tips from the SOP.
    - hint: Specific reference to the SOP document section, visual cues, or indicators.
@@ -444,28 +458,23 @@ app.post('/api/coach', async (req, res) => {
     }
 
     const rawText = response.text || '';
-    const cleanedText = rawText
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/\s*```$/i, '')
-      .trim();
-
-    if (!cleanedText) {
+    if (!rawText.trim()) {
       return res.status(502).json({ error: 'Empty response received from LLM' });
     }
 
-    const parsedData = JSON.parse(cleanedText);
-    return res.status(200).json(parsedData);
-  } catch (error: any) {
-    console.error('[API Error] LLM generation failed:', error);
-    if (error instanceof SyntaxError) {
+    try {
+      const parsedData = cleanAndRepairJson(rawText);
+      return res.status(200).json(parsedData);
+    } catch (parseError: any) {
+      console.error('[API Error /api/coach] cleanAndRepairJson failed:', parseError);
       return res.status(502).json({
         error: 'JSON_PARSE_ERROR',
         message: 'The model output was malformed or truncated.',
-        details: error.message,
+        details: parseError.message,
       });
     }
-
+  } catch (error: any) {
+    console.error('[API Error /api/coach] LLM generation failed:', error);
     return res.status(500).json({
       error: 'LLM_PROVIDER_ERROR',
       message: error.message || 'Failed to generate response',
@@ -517,8 +526,15 @@ function sanitizeJsonString(str: string): string {
         result += ch;
         isEscaped = true;
       } else if (ch === '"') {
-        result += ch;
-        inString = false;
+        // Lookahead check: is this double-quote closing the property/value, or an interior unescaped quote?
+        const rest = str.slice(i + 1).trimStart();
+        if (rest.startsWith(':') || rest.startsWith(',') || rest.startsWith('}') || rest.startsWith(']')) {
+          result += ch;
+          inString = false;
+        } else {
+          // Interior unescaped quote -> escape it
+          result += '\\"';
+        }
       } else if (ch === '\n') {
         result += '\\n';
       } else if (ch === '\r') {
@@ -539,7 +555,16 @@ function sanitizeJsonString(str: string): string {
 }
 
 function repairTruncatedJson(jsonStr: string): string {
-  let text = jsonStr.trim().replace(/[,:\s]+$/, '');
+  let text = jsonStr.trim();
+
+  // Strip trailing markdown fences if present
+  text = text.replace(/```$/g, '').trim();
+
+  // Strip incomplete keys or values at end of truncated JSON string
+  text = text.replace(/,?\s*"[^"]*"\s*:\s*$/, '');
+  text = text.replace(/,?\s*"[^"]*$/, '');
+  text = text.replace(/[,:\s]+$/, '');
+
   let inString = false;
   let isEscaped = false;
   const stack: string[] = [];
@@ -560,16 +585,20 @@ function repairTruncatedJson(jsonStr: string): string {
       } else if (ch === '{' || ch === '[') {
         stack.push(ch);
       } else if (ch === '}' || ch === ']') {
-        stack.pop();
+        if (stack.length > 0) stack.pop();
       }
     }
   }
 
+  // If ended mid-string, terminate string
   if (inString) {
     text += '"';
   }
+
+  // Remove trailing punctuation again after string closure
   text = text.replace(/[,:\s]+$/, '');
 
+  // Close all unclosed objects and arrays in stack order
   while (stack.length > 0) {
     const opening = stack.pop();
     if (opening === '{') {
@@ -579,37 +608,59 @@ function repairTruncatedJson(jsonStr: string): string {
     }
   }
 
+  // Strip invalid trailing commas before closing braces/brackets
+  text = text.replace(/,\s*([\}\]])/g, '$1');
+
   return text;
 }
 
 function cleanAndRepairJson(rawText: string): any {
-  if (!rawText) throw new Error('Empty text response from model');
+  if (!rawText || !rawText.trim()) throw new Error('Empty text response from model');
 
   let text = rawText.trim();
-  if (text.startsWith('```json')) {
-    text = text.replace(/^```json\s*/i, '').replace(/\s*```$/, '');
-  } else if (text.startsWith('```')) {
-    text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
-  }
 
-  if (!text.startsWith('{') && text.includes('{')) {
-    text = text.slice(text.indexOf('{'));
+  // Strip markdown codeblock enclosures
+  text = text
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
+
+  // Extract from first '{' onwards if surrounded by conversational preamble
+  const firstBrace = text.indexOf('{');
+  if (firstBrace !== -1) {
     const lastBrace = text.lastIndexOf('}');
-    if (lastBrace !== -1) {
-      text = text.slice(0, lastBrace + 1);
+    if (lastBrace > firstBrace) {
+      text = text.slice(firstBrace, lastBrace + 1);
+    } else {
+      text = text.slice(firstBrace);
     }
   }
 
-  const sanitized = sanitizeJsonString(text);
-
+  // Attempt 1: Direct JSON parse
   try {
-    return JSON.parse(sanitized);
-  } catch (parseErr) {
+    return JSON.parse(text);
+  } catch (e1) {
+    // Attempt 2: Sanitize control characters inside strings
     try {
-      const repaired = repairTruncatedJson(sanitized);
-      return JSON.parse(repaired);
-    } catch (repairErr) {
-      throw parseErr;
+      const sanitized = sanitizeJsonString(text);
+      return JSON.parse(sanitized);
+    } catch (e2) {
+      // Attempt 3: Repair truncated JSON with sanitization
+      try {
+        const sanitized = sanitizeJsonString(text);
+        const repaired = repairTruncatedJson(sanitized);
+        return JSON.parse(repaired);
+      } catch (e3) {
+        // Attempt 4: Repair raw truncated JSON
+        try {
+          const repairedRaw = repairTruncatedJson(text);
+          return JSON.parse(repairedRaw);
+        } catch (e4) {
+          console.error('[cleanAndRepairJson FAIL] Unrepairable JSON response from LLM:', text.slice(0, 300));
+          throw new Error('MALFORMED_LLM_JSON_OUTPUT');
+        }
+      }
     }
   }
 }

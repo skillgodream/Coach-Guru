@@ -21,7 +21,6 @@ import BentoArchitectureShowcase from './components/BentoArchitectureShowcase';
 import ValidationErrorModal from './components/ValidationErrorModal';
 import { MeetGurujiScreen } from './screens/MeetGurujiScreen';
 import { HomeScreen } from './screens/HomeScreen';
-import { TempLlmTester } from './components/TempLlmTester';
 
 import { INITIAL_LESSONS } from './data/lessonsData';
 import ProcessPassportModal from './components/ProcessPassportModal';
@@ -608,9 +607,6 @@ export default function App() {
            </button>
         </div>
       )}
-
-      {/* Temporary LLM Diagnostic & Testing Console */}
-      <TempLlmTester />
     </div>
   );
 }

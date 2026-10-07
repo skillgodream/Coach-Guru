@@ -59,7 +59,21 @@ export function getDomainHeroImage(title: string, role: string): {
     };
   }
 
-  if (combined.includes('warehouse') || combined.includes('inventory') || combined.includes('picker') || combined.includes('tote') || combined.includes('logistics')) {
+  if (
+    combined.includes('warehouse') ||
+    combined.includes('inventory') ||
+    combined.includes('picker') ||
+    combined.includes('picking') ||
+    combined.includes('outbound') ||
+    combined.includes('inbound') ||
+    combined.includes('fulfilment') ||
+    combined.includes('fulfillment') ||
+    combined.includes('commerce') ||
+    combined.includes('dispatch') ||
+    combined.includes('order') ||
+    combined.includes('tote') ||
+    combined.includes('logistics')
+  ) {
     return {
       hero: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
       checklist: [
@@ -91,7 +105,7 @@ export function getDomainHeroImage(title: string, role: string): {
       {
         title: 'Workstation Verification',
         subtitle: 'Ensure safety equipment and tools are calibrated.',
-        img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=300&q=80',
+        img: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=300&q=80',
         status: 'check',
       },
       {
@@ -309,7 +323,7 @@ export function planSlides(lesson: Lesson): TeachMePlan {
     const km = lesson.knowledgeModel;
     const passport = lesson.passport;
 
-    const role = opBlueprint?.role || km?.identity?.role || passport?.fields?.process_name || 'Frontline Specialist';
+    const role = opBlueprint?.role || km?.identity?.role || passport?.process_name || 'Frontline Specialist';
     const processName = opBlueprint?.process || km?.identity?.process || lesson.title;
     const purpose = opBlueprint?.purpose || km?.purpose || lesson.description;
     const opSteps = opBlueprint?.operational_steps || [];
@@ -346,10 +360,10 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       objectivesItems = blueprint.floor_checklist.slice(0, 4).map((fc) => fc.behaviour);
     } else {
       objectivesItems = [
-        'Receive the patient and check the test order',
-        'Verify identity: name and date of birth must match',
-        'Confirm test requirements such as fasting',
-        'Register the patient and verify selected tests',
+        `Understand the core operational workflow for ${processName}`,
+        `Verify all required tools, inputs, and prerequisites`,
+        `Execute sequential process steps in compliance with written SOP`,
+        `Identify non-standard exceptions and execute escalation boundaries`,
       ];
     }
 
@@ -374,14 +388,21 @@ export function planSlides(lesson: Lesson): TeachMePlan {
     } else if (km?.prerequisites?.length) {
       prepChecklist = km.prerequisites.slice(0, 5).map((p) => p.text);
     } else {
-      prepChecklist = ['Order checked', 'Name and DOB matched', 'Fasting confirmed'];
+      prepChecklist = [
+        `${processName} order verified`,
+        'Workstation & tools ready',
+        'Pre-execution safety checks cleared',
+      ];
     }
+
+    const prepareTitle = `Before You Execute ${processName}`;
+    const prepareContent = purpose || `Confirm all prerequisites, tools, and readiness checks before starting ${processName}.`;
 
     slides.push({
       type: 'SECTION_INTRO',
       sec: 'Stage 2: Prepare',
-      title: `Before You Collect`,
-      content: 'Confirm all prerequisites, order checks, and patient preparation before proceeding.',
+      title: prepareTitle,
+      content: prepareContent,
       fl: prepChecklist,
       img: domainAssets.hero,
     });
@@ -428,10 +449,10 @@ export function planSlides(lesson: Lesson): TeachMePlan {
         title: 'Execute Core Protocol',
         ic: 'check',
         items: [
-          'Welcome patient and confirm purpose of visit',
-          'Check test order or prescription',
-          'Verify patient name and date of birth match order',
-          'Register patient details into laboratory system',
+          `Verify ${processName} work order parameters`,
+          'Inspect inputs, tools, and environmental conditions',
+          'Execute operational process steps according to written SOP',
+          'Validate output quality and log completion status',
         ],
         content: 'Follow standard verification protocol and complete registration.',
         img: domainAssets.checklist[0]?.img,
@@ -447,14 +468,14 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       (opBlueprint?.safety_rules?.[0] ? { rule: opBlueprint.safety_rules[0].rule, rationale: 'Safety and compliance requirement.' } : null) ||
       (passport?.fields?.golden_rules?.[0] ? { rule: passport.fields.golden_rules[0].text, rationale: 'Core operational compliance.' } : null) ||
       (km?.criticalControls?.[0] ? { rule: km.criticalControls[0], rationale: km.whyItMatters || 'Essential process control.' } : null) || {
-        rule: 'Never proceed with an unresolved identity mismatch.',
-        rationale: 'A sample linked to the wrong patient can lead to a wrong result. Escalate to your supervisor.',
+        rule: `Never proceed with unverified parameters or bypassed safety checks during ${processName}.`,
+        rationale: `Skipping mandatory verifications compromises operational quality and violates compliance. Escalate anomalies to your supervisor.`,
       };
 
     slides.push({
       type: 'IMPORTANT_RULE',
       title: criticalControl.rule,
-      why: criticalControl.rationale || 'Compliance and patient safety requirements must never be bypassed.',
+      why: criticalControl.rationale || 'Compliance and operational safety requirements must never be bypassed.',
       ic: 'warn',
       slash: 1,
       content: criticalControl.rule,
@@ -471,22 +492,22 @@ export function planSlides(lesson: Lesson): TeachMePlan {
     let donts: string[] = [];
 
     if (opBlueprint?.common_mistakes?.length) {
-      dos = opBlueprint.common_mistakes.slice(0, 2).map((m) => m.prevention || 'Match name and date of birth with the order');
-      donts = opBlueprint.common_mistakes.slice(0, 2).map((m) => m.mistake || 'Collect from an inadequately identified patient');
+      dos = opBlueprint.common_mistakes.slice(0, 2).map((m) => m.prevention || `Verify order parameters before starting ${processName}`);
+      donts = opBlueprint.common_mistakes.slice(0, 2).map((m) => m.mistake || `Execute ${processName} without verifying required criteria`);
     } else if (km?.commonMistakes?.length) {
       donts = km.commonMistakes.slice(0, 2);
-      dos = ['Match name and date of birth with the order', 'Verify selected tests before finalizing'];
+      dos = [`Verify order parameters before starting ${processName}`, 'Validate output quality against SOP standard'];
     } else if (passport?.fields?.golden_rules?.length) {
       dos = passport.fields.golden_rules.slice(0, 2).map((g) => g.text);
-      donts = ['Collect from an inadequately identified patient', 'Assume a sample belongs to a patient without checking'];
+      donts = [`Bypass pre-execution safety or identity verifications in ${processName}`, 'Assume parameters are correct without checking'];
     } else {
       dos = [
-        'Match name and date of birth with the order',
-        'Verify selected tests before finalizing registration',
+        `Verify work order parameters and item details before execution`,
+        `Validate output quality and confirm parameters match ${processName} SOP`,
       ];
       donts = [
-        'Collect from an inadequately identified patient',
-        'Assume a sample belongs to a patient without checking',
+        `Bypass pre-execution safety or identity verifications in ${processName}`,
+        `Proceed with execution when parameters or item details do not match`,
       ];
     }
 
@@ -506,11 +527,11 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       opSteps.find((s) => s.scenario_question && s.choices && s.choices.length > 0) ||
       (opBlueprint?.exceptions?.[0]
         ? {
-            scenario_question: `The Name Does Not Match: ${opBlueprint.exceptions[0].trigger}`,
+            scenario_question: `Parameter Mismatch: ${opBlueprint.exceptions[0].trigger}`,
             choices: [
-              { id: 'wrong_1', title: 'Register anyway; it is probably a spelling error', isCorrect: false, subtitle: 'Risk of wrong patient sample' },
-              { id: 'right', title: 'Stop, confirm details with patient, and escalate to supervisor if still unresolved', isCorrect: true, subtitle: 'Standard SOP exception protocol' },
-              { id: 'wrong_2', title: 'Collect the sample and fix the name later', isCorrect: false, subtitle: 'Violates patient identity verification rule' },
+              { id: 'wrong_1', title: 'Proceed anyway and ignore the parameter mismatch', isCorrect: false, subtitle: 'High operational risk: causes process failure or quality defect' },
+              { id: 'right', title: 'Halt execution, confirm details with supervisor, and follow exception protocol', isCorrect: true, subtitle: 'Standard compliant SOP exception protocol' },
+              { id: 'wrong_2', title: 'Bypass verification check and fix records later', isCorrect: false, subtitle: 'Violates mandatory compliance protocol' },
             ],
           }
         : null) ||
@@ -518,7 +539,7 @@ export function planSlides(lesson: Lesson): TeachMePlan {
         ? {
             scenario_question: opBlueprint.decision_points[0].situation,
             choices: [
-              { id: 'wrong_1', title: 'Proceed without verification', isCorrect: false, subtitle: 'Risk of wrong patient sample' },
+              { id: 'wrong_1', title: 'Proceed without verification', isCorrect: false, subtitle: 'Risk of operational discrepancy' },
               { id: 'right', title: opBlueprint.decision_points[0].action || opBlueprint.decision_points[0].decision, isCorrect: true, subtitle: 'Standard SOP verification' },
               { id: 'wrong_2', title: 'Bypass check and report later', isCorrect: false, subtitle: 'Violates SOP protocol' },
             ],
@@ -540,7 +561,7 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       slides.push({
         type: 'REAL_WORLD_SCENARIO',
         title: scenarioStep.scenario_question || 'Operational Decision Required',
-        content: scenarioStep.scenario_question || 'A patient arrives. The name on the test order is different from the registration record. What should you do?',
+        content: scenarioStep.scenario_question || `An operational anomaly or parameter mismatch occurs during ${processName}. What is the compliant SOP action?`,
         ic: 'wipe',
         evidenceSource: 'SOP Exception & Escalation Protocol',
         img: domainAssets.hero,
@@ -550,8 +571,8 @@ export function planSlides(lesson: Lesson): TeachMePlan {
         t: c.title,
         ok: c.isCorrect ? 1 : 0,
         why: c.isCorrect
-          ? 'Correct. Stop, confirm details with patient, and escalate to supervisor if still unresolved.'
-          : 'Incorrect. Never proceed with an unresolved identity mismatch.',
+          ? `Correct. Follow standard SOP exception protocol for ${processName} and escalate if unresolved.`
+          : `Incorrect. Never proceed when parameters or safety criteria do not match ${processName} SOP.`,
       }));
 
       const choices = (scenarioStep.choices || []).map((c) => ({
@@ -559,11 +580,11 @@ export function planSlides(lesson: Lesson): TeachMePlan {
         text: c.title,
         isCorrect: c.isCorrect,
         feedback: c.isCorrect
-          ? 'Correct. Stop, confirm details with the patient, and escalate to your supervisor if still unresolved.'
-          : 'Incorrect. Never collect from an inadequately identified patient.',
+          ? `Correct. Follow standard SOP exception protocol for ${processName} and escalate to your supervisor if unresolved.`
+          : `Incorrect. Never execute ${processName} when required criteria or inputs fail verification.`,
         why: c.isCorrect
-          ? 'Correct. Stop, confirm details with the patient, and escalate to your supervisor if still unresolved.'
-          : 'Incorrect. Never collect from an inadequately identified patient.',
+          ? `Correct. Follow standard SOP exception protocol for ${processName} and escalate to your supervisor if unresolved.`
+          : `Incorrect. Never execute ${processName} when required criteria or inputs fail verification.`,
       }));
 
       slides.push({
@@ -601,30 +622,21 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       .filter(Boolean)
       .slice(0, 5);
 
+    const fallbackTakeaways = [
+      `Verify order parameters and inputs before starting ${processName}`,
+      `Never proceed with unverified criteria or bypassed safety checks`,
+      `Follow standard sequential steps according to written SOP`,
+      `Validate output quality before finalizing completion`,
+      `Halt execution and escalate anomalies you cannot resolve`,
+    ];
+
+    const finalTakeaways = uniqueTakeaways.length > 0 ? uniqueTakeaways : fallbackTakeaways;
+
     slides.push({
       type: 'KEY_TAKEAWAYS',
       title: 'Key Takeaways',
-      items:
-        uniqueTakeaways.length > 0
-          ? uniqueTakeaways
-          : [
-              'Check the order, then verify name and date of birth',
-              'Never proceed with an unresolved identity mismatch',
-              'Confirm test requirements such as fasting',
-              'Verify selected tests before finalizing registration',
-              'Escalate what you cannot resolve',
-            ],
-      content: (
-        uniqueTakeaways.length > 0
-          ? uniqueTakeaways
-          : [
-              'Check the order, then verify name and date of birth',
-              'Never proceed with an unresolved identity mismatch',
-              'Confirm test requirements such as fasting',
-              'Verify selected tests before finalizing registration',
-              'Escalate what you cannot resolve',
-            ]
-      ).join('\n'),
+      items: finalTakeaways,
+      content: finalTakeaways.join('\n'),
     });
 
     // Completion / Transition to Practice (Guide Me)

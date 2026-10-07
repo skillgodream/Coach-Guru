@@ -109,10 +109,10 @@ export function ExperiencePlayer({
             </button>
           </div>
 
-          {/* Locked Current Stage Header Display */}
+          {/* Clean Learner-Facing Stage Header Display */}
           <div className="flex items-center gap-2">
-            <span className={`text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-xs ${currentStage.pillClass}`}>
-              CURRENT STAGE: STAGE {currentStage.stageNum} OF 8 • {currentStage.stageName}
+            <span className={`text-[11px] font-bold tracking-wide px-3 py-1 rounded-full border shadow-xs ${currentStage.pillClass}`}>
+              {currentStage.stageTag}
             </span>
           </div>
 
