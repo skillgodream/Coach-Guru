@@ -19,18 +19,17 @@ export const ObjectivesPage: React.FC<{
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="pill stage-orient-pill">
-          <TeachMeIcon name="target" className="w-3.5 h-3.5 inline mr-1" />
-          What You Will Learn
-        </span>
+      {/* Zero-Pill premium metadata label */}
+      <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700 tracking-wider uppercase">
+        <TeachMeIcon name="target" className="w-3.5 h-3.5 text-indigo-600" />
+        <span>What You Will Learn</span>
       </div>
 
-      <h2 className="text-xl font-extrabold text-[#0F1B3D] tracking-tight leading-snug">
+      <h2 className="text-xl font-black text-slate-900 tracking-tight leading-snug">
         {slide.title || 'Lesson Objectives'}
       </h2>
       
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
         {lead}
       </p>
 
@@ -46,12 +45,13 @@ export const ObjectivesPage: React.FC<{
         {items.map((item, j) => (
           <div 
             key={j}
-            className="flex items-start gap-3 p-3.5 bg-white rounded-xl border border-indigo-100/80 shadow-xs hover:border-indigo-200 transition-all"
+            className="flex items-start gap-3.5 p-3.5 bg-white rounded-xl border border-slate-100 shadow-xs hover:border-indigo-100 hover:shadow-sm transition-all duration-200"
           >
-            <span className="flex-none w-7 h-7 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+            {/* Sophisticated neutral-indigo numbering badge instead of chunky colored circle */}
+            <span className="flex-none w-6 h-6 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
               {j + 1}
             </span>
-            <span className="text-sm font-semibold text-[#0F1B3D] leading-relaxed pt-0.5">
+            <span className="text-sm font-semibold text-slate-700 leading-relaxed">
               {item}
             </span>
           </div>

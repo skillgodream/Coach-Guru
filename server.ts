@@ -614,6 +614,58 @@ function repairTruncatedJson(jsonStr: string): string {
   return text;
 }
 
+function extractJsonBlock(text: string): string {
+  const firstBrace = text.indexOf('{');
+  const firstBracket = text.indexOf('[');
+  
+  let startIdx = -1;
+  
+  if (firstBrace !== -1 && firstBracket !== -1) {
+    startIdx = firstBrace < firstBracket ? firstBrace : firstBracket;
+  } else if (firstBrace !== -1) {
+    startIdx = firstBrace;
+  } else if (firstBracket !== -1) {
+    startIdx = firstBracket;
+  }
+  
+  if (startIdx === -1) {
+    return text;
+  }
+  
+  let inString = false;
+  let isEscaped = false;
+  const stack: string[] = [];
+  
+  for (let i = startIdx; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      if (isEscaped) {
+        isEscaped = false;
+      } else if (ch === '\\') {
+        isEscaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+    } else {
+      if (ch === '"') {
+        inString = true;
+      } else if (ch === '{' || ch === '[') {
+        stack.push(ch);
+      } else if (ch === '}' || ch === ']') {
+        const top = stack[stack.length - 1];
+        if ((ch === '}' && top === '{') || (ch === ']' && top === '[')) {
+          stack.pop();
+          if (stack.length === 0) {
+            return text.slice(startIdx, i + 1);
+          }
+        }
+      }
+    }
+  }
+  
+  return text.slice(startIdx);
+}
+
 function cleanAndRepairJson(rawText: string): any {
   if (!rawText || !rawText.trim()) throw new Error('Empty text response from model');
 
@@ -626,37 +678,7 @@ function cleanAndRepairJson(rawText: string): any {
     .replace(/\s*```$/i, '')
     .trim();
 
-  // Find the first and last of either '{' / '}' or '[' / ']'
-  const firstBrace = text.indexOf('{');
-  const firstBracket = text.indexOf('[');
-  
-  let startIdx = -1;
-  let endChar = '';
-  
-  if (firstBrace !== -1 && firstBracket !== -1) {
-    if (firstBrace < firstBracket) {
-      startIdx = firstBrace;
-      endChar = '}';
-    } else {
-      startIdx = firstBracket;
-      endChar = ']';
-    }
-  } else if (firstBrace !== -1) {
-    startIdx = firstBrace;
-    endChar = '}';
-  } else if (firstBracket !== -1) {
-    startIdx = firstBracket;
-    endChar = ']';
-  }
-
-  if (startIdx !== -1) {
-    const lastIdx = text.lastIndexOf(endChar);
-    if (lastIdx > startIdx) {
-      text = text.slice(startIdx, lastIdx + 1);
-    } else {
-      text = text.slice(startIdx);
-    }
-  }
+  text = extractJsonBlock(text);
 
   // Attempt 1: Direct JSON parse
   try {

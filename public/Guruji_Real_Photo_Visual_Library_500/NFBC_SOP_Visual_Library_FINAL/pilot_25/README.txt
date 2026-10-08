@@ -1,0 +1,1 @@
+NFBC SOP Visual Library — 25-image pilot extracted from a photographic contact sheet. Assets are cropped to remove collage gutters and stored as WebP. This is a pilot set, not the full planned library.

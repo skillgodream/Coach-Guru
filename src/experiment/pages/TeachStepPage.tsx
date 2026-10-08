@@ -22,19 +22,20 @@ export const TeachStepPage: React.FC<{
 
   return (
     <div className="space-y-4">
+      {/* Zero-Pill premium metadata label */}
       <div className="flex items-center justify-between">
-        <span className="pill stage-perform-pill">
-          <TeachMeIcon name="arrow" className="w-3.5 h-3.5 inline mr-1 rotate-90" />
-          {slide.step || 'Standard Operational Protocol'}
-        </span>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700 tracking-wider uppercase">
+          <TeachMeIcon name="arrow" className="w-3.5 h-3.5 text-indigo-500 rotate-90" />
+          <span>{slide.step || 'Standard Operational Protocol'}</span>
+        </div>
         {slide.evidenceSource && !slide.evidenceSource.startsWith('S1.') && !slide.evidenceSource.startsWith('S2.') && (
-          <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-full">
+          <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50/60 border border-indigo-100 px-2.5 py-1 rounded-full">
             {slide.evidenceSource}
           </span>
         )}
       </div>
 
-      <h2 className="text-xl font-extrabold text-[#0F1B3D] tracking-tight leading-snug">
+      <h2 className="text-xl font-black text-[#0F1B3D] tracking-tight leading-snug">
         {slide.title}
       </h2>
 
@@ -43,8 +44,8 @@ export const TeachStepPage: React.FC<{
       )}
 
       {/* Structured Action Items Card */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-2.5">
-        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block pb-1 border-b border-slate-100">
+      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-2.5">
+        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block pb-1 border-b border-slate-100">
           Required Actions
         </span>
 
@@ -55,14 +56,15 @@ export const TeachStepPage: React.FC<{
           const rest = parts ? parts[2] : item;
 
           return (
-            <div key={idx} className="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50/80 border border-slate-100">
-              <span className="flex-none w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-2xs mt-0.5">
+            <div key={idx} className="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50/40 border border-slate-100">
+              {/* Premium sleek numbering tag */}
+              <span className="flex-none w-6 h-6 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                 {idx + 1}
               </span>
               <p className="text-sm text-[#0F1B3D] leading-snug">
                 {leadVerb ? (
                   <>
-                    <strong className="font-extrabold text-blue-700">{leadVerb}</strong>
+                    <strong className="font-extrabold text-indigo-700">{leadVerb}</strong>
                     <span>{rest}</span>
                   </>
                 ) : (

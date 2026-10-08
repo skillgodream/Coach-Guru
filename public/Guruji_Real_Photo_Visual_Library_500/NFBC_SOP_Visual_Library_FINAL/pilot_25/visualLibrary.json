@@ -1,0 +1,263 @@
+[
+  {
+    "id": "nfbc_001",
+    "file": "001_01_customer_service_desk.webp",
+    "tags": [
+      "01",
+      "customer",
+      "service",
+      "desk"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_002",
+    "file": "002_02_kyc_identity_verification.webp",
+    "tags": [
+      "02",
+      "kyc",
+      "identity",
+      "verification"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_003",
+    "file": "003_03_digital_kyc_capture.webp",
+    "tags": [
+      "03",
+      "digital",
+      "kyc",
+      "capture"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_004",
+    "file": "004_04_form_completion.webp",
+    "tags": [
+      "04",
+      "form",
+      "completion"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_005",
+    "file": "005_05_customer_account_processing.webp",
+    "tags": [
+      "05",
+      "customer",
+      "account",
+      "processing"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_006",
+    "file": "006_06_cash_counting.webp",
+    "tags": [
+      "06",
+      "cash",
+      "counting"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_007",
+    "file": "007_07_cash_machine_operation.webp",
+    "tags": [
+      "07",
+      "cash",
+      "machine",
+      "operation"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_008",
+    "file": "008_08_loan_document_discussion.webp",
+    "tags": [
+      "08",
+      "loan",
+      "document",
+      "discussion"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_009",
+    "file": "009_09_field_visit_verification.webp",
+    "tags": [
+      "09",
+      "field",
+      "visit",
+      "verification"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_010",
+    "file": "010_10_mobile_app_checklist.webp",
+    "tags": [
+      "10",
+      "mobile",
+      "app",
+      "checklist"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_011",
+    "file": "011_11_customer_service_assistance.webp",
+    "tags": [
+      "11",
+      "customer",
+      "service",
+      "assistance"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_012",
+    "file": "012_12_document_review.webp",
+    "tags": [
+      "12",
+      "document",
+      "review"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_013",
+    "file": "013_13_form_signing.webp",
+    "tags": [
+      "13",
+      "form",
+      "signing"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_014",
+    "file": "014_14_payment_processing.webp",
+    "tags": [
+      "14",
+      "payment",
+      "processing"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_015",
+    "file": "015_15_digital_signature.webp",
+    "tags": [
+      "15",
+      "digital",
+      "signature"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_016",
+    "file": "016_16_safe_deposit_locker.webp",
+    "tags": [
+      "16",
+      "safe",
+      "deposit",
+      "locker"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_017",
+    "file": "017_17_document_shredding.webp",
+    "tags": [
+      "17",
+      "document",
+      "shredding"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_018",
+    "file": "018_18_records_filing.webp",
+    "tags": [
+      "18",
+      "records",
+      "filing"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_019",
+    "file": "019_19_cctv_security.webp",
+    "tags": [
+      "19",
+      "cctv",
+      "security"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_020",
+    "file": "020_20_fire_safety.webp",
+    "tags": [
+      "20",
+      "fire",
+      "safety"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_021",
+    "file": "021_21_atm_operation.webp",
+    "tags": [
+      "21",
+      "atm",
+      "operation"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_022",
+    "file": "022_22_digital_payment_confirmation.webp",
+    "tags": [
+      "22",
+      "digital",
+      "payment",
+      "confirmation"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_023",
+    "file": "023_23_system_workflow.webp",
+    "tags": [
+      "23",
+      "system",
+      "workflow"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_024",
+    "file": "024_24_staff_training.webp",
+    "tags": [
+      "24",
+      "staff",
+      "training"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  },
+  {
+    "id": "nfbc_025",
+    "file": "025_25_facility_cleaning.webp",
+    "tags": [
+      "25",
+      "facility",
+      "cleaning"
+    ],
+    "source": "NFBC banking operations pilot visual"
+  }
+]
