@@ -213,13 +213,13 @@ export const SopHeader: React.FC<{
   className?: string;
 }> = ({ tag, title, className = '' }) => {
   return (
-    <div className={`bg-gradient-to-tr from-[#E0E7FF] via-[#EFF4F8] to-[#FAE8FF] border border-[#D0D6E2] rounded-[24px] p-5 relative overflow-hidden shadow-[0_4px_16px_rgba(15,27,61,0.05),0_1px_3px_rgba(15,27,61,0.02)] flex flex-col gap-2.5 text-left select-none ${className}`}>
+    <div className={`bg-gradient-to-tr from-[#C2D1F9] via-[#D1E8F2] to-[#E9D5FF] border border-[#BCC6D8] rounded-[24px] p-5 relative overflow-hidden shadow-[0_4px_16px_rgba(15,27,61,0.06),0_1px_3px_rgba(15,27,61,0.02)] flex flex-col gap-2.5 text-left select-none ${className}`}>
       {/* Subtle decorative Apple-style light highlight */}
       <div className="absolute inset-x-0 top-0 h-[1px] bg-white/70 pointer-events-none" />
       <div className="absolute right-0 top-0 w-24 h-24 bg-white/40 rounded-full blur-xl pointer-events-none" />
       
       {/* Premium styled Tag Badge Pill */}
-      <div className="inline-flex items-center self-start px-3 py-1 rounded-full bg-white/85 border border-[#BFC7D6] backdrop-blur-xs text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#0F1B3D] shadow-3xs select-none">
+      <div className="inline-flex items-center self-start px-3 py-1 rounded-full bg-white/80 border border-[#A8B2C4] backdrop-blur-xs text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#0F1B3D] shadow-3xs select-none">
         {tag}
       </div>
 
