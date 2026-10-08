@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ArrowRight, BookOpen, Play, Bookmark, FileText } from 'lucide-react';
+import { ChevronLeft, ArrowRight, BookOpen, Play, Bookmark, FileText, Compass, Award } from 'lucide-react';
 import { Lesson } from '../types';
 import { sounds } from '../utils/audio';
 
@@ -77,71 +77,6 @@ export default function LessonOverview({
 
   const themeColors = getThemeColors();
 
-  const getGuideMeIllustration = (artType: string) => {
-    switch (artType) {
-      case 'tote':
-        return (
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-            <ellipse cx="50" cy="88" rx="32" ry="7" fill="#1E293B" fillOpacity="0.15" />
-            <path d="M22 35 L28 80 C29 83 32 85 36 85 L64 85 C68 85 71 83 72 80 L78 35 Z" fill="#3B82F6" fillOpacity="0.8" />
-            <rect x="16" y="26" width="68" height="10" rx="5" fill="#2563EB" />
-            <rect x="38" y="55" width="24" height="15" rx="3" fill="#FFFFFF" />
-            <rect x="42" y="58" width="2" height="9" fill="#0F172A" />
-            <rect x="46" y="58" width="2" height="9" fill="#0F172A" />
-            <rect x="50" y="58" width="3" height="9" fill="#0F172A" />
-            <rect x="55" y="58" width="1" height="9" fill="#0F172A" />
-            <rect x="58" y="58" width="2" height="9" fill="#0F172A" />
-          </svg>
-        );
-      case 'safety':
-        return (
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-            <ellipse cx="50" cy="90" rx="32" ry="7" fill="#1E293B" fillOpacity="0.15" />
-            <rect x="22" y="78" width="56" height="10" rx="4" fill="#1E293B" />
-            <path d="M45 15 L26 78 L74 78 L55 15 Z" fill="#FB923C" fillOpacity="0.8" />
-            <path d="M40 34 L34 52 L66 52 L60 34 Z" fill="#F8FAFC" />
-            <path d="M31 60 L28 72 L72 72 L69 60 Z" fill="#F8FAFC" />
-          </svg>
-        );
-      case 'box':
-        return (
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-            <ellipse cx="50" cy="88" rx="30" ry="7" fill="#1E293B" fillOpacity="0.15" />
-            <rect x="22" y="38" width="56" height="44" rx="8" fill="#D97706" fillOpacity="0.8" />
-            <path d="M22 43 L50 22 L78 43 L50 52 Z" fill="#F59E0B" />
-            <rect x="46" y="24" width="8" height="60" rx="2" fill="#78350F" fillOpacity="0.25" />
-          </svg>
-        );
-      case 'clipboard':
-        return (
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-            <ellipse cx="50" cy="88" rx="28" ry="6" fill="#1E293B" fillOpacity="0.12" />
-            <rect x="24" y="20" width="52" height="64" rx="10" fill="#7C3AED" fillOpacity="0.8" />
-            <rect x="29" y="27" width="42" height="51" rx="6" fill="#FFFFFF" />
-            <rect x="34" y="36" width="6" height="6" rx="2" fill="#10B981" />
-            <path d="M35 39 L37 41 L41 37" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
-            <rect x="44" y="38" width="22" height="3" rx="1" fill="#E2E8F0" />
-            <rect x="34" y="47" width="6" height="6" rx="2" fill="#10B981" />
-            <path d="M35 50 L37 52 L41 48" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
-            <rect x="44" y="49" width="20" height="3" rx="1" fill="#E2E8F0" />
-            <rect x="40" y="14" width="20" height="10" rx="4" fill="#E2E8F0" />
-          </svg>
-        );
-      case 'trolley':
-      default:
-        return (
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-            <rect x="25" y="45" width="50" height="38" rx="6" fill="#10B981" fillOpacity="0.8" />
-            <rect x="20" y="40" width="60" height="5" rx="2.5" fill="#059669" />
-            <rect x="35" y="25" width="10" height="15" fill="#FFFFFF" />
-            <rect x="55" y="25" width="10" height="15" fill="#FFFFFF" />
-            <circle cx="35" cy="86" r="8" fill="#374151" />
-            <circle cx="65" cy="86" r="8" fill="#374151" />
-          </svg>
-        );
-    }
-  };
-
   const learningPath = [
     {
       id: 'know-it',
@@ -149,24 +84,17 @@ export default function LessonOverview({
       modeTag: 'TEACHING FORMAT',
       desc: 'Explain the SOP & process in simple presentation format',
       duration: '2 min',
-      bgColor: 'bg-white/35 border-white/50 hover:border-blue-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
-      iconBg: 'bg-[#2563EB]',
-      pillTextColor: 'text-[#2563EB]',
-      arrowColor: 'text-indigo-600',
+      bgColor: 'bg-white/60 border-white/70 hover:border-blue-300/60 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_36px_rgba(37,99,235,0.06)] hover:bg-white/85',
+      iconBg: 'bg-blue-500/10 text-blue-600 border border-blue-200/20',
+      pillTextColor: 'text-blue-600',
+      arrowColor: 'text-blue-600',
       icon: BookOpen,
       action: () => onOpenIntroDeck(),
       illustration: (
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-          <path d="M15 25 Q35 15 50 25 Q65 15 85 25 L85 75 Q65 65 50 75 Q35 65 15 75 Z" fill="#2563EB" fillOpacity="0.8" />
-          <path d="M18 27 Q35 18 50 27 Q65 18 82 27 L82 72 Q65 63 50 72 Q35 63 18 72 Z" fill="#FFFFFF" />
-          <path d="M50 27 L50 72" stroke="#2563EB" strokeWidth="2.0" />
-          <path d="M24 38 H44" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M24 48 H44" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M24 58 H40" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M56 38 H76" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M56 48 H76" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M56 58 H72" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
+        <div className="absolute right-0 bottom-0 overflow-hidden w-full h-full pointer-events-none">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/8 rounded-full blur-xl group-hover:bg-blue-500/15 transition-all duration-300" />
+          <BookOpen size={72} strokeWidth={0.75} className="absolute -right-2 -bottom-2 text-blue-500/12 group-hover:text-blue-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300" />
+        </div>
       )
     },
     {
@@ -175,20 +103,17 @@ export default function LessonOverview({
       modeTag: 'DEMONSTRATION',
       desc: 'Watch Coach demonstrate the actual SOP steps',
       duration: '3 min',
-      bgColor: 'bg-white/35 border-white/50 hover:border-purple-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
-      iconBg: 'bg-[#7C3AED]',
-      pillTextColor: 'text-[#7C3AED]',
+      bgColor: 'bg-white/60 border-white/70 hover:border-purple-300/60 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_36px_rgba(124,58,237,0.06)] hover:bg-white/85',
+      iconBg: 'bg-purple-500/10 text-purple-600 border border-purple-200/20',
+      pillTextColor: 'text-purple-600',
       arrowColor: 'text-purple-600',
       icon: Play,
       action: () => onStartSimulation(0),
       illustration: (
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-          <rect x="25" y="35" width="40" height="30" rx="8" fill="#7C3AED" fillOpacity="0.8" />
-          <circle cx="35" cy="25" r="12" fill="#7C3AED" fillOpacity="0.8" />
-          <circle cx="55" cy="25" r="12" fill="#7C3AED" fillOpacity="0.8" />
-          <path d="M65 42 L82 32 L82 68 L65 58 Z" fill="#6D28D9" />
-          <circle cx="45" cy="50" r="4" fill="#FFFFFF" />
-        </svg>
+        <div className="absolute right-0 bottom-0 overflow-hidden w-full h-full pointer-events-none">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-purple-500/8 rounded-full blur-xl group-hover:bg-purple-500/15 transition-all duration-300" />
+          <Play size={72} strokeWidth={0.75} className="absolute -right-2 -bottom-2 text-purple-500/12 group-hover:text-purple-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300" />
+        </div>
       )
     },
     {
@@ -197,17 +122,18 @@ export default function LessonOverview({
       modeTag: 'GUIDED PRACTICE',
       desc: 'Perform the SOP with step-by-step coach hints',
       duration: '5 min',
-      bgColor: 'bg-white/35 border-white/50 hover:border-emerald-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
-      iconBg: 'bg-[#10B981]',
-      pillTextColor: 'text-[#10B981]',
+      bgColor: 'bg-white/60 border-white/70 hover:border-emerald-300/60 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_36px_rgba(16,185,129,0.06)] hover:bg-white/85',
+      iconBg: 'bg-emerald-500/10 text-emerald-600 border border-emerald-200/20',
+      pillTextColor: 'text-emerald-600',
       arrowColor: 'text-emerald-600',
-      icon: () => (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
-          <path d="M12 2a1 1 0 0 0-1 1v12.5a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1zM7 7a1 1 0 0 0-1 1v6.5a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1zM17 9a1 1 0 0 0-1 1v4.5a1 1 0 0 0 2 0V10a1 1 0 0 0-1-1zM12 18.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-        </svg>
-      ),
+      icon: Compass,
       action: () => onStartSimulation(1),
-      illustration: getGuideMeIllustration(lesson.artType || 'clipboard')
+      illustration: (
+        <div className="absolute right-0 bottom-0 overflow-hidden w-full h-full pointer-events-none">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/8 rounded-full blur-xl group-hover:bg-emerald-500/15 transition-all duration-300" />
+          <Compass size={72} strokeWidth={0.75} className="absolute -right-2 -bottom-2 text-emerald-500/12 group-hover:text-emerald-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300" />
+        </div>
+      )
     },
     {
       id: 'test-me',
@@ -215,21 +141,17 @@ export default function LessonOverview({
       modeTag: 'ASSESSMENT',
       desc: 'Assess whether you can perform the SOP without hints',
       duration: '3 min',
-      bgColor: 'bg-white/35 border-white/50 hover:border-orange-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
-      iconBg: 'bg-[#F97316]',
-      pillTextColor: 'text-[#F97316]',
+      bgColor: 'bg-white/60 border-white/70 hover:border-orange-300/60 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_12px_36px_rgba(249,115,22,0.06)] hover:bg-white/85',
+      iconBg: 'bg-orange-500/10 text-orange-600 border border-orange-200/20',
+      pillTextColor: 'text-orange-600',
       arrowColor: 'text-orange-600',
-      icon: FileText,
+      icon: Award,
       action: () => onStartSimulation(2),
       illustration: (
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-          <rect x="28" y="20" width="44" height="64" rx="6" fill="#F97316" fillOpacity="0.8" />
-          <rect x="34" y="28" width="32" height="48" rx="3" fill="#FFFFFF" />
-          <rect x="42" y="14" width="16" height="8" rx="2" fill="#D97706" />
-          <path d="M38 40 L43 45 L54 35" stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M38 54 L43 59 L54 49" stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-          <rect x="74" y="32" width="6" height="40" rx="3" fill="#3B82F6" transform="rotate(15 74 32)" />
-        </svg>
+        <div className="absolute right-0 bottom-0 overflow-hidden w-full h-full pointer-events-none">
+          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-500/8 rounded-full blur-xl group-hover:bg-orange-500/15 transition-all duration-300" />
+          <Award size={72} strokeWidth={0.75} className="absolute -right-2 -bottom-2 text-orange-500/12 group-hover:text-orange-500/20 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300" />
+        </div>
       )
     },
   ];
@@ -347,7 +269,7 @@ export default function LessonOverview({
               >
                 {/* Top Row: Mini Icon + White/Glass Circle Chevron Arrow */}
                 <div className="flex justify-between items-center w-full">
-                  <div className={`w-9 h-9 rounded-xl ${item.iconBg} text-white flex items-center justify-center shrink-0`}>
+                  <div className={`w-9 h-9 rounded-xl ${item.iconBg} flex items-center justify-center shrink-0`}>
                     <IconComponent className="w-5 h-5" />
                   </div>
                   <div className="w-7 h-7 rounded-full bg-white/80 border border-white/60 flex items-center justify-center shadow-2xs group-hover:bg-white text-slate-800 transition-all duration-200">
@@ -365,10 +287,8 @@ export default function LessonOverview({
                   </span>
                 </div>
 
-                {/* Custom Gorgeous 3D-Style Vector Illustration at the bottom-right corner */}
-                <div className="absolute bottom-1.5 right-1.5 w-18 h-18 pointer-events-none opacity-80 group-hover:scale-110 group-hover:rotate-2 transition-all duration-300">
-                  {item.illustration}
-                </div>
+                {/* Custom Gorgeous Watermark outline at the bottom-right corner */}
+                {item.illustration}
               </button>
             );
           })}

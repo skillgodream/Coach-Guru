@@ -90,51 +90,64 @@ export const SectionIntroPage: React.FC<{
         </p>
       )}
 
-      {/* Horizontal Cards with Right-Side Image Thumbnails (Screenshot 1 Layout) */}
-      <div className="space-y-3 pt-1">
+      {/* Vertical Timeline Step-by-Step Checklist (Screenshot 2 Format) */}
+      <div className="space-y-1 pt-1 relative">
         {items.map((item, idx) => (
-          <div
-            key={idx}
-            className="flex items-center justify-between bg-white rounded-2xl p-3.5 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all gap-3"
-          >
-            {/* Left Column: Green Checkmark Badge + Text */}
-            <div className="flex items-start gap-3 flex-1 min-w-0">
-              <span className="flex-none w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm shadow-xs mt-0.5">
-                ✓
+          <div key={idx} className="relative flex gap-4">
+            
+            {/* Timeline Vertical Connecting Line */}
+            {idx < items.length - 1 && (
+              <div 
+                className="absolute left-4 top-8 bottom-0 w-[2px] bg-slate-200/80" 
+                style={{ transform: 'translateX(-50%)' }} 
+              />
+            )}
+
+            {/* Left Column: Sequential Number Badge */}
+            <div className="flex-none relative">
+              <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shadow-xs relative z-10">
+                {idx + 1}
               </span>
+            </div>
+
+            {/* Right Column: Title + Subtitle + Large Step Image */}
+            <div className="flex-1 space-y-3 pb-6">
               <div className="space-y-0.5">
                 <h4 className="text-sm font-black text-slate-900 leading-tight">
                   {item.title}
                 </h4>
-                <p className="text-xs font-medium text-slate-500 leading-snug">
+                <p className="text-xs font-semibold text-slate-500 leading-snug">
                   {item.subtitle}
                 </p>
               </div>
+
+              {/* Large Rounded Image underneath text */}
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/90 shadow-2xs max-w-sm">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to hidden
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                />
+                
+                {/* Status Badge Overlay inside image */}
+                {item.status === 'prohibited' ? (
+                  <div className="absolute inset-0 bg-rose-950/20 backdrop-blur-[0.5px] flex items-center justify-center">
+                    <div className="px-3 py-1.5 rounded-full bg-rose-600 text-white flex items-center gap-1.5 font-extrabold text-[10px] border border-white/40 shadow-md">
+                      <span>⊘ Prohibited Action</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute bottom-2 right-2 px-2.5 py-1 rounded-full bg-emerald-500 text-white flex items-center gap-1 font-bold text-[9px] border border-white/30 shadow-2xs">
+                    ✓ Verified Check
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Right Column: Square Photo Thumbnail with Badge Overlay */}
-            <div className="relative flex-none w-20 h-20 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-inner">
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback vector icon
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
-              />
-              {item.status === 'prohibited' ? (
-                <div className="absolute inset-0 bg-rose-900/20 backdrop-blur-[1px] flex items-center justify-center">
-                  <div className="w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center font-black text-lg border-2 border-white shadow-md">
-                    ⊘
-                  </div>
-                </div>
-              ) : (
-                <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center font-black text-[10px] border border-white shadow-xs">
-                  ✓
-                </div>
-              )}
-            </div>
           </div>
         ))}
       </div>
