@@ -425,7 +425,7 @@ export const Button: React.FC<{
 export function getChoiceContainerClass(state: 'default' | 'correct' | 'wrong'): string {
   switch (state) {
     case 'default':
-      return 'bg-white border-[#E3E8F4] hover:bg-[#F6F7FB]';
+      return 'bg-white border-[#E3E8F4] text-[#0F1B3D] hover:bg-[#F6F7FB]';
     case 'correct':
       return 'bg-[#E7F5EC] border-[#2FA866] text-[#2FA866]';
     case 'wrong':
