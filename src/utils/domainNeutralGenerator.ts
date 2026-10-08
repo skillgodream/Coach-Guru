@@ -725,21 +725,53 @@ export function generateLessonFromOperationalBlueprint(
   };
 
   let category: 'All' | 'Picking' | 'Packing' | 'Safety' | 'Inventory' = 'Safety';
-  if (role.includes('Retail') || role.includes('Cashier')) category = 'Inventory';
+  let color: 'sky' | 'mint' | 'peach' | 'lilac' = 'sky';
+  let accentColor = '#2F6FED';
+  let artType: 'trolley' | 'tote' | 'safety' | 'box' | 'clipboard' = 'clipboard';
+
+  const processLower = process.toLowerCase();
+  const roleLower = role.toLowerCase();
+
+  if (processLower.includes('cleaning') || processLower.includes('sanit') || processLower.includes('housekeeping') || processLower.includes('wash') || roleLower.includes('housekeeping')) {
+    category = 'Safety';
+    color = 'sky';
+    accentColor = '#3B4FE0';
+    artType = 'trolley';
+  } else if (processLower.includes('pick') || processLower.includes('receive') || processLower.includes('warehouse') || roleLower.includes('picker')) {
+    category = 'Picking';
+    color = 'sky';
+    accentColor = '#2F6FED';
+    artType = 'tote';
+  } else if (processLower.includes('pack') || processLower.includes('ship') || processLower.includes('box') || processLower.includes('seal')) {
+    category = 'Packing';
+    color = 'peach';
+    accentColor = '#F27A1A';
+    artType = 'box';
+  } else if (processLower.includes('safety') || processLower.includes('hazard') || processLower.includes('ehs') || processLower.includes('ppe') || processLower.includes('accident')) {
+    category = 'Safety';
+    color = 'mint';
+    accentColor = '#1FA55E';
+    artType = 'safety';
+  } else if (processLower.includes('count') || processLower.includes('audit') || processLower.includes('cycle') || processLower.includes('inventory') || processLower.includes('recount') || roleLower.includes('retail') || roleLower.includes('cashier')) {
+    category = 'Inventory';
+    color = 'lilac';
+    accentColor = '#7A5AF8';
+    artType = 'clipboard';
+  }
 
   const lesson: Lesson = {
     id: lessonId,
     title: process,
     subtitle: `Role: ${role} · Source: ${extracted.filename}`,
     category,
-    color: 'sky',
-    accentColor: '#2F6FED',
+    color,
+    accentColor,
     stepsCount: simulatorSteps.length,
     durationMinutes: Math.max(5, Math.ceil(simulatorSteps.length * 1.5)),
     level: 'Beginner',
     progress: 0,
     masteryPercentage: 0,
-    artType: 'clipboard',
+    artType,
     description: opBlueprint.purpose,
     sourceMeta: {
       filename: extracted.filename,

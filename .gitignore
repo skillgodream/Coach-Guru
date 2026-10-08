@@ -1,0 +1,16 @@
+# Temporarily ignore large asset folders to push in batches
+/public/Guruji_Real_Photo_Visual_Library_500/hospitality/
+/public/Guruji_Real_Photo_Visual_Library_500/hospitality_Old/
+/public/Guruji_Real_Photo_Visual_Library_500/people_safety/
+/public/Guruji_Real_Photo_Visual_Library_500/safety/
+/public/Guruji_Real_Photo_Visual_Library_500/retail/
+/public/Guruji_Real_Photo_Visual_Library_500/retail_old/
+/public/Guruji_Real_Photo_Visual_Library_500/ecommerce/
+/public/Guruji_Real_Photo_Visual_Library_500/ecommerce_warehouse/
+/public/Guruji_Real_Photo_Visual_Library_500/tools_props/
+/public/Guruji_Real_Photo_Visual_Library_500/tools_props_Old/
+/public/Guruji_Real_Photo_Visual_Library_500/documents_records/
+/public/Guruji_Real_Photo_Visual_Library_500/decisions_exceptions/
+/public/Guruji_Real_Photo_Visual_Library_500/escalation_handover/
+/public/Guruji_Real_Photo_Visual_Library_500/generic_actions/
+/public/Guruji_Real_Photo_Visual_Library_500/control_verification/

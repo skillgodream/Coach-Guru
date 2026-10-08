@@ -6,6 +6,7 @@ import AskTrainerModal from './AskTrainerModal';
 import MicroLessonSheet from './MicroLessonSheet';
 import { sounds } from '../utils/audio';
 import { ORG_CONFIG } from '../config/orgConfig';
+import { findBestVisualMatch } from '../utils/visualLibraryMatcher';
 import './guruji-work-coach.css';
 
 interface SimulatorScreenProps {
@@ -279,41 +280,97 @@ export default function SimulatorScreen({
     return map[type?.toLowerCase()] || (priority?.toLowerCase().includes('crit') ? '!' : '▣');
   };
 
-  // Visual slot renderer (Domain-Aware Cards)
+  // Visual slot renderer (Domain-Aware Cards + Smart Visual Photo Library Matcher)
   const renderVisualSlot = (currentStep: SimulatorStep) => {
-    const type = currentStep.type?.toLowerCase();
-    const isLogistics =
-      type === 'tote' ||
-      (type === 'sku' && currentStep.sku?.startsWith('SKU')) ||
-      (currentStep.targetCode && currentStep.targetCode.startsWith('LOC-'));
-
-    if (isLogistics) {
-      const loc = currentStep.targetCode || 'LOC-A01';
-      return (
-        <div className="visual">
-          <div className="visualOverlay p-3 bg-slate-900 border border-slate-700 rounded-xl">
-            <div className="flex items-center justify-between text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">
-              <span>LOCATION TARGET</span>
-              <span>LOGISTICS</span>
-            </div>
-            <div className="text-lg font-black text-white">{loc}</div>
-          </div>
-        </div>
-      );
-    }
-
-    // Default Domain-Neutral SOP Protocol Card (Teachers, Healthcare, Housekeeping, Retail, EHS, Operations)
+    const textContext = `${currentStep.title} ${currentStep.question} ${currentStep.why || ''} ${currentStep.taskTitle || ''} ${currentStep.taskItem || ''}`;
+    const overallContext = `${lesson?.title || ''} ${lesson?.category || ''} ${lesson?.description || ''}`;
+    
+    const { asset, score, url } = findBestVisualMatch(textContext, overallContext);
+    
     const code = currentStep.targetCode || `STEP-${stepIndex + 1}`;
     const taskTitle = currentStep.taskTitle || lesson?.title || 'Operational Protocol';
 
     return (
-      <div className="w-full flex items-center justify-between px-3 py-2 bg-slate-900/90 border border-slate-700/80 rounded-xl mb-3 shadow-xs">
-        <span className="text-[11px] font-black tracking-wider text-indigo-300 uppercase truncate">
-          {taskTitle}
-        </span>
-        <span className="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-md border border-indigo-800/60 font-mono text-[10px] font-bold shrink-0">
-          {code}
-        </span>
+      <div className="w-full flex flex-col gap-3 mb-4">
+        {/* Real Photo Visual Match Area */}
+        {url ? (
+          <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-slate-800 shadow-lg group bg-slate-950 shrink-0">
+            {/* Real WebP Image */}
+            <img 
+              src={url} 
+              alt={currentStep.title} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            
+            {/* Glossy gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+            
+            {/* Visual Library Indicator Tag */}
+            <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-black tracking-wider text-amber-400 uppercase">
+              <Sparkles size={10} className="text-amber-400 animate-pulse shrink-0" />
+              <span>Real Photo Match</span>
+              <span className="text-white/40">•</span>
+              <span className="text-white font-mono">Score: {score}</span>
+            </div>
+
+            {/* Target code / location Overlay inside the image */}
+            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 text-[10px] font-bold text-indigo-300 font-mono uppercase shadow-md">
+              {code}
+            </div>
+
+            {/* Details Overlay at the bottom */}
+            <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+              <div className="flex flex-col gap-0.5 max-w-[65%]">
+                <span className="text-[10px] font-extrabold text-indigo-300 uppercase tracking-wider block truncate">
+                  {taskTitle}
+                </span>
+                <span className="text-xs font-bold text-white truncate block">
+                  {currentStep.title}
+                </span>
+              </div>
+              
+              {/* Asset Filename */}
+              {asset && (
+                <span className="text-[9px] font-mono font-medium text-white/50 bg-black/50 px-2 py-0.5 rounded-md truncate max-w-[35%] shrink-0 text-right">
+                  {asset.file.split('/').pop()}
+                </span>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="w-full flex items-center justify-between px-3 py-2 bg-slate-900/90 border border-slate-700/80 rounded-xl mb-3 shadow-xs">
+            <span className="text-[11px] font-black tracking-wider text-indigo-300 uppercase truncate">
+              {taskTitle}
+            </span>
+            <span className="bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-md border border-indigo-800/60 font-mono text-[10px] font-bold shrink-0">
+              {code}
+            </span>
+          </div>
+        )}
+
+        {/* Dynamic Match Information Drawer (Educational/Analytical tags view) */}
+        {asset && score > 0 && (
+          <div className="px-3.5 py-2 rounded-xl bg-slate-900/50 border border-slate-800/80 text-[11px] font-semibold text-slate-300 flex flex-wrap items-center gap-1.5 shadow-sm">
+            <span className="font-bold text-slate-400 uppercase tracking-wider text-[9px] bg-slate-800 px-1.5 py-0.5 rounded-sm shrink-0">
+              Matched Tags:
+            </span>
+            {asset.tags.map((tag) => {
+              const isMatch = textContext.toLowerCase().includes(tag) || overallContext.toLowerCase().includes(tag);
+              return (
+                <span 
+                  key={tag} 
+                  className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                    isMatch 
+                      ? 'bg-emerald-950/60 text-emerald-300 font-bold border border-emerald-900/40' 
+                      : 'bg-slate-800/40 text-slate-500 border border-transparent'
+                  }`}
+                >
+                  #{tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   };

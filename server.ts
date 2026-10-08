@@ -626,14 +626,35 @@ function cleanAndRepairJson(rawText: string): any {
     .replace(/\s*```$/i, '')
     .trim();
 
-  // Extract from first '{' onwards if surrounded by conversational preamble
+  // Find the first and last of either '{' / '}' or '[' / ']'
   const firstBrace = text.indexOf('{');
-  if (firstBrace !== -1) {
-    const lastBrace = text.lastIndexOf('}');
-    if (lastBrace > firstBrace) {
-      text = text.slice(firstBrace, lastBrace + 1);
+  const firstBracket = text.indexOf('[');
+  
+  let startIdx = -1;
+  let endChar = '';
+  
+  if (firstBrace !== -1 && firstBracket !== -1) {
+    if (firstBrace < firstBracket) {
+      startIdx = firstBrace;
+      endChar = '}';
     } else {
-      text = text.slice(firstBrace);
+      startIdx = firstBracket;
+      endChar = ']';
+    }
+  } else if (firstBrace !== -1) {
+    startIdx = firstBrace;
+    endChar = '}';
+  } else if (firstBracket !== -1) {
+    startIdx = firstBracket;
+    endChar = ']';
+  }
+
+  if (startIdx !== -1) {
+    const lastIdx = text.lastIndexOf(endChar);
+    if (lastIdx > startIdx) {
+      text = text.slice(startIdx, lastIdx + 1);
+    } else {
+      text = text.slice(startIdx);
     }
   }
 

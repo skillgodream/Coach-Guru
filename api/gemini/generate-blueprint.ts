@@ -265,11 +265,35 @@ function cleanAndRepairJson(rawText: string): any {
     text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
   }
 
-  if (!text.startsWith('{') && text.includes('{')) {
-    text = text.slice(text.indexOf('{'));
-    const lastBrace = text.lastIndexOf('}');
-    if (lastBrace !== -1) {
-      text = text.slice(0, lastBrace + 1);
+  // Find the first and last of either '{' / '}' or '[' / ']'
+  const firstBrace = text.indexOf('{');
+  const firstBracket = text.indexOf('[');
+  
+  let startIdx = -1;
+  let endChar = '';
+  
+  if (firstBrace !== -1 && firstBracket !== -1) {
+    if (firstBrace < firstBracket) {
+      startIdx = firstBrace;
+      endChar = '}';
+    } else {
+      startIdx = firstBracket;
+      endChar = ']';
+    }
+  } else if (firstBrace !== -1) {
+    startIdx = firstBrace;
+    endChar = '}';
+  } else if (firstBracket !== -1) {
+    startIdx = firstBracket;
+    endChar = ']';
+  }
+
+  if (startIdx !== -1) {
+    const lastIdx = text.lastIndexOf(endChar);
+    if (lastIdx > startIdx) {
+      text = text.slice(startIdx, lastIdx + 1);
+    } else {
+      text = text.slice(startIdx);
     }
   }
 

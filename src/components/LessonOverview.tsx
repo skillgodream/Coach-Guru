@@ -20,6 +20,128 @@ export default function LessonOverview({
 }: LessonOverviewProps) {
   const [bookmarked, setBookmarked] = useState(false);
 
+  // Dynamic color configuration based on lesson color scheme
+  const getThemeColors = () => {
+    switch (lesson.color) {
+      case 'mint':
+        return {
+          bgClass: 'bg-[#ECFDF5]',
+          blob1: 'bg-[#A7F3D0]',
+          blob2: 'bg-[#6EE7B7]',
+          blob3: 'bg-[#C6F6D5]',
+          blob4: 'bg-[#A5F3FC]',
+          textAccent: 'text-emerald-600',
+          borderAccent: 'border-emerald-500/20',
+          accentGradient: 'from-emerald-500/10 to-teal-500/10',
+          primaryAccent: '#10B981',
+        };
+      case 'peach':
+        return {
+          bgClass: 'bg-[#FFF7ED]',
+          blob1: 'bg-[#FFEDD5]',
+          blob2: 'bg-[#FDBA74]',
+          blob3: 'bg-[#FECACA]',
+          blob4: 'bg-[#FED7AA]',
+          textAccent: 'text-orange-600',
+          borderAccent: 'border-orange-500/20',
+          accentGradient: 'from-orange-500/10 to-amber-500/10',
+          primaryAccent: '#F97316',
+        };
+      case 'lilac':
+        return {
+          bgClass: 'bg-[#F5F3FF]',
+          blob1: 'bg-[#DDD6FE]',
+          blob2: 'bg-[#C4B5FD]',
+          blob3: 'bg-[#F5D0FE]',
+          blob4: 'bg-[#E9D5FF]',
+          textAccent: 'text-purple-600',
+          borderAccent: 'border-purple-500/20',
+          accentGradient: 'from-purple-500/10 to-indigo-500/10',
+          primaryAccent: '#7C3AED',
+        };
+      case 'sky':
+      default:
+        return {
+          bgClass: 'bg-[#E0F2FE]',
+          blob1: 'bg-[#C7D2FE]',
+          blob2: 'bg-[#D8B4FE]',
+          blob3: 'bg-[#A5F3FC]',
+          blob4: 'bg-[#FFD3C4]',
+          textAccent: 'text-indigo-600',
+          borderAccent: 'border-indigo-500/20',
+          accentGradient: 'from-indigo-500/10 to-blue-500/10',
+          primaryAccent: '#2563EB',
+        };
+    }
+  };
+
+  const themeColors = getThemeColors();
+
+  const getGuideMeIllustration = (artType: string) => {
+    switch (artType) {
+      case 'tote':
+        return (
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <ellipse cx="50" cy="88" rx="32" ry="7" fill="#1E293B" fillOpacity="0.15" />
+            <path d="M22 35 L28 80 C29 83 32 85 36 85 L64 85 C68 85 71 83 72 80 L78 35 Z" fill="#3B82F6" fillOpacity="0.8" />
+            <rect x="16" y="26" width="68" height="10" rx="5" fill="#2563EB" />
+            <rect x="38" y="55" width="24" height="15" rx="3" fill="#FFFFFF" />
+            <rect x="42" y="58" width="2" height="9" fill="#0F172A" />
+            <rect x="46" y="58" width="2" height="9" fill="#0F172A" />
+            <rect x="50" y="58" width="3" height="9" fill="#0F172A" />
+            <rect x="55" y="58" width="1" height="9" fill="#0F172A" />
+            <rect x="58" y="58" width="2" height="9" fill="#0F172A" />
+          </svg>
+        );
+      case 'safety':
+        return (
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <ellipse cx="50" cy="90" rx="32" ry="7" fill="#1E293B" fillOpacity="0.15" />
+            <rect x="22" y="78" width="56" height="10" rx="4" fill="#1E293B" />
+            <path d="M45 15 L26 78 L74 78 L55 15 Z" fill="#FB923C" fillOpacity="0.8" />
+            <path d="M40 34 L34 52 L66 52 L60 34 Z" fill="#F8FAFC" />
+            <path d="M31 60 L28 72 L72 72 L69 60 Z" fill="#F8FAFC" />
+          </svg>
+        );
+      case 'box':
+        return (
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <ellipse cx="50" cy="88" rx="30" ry="7" fill="#1E293B" fillOpacity="0.15" />
+            <rect x="22" y="38" width="56" height="44" rx="8" fill="#D97706" fillOpacity="0.8" />
+            <path d="M22 43 L50 22 L78 43 L50 52 Z" fill="#F59E0B" />
+            <rect x="46" y="24" width="8" height="60" rx="2" fill="#78350F" fillOpacity="0.25" />
+          </svg>
+        );
+      case 'clipboard':
+        return (
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <ellipse cx="50" cy="88" rx="28" ry="6" fill="#1E293B" fillOpacity="0.12" />
+            <rect x="24" y="20" width="52" height="64" rx="10" fill="#7C3AED" fillOpacity="0.8" />
+            <rect x="29" y="27" width="42" height="51" rx="6" fill="#FFFFFF" />
+            <rect x="34" y="36" width="6" height="6" rx="2" fill="#10B981" />
+            <path d="M35 39 L37 41 L41 37" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
+            <rect x="44" y="38" width="22" height="3" rx="1" fill="#E2E8F0" />
+            <rect x="34" y="47" width="6" height="6" rx="2" fill="#10B981" />
+            <path d="M35 50 L37 52 L41 48" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" />
+            <rect x="44" y="49" width="20" height="3" rx="1" fill="#E2E8F0" />
+            <rect x="40" y="14" width="20" height="10" rx="4" fill="#E2E8F0" />
+          </svg>
+        );
+      case 'trolley':
+      default:
+        return (
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <rect x="25" y="45" width="50" height="38" rx="6" fill="#10B981" fillOpacity="0.8" />
+            <rect x="20" y="40" width="60" height="5" rx="2.5" fill="#059669" />
+            <rect x="35" y="25" width="10" height="15" fill="#FFFFFF" />
+            <rect x="55" y="25" width="10" height="15" fill="#FFFFFF" />
+            <circle cx="35" cy="86" r="8" fill="#374151" />
+            <circle cx="65" cy="86" r="8" fill="#374151" />
+          </svg>
+        );
+    }
+  };
+
   const learningPath = [
     {
       id: 'know-it',
@@ -27,7 +149,6 @@ export default function LessonOverview({
       modeTag: 'TEACHING FORMAT',
       desc: 'Explain the SOP & process in simple presentation format',
       duration: '2 min',
-      // High-end Apple light-glass translucent card with blue highlight border
       bgColor: 'bg-white/35 border-white/50 hover:border-blue-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
       iconBg: 'bg-[#2563EB]',
       pillTextColor: 'text-[#2563EB]',
@@ -54,7 +175,6 @@ export default function LessonOverview({
       modeTag: 'DEMONSTRATION',
       desc: 'Watch Coach demonstrate the actual SOP steps',
       duration: '3 min',
-      // Translucent purple highlight card
       bgColor: 'bg-white/35 border-white/50 hover:border-purple-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
       iconBg: 'bg-[#7C3AED]',
       pillTextColor: 'text-[#7C3AED]',
@@ -77,7 +197,6 @@ export default function LessonOverview({
       modeTag: 'GUIDED PRACTICE',
       desc: 'Perform the SOP with step-by-step coach hints',
       duration: '5 min',
-      // Translucent emerald highlight card
       bgColor: 'bg-white/35 border-white/50 hover:border-emerald-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
       iconBg: 'bg-[#10B981]',
       pillTextColor: 'text-[#10B981]',
@@ -88,16 +207,7 @@ export default function LessonOverview({
         </svg>
       ),
       action: () => onStartSimulation(1),
-      illustration: (
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-          <rect x="25" y="45" width="50" height="38" rx="6" fill="#10B981" fillOpacity="0.8" />
-          <rect x="20" y="40" width="60" height="5" rx="2.5" fill="#059669" />
-          <rect x="35" y="25" width="10" height="15" fill="#FFFFFF" />
-          <rect x="55" y="25" width="10" height="15" fill="#FFFFFF" />
-          <circle cx="35" cy="86" r="8" fill="#374151" />
-          <circle cx="65" cy="86" r="8" fill="#374151" />
-        </svg>
-      )
+      illustration: getGuideMeIllustration(lesson.artType || 'clipboard')
     },
     {
       id: 'test-me',
@@ -105,7 +215,6 @@ export default function LessonOverview({
       modeTag: 'ASSESSMENT',
       desc: 'Assess whether you can perform the SOP without hints',
       duration: '3 min',
-      // Translucent orange highlight card
       bgColor: 'bg-white/35 border-white/50 hover:border-orange-400/40 shadow-[0_12px_32px_0_rgba(31,38,135,0.05)]',
       iconBg: 'bg-[#F97316]',
       pillTextColor: 'text-[#F97316]',
@@ -126,21 +235,21 @@ export default function LessonOverview({
   ];
 
   return (
-    <div className="fixed inset-0 z-40 bg-[#E0F2FE] flex flex-col overflow-y-auto animate-in fade-in duration-200 p-6 sm:p-8 font-sans">
+    <div className={`fixed inset-0 z-40 ${themeColors.bgClass} flex flex-col overflow-y-auto animate-in fade-in duration-200 p-6 sm:p-8 font-sans`}>
       
       {/* 1. Fluid Pastel Holographic Backdrop Zones (No Apple logo, pure premium gradient mesh matching screenshot) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#E0F2FE]">
-        {/* Soft Lavender top-left */}
-        <div className="absolute top-[-10%] left-[-10%] w-[85%] h-[60%] rounded-full bg-[#C7D2FE] filter blur-[70px] opacity-90" />
+      <div className={`absolute inset-0 z-0 overflow-hidden pointer-events-none ${themeColors.bgClass}`}>
+        {/* Soft Left-Top blob */}
+        <div className={`absolute top-[-10%] left-[-10%] w-[85%] h-[60%] rounded-full ${themeColors.blob1} filter blur-[70px] opacity-90`} />
         
-        {/* Pastel Purple top-right */}
-        <div className="absolute top-[-5%] right-[-10%] w-[80%] h-[55%] rounded-full bg-[#D8B4FE] filter blur-[80px] opacity-85" />
+        {/* Pastel Right-Top blob */}
+        <div className={`absolute top-[-5%] right-[-10%] w-[80%] h-[55%] rounded-full ${themeColors.blob2} filter blur-[80px] opacity-85`} />
         
-        {/* Soft Mint/Cyan middle-left */}
-        <div className="absolute top-[40%] left-[-20%] w-[65%] h-[50%] rounded-full bg-[#A5F3FC] filter blur-[70px] opacity-90" />
+        {/* Soft Mid-Left blob */}
+        <div className={`absolute top-[40%] left-[-20%] w-[65%] h-[50%] rounded-full ${themeColors.blob3} filter blur-[70px] opacity-90`} />
         
-        {/* Light Pink/Peach bottom */}
-        <div className="absolute bottom-[-10%] right-[-10%] w-[80%] h-[55%] rounded-full bg-[#FFD3C4] filter blur-[85px] opacity-95" />
+        {/* Light Bottom blob */}
+        <div className={`absolute bottom-[-10%] right-[-10%] w-[80%] h-[55%] rounded-full ${themeColors.blob4} filter blur-[85px] opacity-95`} />
         
         {/* Ultra-soft white overlay for fluid translucent look */}
         <div className="absolute inset-0 bg-white/25 backdrop-blur-[3px]" />
@@ -178,9 +287,12 @@ export default function LessonOverview({
                 sounds.playTap();
                 setBookmarked(!bookmarked);
               }}
-              className={`w-10 h-10 rounded-full border flex items-center justify-center shadow-xs active:scale-95 transition-all cursor-pointer ${
-                bookmarked ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white/40 border-white/50 text-slate-800 hover:bg-white/60'
-              }`}
+              className="w-10 h-10 rounded-full border flex items-center justify-center shadow-xs active:scale-95 transition-all cursor-pointer hover:bg-white/60"
+              style={{
+                backgroundColor: bookmarked ? themeColors.primaryAccent : 'rgba(255, 255, 255, 0.4)',
+                borderColor: bookmarked ? themeColors.primaryAccent : 'rgba(255, 255, 255, 0.5)',
+                color: bookmarked ? '#FFFFFF' : '#1E293B',
+              }}
               aria-label="Bookmark"
             >
               <Bookmark size={18} className={bookmarked ? 'fill-current' : ''} />
@@ -191,8 +303,8 @@ export default function LessonOverview({
         {/* 3. Hero Header Section: Perfectly aligned grid layout with no overlaps */}
         <div className="flex items-center justify-between gap-4 pt-8 pb-6 border-b border-black/5 relative z-10">
           <div className="flex-1 space-y-2">
-            {/* Steps Count Badge - Sleek blue text with book open icon */}
-            <div className="flex items-center gap-1.5 text-indigo-600 font-extrabold text-xs uppercase tracking-wider">
+            {/* Steps Count Badge - Dynamic theme text color with book open icon */}
+            <div className={`flex items-center gap-1.5 ${themeColors.textAccent} font-extrabold text-xs uppercase tracking-wider`}>
               <BookOpen size={14} className="stroke-[2.5]" />
               <span>{lesson.stepsCount} verified steps</span>
             </div>

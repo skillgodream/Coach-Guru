@@ -1,6 +1,7 @@
 import React from 'react';
 import { Slide } from '../types';
 import { SlideImage, TeachMeIcon } from '../TeachMeIcons';
+import { findBestVisualMatch } from '../../utils/visualLibraryMatcher';
 
 export const SectionIntroPage: React.FC<{
   slide: Slide;
@@ -22,7 +23,7 @@ export const SectionIntroPage: React.FC<{
   ];
 
   const items = rawItems.map((raw, idx) => {
-    const parts = raw.split(/[:\-\–]\s*/);
+    const parts = raw.split(/(?<!\d)[:\-\–](?!\d)\s*/);
     let title = '';
     let subtitle = '';
 
@@ -51,10 +52,14 @@ export const SectionIntroPage: React.FC<{
       raw.toLowerCase().includes('prohibit') ||
       raw.toLowerCase().includes('bypass');
 
+    // Run custom dynamic visual match on this specific item text for high-fidelity thumbnails
+    const itemMatch = findBestVisualMatch(raw, slide.title || '');
+    const itemImg = itemMatch.url || fallbackImages[idx % fallbackImages.length];
+
     return {
       title,
       subtitle,
-      img: slide.img || fallbackImages[idx % fallbackImages.length],
+      img: itemImg,
       status: isProhibited ? 'prohibited' : 'check',
     };
   });

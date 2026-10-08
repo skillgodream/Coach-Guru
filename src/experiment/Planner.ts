@@ -1,5 +1,6 @@
 import { Lesson } from '../types';
 import { TeachMePlan, Slide } from './types';
+import { findBestVisualMatch } from '../utils/visualLibraryMatcher';
 
 export function getDomainHeroImage(title: string, role: string): {
   hero: string;
@@ -647,6 +648,21 @@ export function planSlides(lesson: Lesson): TeachMePlan {
       next: 'Next: Guide Me',
       nb: 'Practise the steps with a coach beside you.',
     });
+  }
+
+  // Dynamic Post-Processing Pass: Enrich slide images from the Guruji Real Photo Visual Library
+  for (const slide of slides) {
+    const supportsImage = ['WELCOME', 'SECTION_INTRO', 'TEACH_STEP', 'IMPORTANT_RULE', 'REAL_WORLD_SCENARIO', 'DECISION'].includes(slide.type);
+    
+    if (supportsImage) {
+      const slideText = `${slide.title || ''} ${slide.content || ''} ${slide.items?.join(' ') || ''} ${slide.step || ''} ${slide.lead || ''}`;
+      const lessonContext = `${lesson.title} ${lesson.category || ''} ${lesson.description || ''}`;
+      const { url } = findBestVisualMatch(slideText, lessonContext);
+      if (url) {
+        slide.img = url;
+        slide.alt = slide.title || 'Visual illustration';
+      }
+    }
   }
 
   return { lessonId: lesson.id, title: lesson.title, slides };

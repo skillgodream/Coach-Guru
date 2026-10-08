@@ -1,0 +1,3608 @@
+{
+  "library": "Guruji Fresh SOP Visual Library",
+  "version": "1.0",
+  "count": 300,
+  "design_principle": "SOP visual vocabulary: people, actions, tools, controls, decisions, exceptions, safety, escalation, records",
+  "assets": [
+    {
+      "id": "244_verification_qr_scan",
+      "file": "control_verification/244_verification_qr_scan.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6320,
+      "tags": [
+        "verification",
+        "qr",
+        "scan"
+      ]
+    },
+    {
+      "id": "278_check_expiry_date",
+      "file": "control_verification/278_check_expiry_date.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 4274,
+      "tags": [
+        "check",
+        "expiry",
+        "date"
+      ]
+    },
+    {
+      "id": "279_check_temperature",
+      "file": "control_verification/279_check_temperature.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3990,
+      "tags": [
+        "check",
+        "temperature"
+      ]
+    },
+    {
+      "id": "280_verify_label_barcode",
+      "file": "control_verification/280_verify_label_barcode.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3820,
+      "tags": [
+        "verify",
+        "label",
+        "barcode"
+      ]
+    },
+    {
+      "id": "281_verify_qr_code",
+      "file": "control_verification/281_verify_qr_code.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 5660,
+      "tags": [
+        "verify",
+        "qr",
+        "code"
+      ]
+    },
+    {
+      "id": "045_exception_damaged_box",
+      "file": "decisions_exceptions/045_exception_damaged_box.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3556,
+      "tags": [
+        "exception",
+        "damaged",
+        "box"
+      ]
+    },
+    {
+      "id": "046_exception_wrong_item",
+      "file": "decisions_exceptions/046_exception_wrong_item.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4264,
+      "tags": [
+        "exception",
+        "wrong",
+        "item"
+      ]
+    },
+    {
+      "id": "047_exception_expired_product",
+      "file": "decisions_exceptions/047_exception_expired_product.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4994,
+      "tags": [
+        "exception",
+        "expired",
+        "product"
+      ]
+    },
+    {
+      "id": "093_exception_damaged_box",
+      "file": "decisions_exceptions/093_exception_damaged_box.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4922,
+      "tags": [
+        "exception",
+        "damaged",
+        "box"
+      ]
+    },
+    {
+      "id": "094_exception_wrong_item",
+      "file": "decisions_exceptions/094_exception_wrong_item.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5536,
+      "tags": [
+        "exception",
+        "wrong",
+        "item"
+      ]
+    },
+    {
+      "id": "095_exception_expired_product",
+      "file": "decisions_exceptions/095_exception_expired_product.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3686,
+      "tags": [
+        "exception",
+        "expired",
+        "product"
+      ]
+    },
+    {
+      "id": "121_exception_damaged_product",
+      "file": "decisions_exceptions/121_exception_damaged_product.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 3626,
+      "tags": [
+        "exception",
+        "damaged",
+        "product"
+      ]
+    },
+    {
+      "id": "122_exception_wrong_item",
+      "file": "decisions_exceptions/122_exception_wrong_item.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5626,
+      "tags": [
+        "exception",
+        "wrong",
+        "item"
+      ]
+    },
+    {
+      "id": "123_exception_expired_product",
+      "file": "decisions_exceptions/123_exception_expired_product.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 4468,
+      "tags": [
+        "exception",
+        "expired",
+        "product"
+      ]
+    },
+    {
+      "id": "124_exception_system_offline",
+      "file": "decisions_exceptions/124_exception_system_offline.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 4542,
+      "tags": [
+        "exception",
+        "system",
+        "offline"
+      ]
+    },
+    {
+      "id": "125_exception_barcode_not_scan",
+      "file": "decisions_exceptions/125_exception_barcode_not_scan.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5280,
+      "tags": [
+        "exception",
+        "barcode",
+        "not",
+        "scan"
+      ]
+    },
+    {
+      "id": "245_exception_damaged_box",
+      "file": "decisions_exceptions/245_exception_damaged_box.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5884,
+      "tags": [
+        "exception",
+        "damaged",
+        "box"
+      ]
+    },
+    {
+      "id": "246_exception_spillage",
+      "file": "decisions_exceptions/246_exception_spillage.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6080,
+      "tags": [
+        "exception",
+        "spillage"
+      ]
+    },
+    {
+      "id": "258_exception_damaged_product",
+      "file": "decisions_exceptions/258_exception_damaged_product.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 11324,
+      "tags": [
+        "exception",
+        "damaged",
+        "product"
+      ]
+    },
+    {
+      "id": "276_exception_damaged_package_inspection",
+      "file": "decisions_exceptions/276_exception_damaged_package_inspection.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 5204,
+      "tags": [
+        "exception",
+        "damaged",
+        "package",
+        "inspection"
+      ]
+    },
+    {
+      "id": "277_exception_damaged_box",
+      "file": "decisions_exceptions/277_exception_damaged_box.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3658,
+      "tags": [
+        "exception",
+        "damaged",
+        "box"
+      ]
+    },
+    {
+      "id": "282_decision_correct_vs_wrong_product",
+      "file": "decisions_exceptions/282_decision_correct_vs_wrong_product.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 6104,
+      "tags": [
+        "decision",
+        "correct",
+        "vs",
+        "wrong",
+        "product"
+      ]
+    },
+    {
+      "id": "283_exception_damaged_item_bin",
+      "file": "decisions_exceptions/283_exception_damaged_item_bin.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 4566,
+      "tags": [
+        "exception",
+        "damaged",
+        "item",
+        "bin"
+      ]
+    },
+    {
+      "id": "041_document_checklist",
+      "file": "documents_records/041_document_checklist.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5256,
+      "tags": [
+        "document",
+        "checklist"
+      ]
+    },
+    {
+      "id": "042_document_form_filling",
+      "file": "documents_records/042_document_form_filling.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4190,
+      "tags": [
+        "document",
+        "form",
+        "filling"
+      ]
+    },
+    {
+      "id": "043_document_approval_stamp",
+      "file": "documents_records/043_document_approval_stamp.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3556,
+      "tags": [
+        "document",
+        "approval",
+        "stamp"
+      ]
+    },
+    {
+      "id": "044_document_employee_id",
+      "file": "documents_records/044_document_employee_id.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5264,
+      "tags": [
+        "document",
+        "employee",
+        "id"
+      ]
+    },
+    {
+      "id": "089_document_checklist",
+      "file": "documents_records/089_document_checklist.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5616,
+      "tags": [
+        "document",
+        "checklist"
+      ]
+    },
+    {
+      "id": "090_document_form_filling",
+      "file": "documents_records/090_document_form_filling.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5038,
+      "tags": [
+        "document",
+        "form",
+        "filling"
+      ]
+    },
+    {
+      "id": "091_document_approval_stamp",
+      "file": "documents_records/091_document_approval_stamp.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3978,
+      "tags": [
+        "document",
+        "approval",
+        "stamp"
+      ]
+    },
+    {
+      "id": "092_document_employee_id",
+      "file": "documents_records/092_document_employee_id.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5404,
+      "tags": [
+        "document",
+        "employee",
+        "id"
+      ]
+    },
+    {
+      "id": "205_employee_checklist",
+      "file": "documents_records/205_employee_checklist.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 4104,
+      "tags": [
+        "employee",
+        "checklist"
+      ]
+    },
+    {
+      "id": "242_document_checklist",
+      "file": "documents_records/242_document_checklist.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6236,
+      "tags": [
+        "document",
+        "checklist"
+      ]
+    },
+    {
+      "id": "243_document_employee_id",
+      "file": "documents_records/243_document_employee_id.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5560,
+      "tags": [
+        "document",
+        "employee",
+        "id"
+      ]
+    },
+    {
+      "id": "284_document_employee_review",
+      "file": "documents_records/284_document_employee_review.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 5216,
+      "tags": [
+        "document",
+        "employee",
+        "review"
+      ]
+    },
+    {
+      "id": "285_document_signing",
+      "file": "documents_records/285_document_signing.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 6150,
+      "tags": [
+        "document",
+        "signing"
+      ]
+    },
+    {
+      "id": "286_digital_checklist",
+      "file": "documents_records/286_digital_checklist.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 5170,
+      "tags": [
+        "digital",
+        "checklist"
+      ]
+    },
+    {
+      "id": "017_ecommerce_receiving",
+      "file": "ecommerce_warehouse/017_ecommerce_receiving.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6530,
+      "tags": [
+        "ecommerce",
+        "receiving"
+      ]
+    },
+    {
+      "id": "018_ecommerce_picking",
+      "file": "ecommerce_warehouse/018_ecommerce_picking.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 7844,
+      "tags": [
+        "ecommerce",
+        "picking"
+      ]
+    },
+    {
+      "id": "019_ecommerce_packing",
+      "file": "ecommerce_warehouse/019_ecommerce_packing.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6256,
+      "tags": [
+        "ecommerce",
+        "packing"
+      ]
+    },
+    {
+      "id": "020_ecommerce_labeling",
+      "file": "ecommerce_warehouse/020_ecommerce_labeling.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4056,
+      "tags": [
+        "ecommerce",
+        "labeling"
+      ]
+    },
+    {
+      "id": "021_ecommerce_weighing",
+      "file": "ecommerce_warehouse/021_ecommerce_weighing.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5422,
+      "tags": [
+        "ecommerce",
+        "weighing"
+      ]
+    },
+    {
+      "id": "022_ecommerce_sorting",
+      "file": "ecommerce_warehouse/022_ecommerce_sorting.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 7856,
+      "tags": [
+        "ecommerce",
+        "sorting"
+      ]
+    },
+    {
+      "id": "023_ecommerce_loading",
+      "file": "ecommerce_warehouse/023_ecommerce_loading.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6180,
+      "tags": [
+        "ecommerce",
+        "loading"
+      ]
+    },
+    {
+      "id": "024_ecommerce_delivery_handover",
+      "file": "ecommerce_warehouse/024_ecommerce_delivery_handover.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5828,
+      "tags": [
+        "ecommerce",
+        "delivery",
+        "handover"
+      ]
+    },
+    {
+      "id": "065_ecommerce_receiving",
+      "file": "ecommerce_warehouse/065_ecommerce_receiving.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5404,
+      "tags": [
+        "ecommerce",
+        "receiving"
+      ]
+    },
+    {
+      "id": "066_ecommerce_picking",
+      "file": "ecommerce_warehouse/066_ecommerce_picking.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 7236,
+      "tags": [
+        "ecommerce",
+        "picking"
+      ]
+    },
+    {
+      "id": "067_ecommerce_packing",
+      "file": "ecommerce_warehouse/067_ecommerce_packing.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5970,
+      "tags": [
+        "ecommerce",
+        "packing"
+      ]
+    },
+    {
+      "id": "068_ecommerce_labeling",
+      "file": "ecommerce_warehouse/068_ecommerce_labeling.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4374,
+      "tags": [
+        "ecommerce",
+        "labeling"
+      ]
+    },
+    {
+      "id": "069_ecommerce_weighing",
+      "file": "ecommerce_warehouse/069_ecommerce_weighing.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 7954,
+      "tags": [
+        "ecommerce",
+        "weighing"
+      ]
+    },
+    {
+      "id": "070_ecommerce_sorting",
+      "file": "ecommerce_warehouse/070_ecommerce_sorting.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 8470,
+      "tags": [
+        "ecommerce",
+        "sorting"
+      ]
+    },
+    {
+      "id": "071_ecommerce_loading",
+      "file": "ecommerce_warehouse/071_ecommerce_loading.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 6488,
+      "tags": [
+        "ecommerce",
+        "loading"
+      ]
+    },
+    {
+      "id": "072_ecommerce_delivery_handover",
+      "file": "ecommerce_warehouse/072_ecommerce_delivery_handover.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 8012,
+      "tags": [
+        "ecommerce",
+        "delivery",
+        "handover"
+      ]
+    },
+    {
+      "id": "109_warehouse_picking_scan",
+      "file": "ecommerce_warehouse/109_warehouse_picking_scan.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7746,
+      "tags": [
+        "warehouse",
+        "picking",
+        "scan"
+      ]
+    },
+    {
+      "id": "110_warehouse_packing_station",
+      "file": "ecommerce_warehouse/110_warehouse_packing_station.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7972,
+      "tags": [
+        "warehouse",
+        "packing",
+        "station"
+      ]
+    },
+    {
+      "id": "111_warehouse_labeling",
+      "file": "ecommerce_warehouse/111_warehouse_labeling.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 4910,
+      "tags": [
+        "warehouse",
+        "labeling"
+      ]
+    },
+    {
+      "id": "112_warehouse_inventory_check",
+      "file": "ecommerce_warehouse/112_warehouse_inventory_check.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 9062,
+      "tags": [
+        "warehouse",
+        "inventory",
+        "check"
+      ]
+    },
+    {
+      "id": "113_warehouse_loading_truck",
+      "file": "ecommerce_warehouse/113_warehouse_loading_truck.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7662,
+      "tags": [
+        "warehouse",
+        "loading",
+        "truck"
+      ]
+    },
+    {
+      "id": "114_delivery_handover",
+      "file": "ecommerce_warehouse/114_delivery_handover.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 6294,
+      "tags": [
+        "delivery",
+        "handover"
+      ]
+    },
+    {
+      "id": "147_warehouse_scanning_barcode",
+      "file": "ecommerce_warehouse/147_warehouse_scanning_barcode.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2124,
+      "tags": [
+        "warehouse",
+        "scanning",
+        "barcode"
+      ]
+    },
+    {
+      "id": "148_warehouse_picking_items",
+      "file": "ecommerce_warehouse/148_warehouse_picking_items.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2854,
+      "tags": [
+        "warehouse",
+        "picking",
+        "items"
+      ]
+    },
+    {
+      "id": "149_warehouse_packing_station",
+      "file": "ecommerce_warehouse/149_warehouse_packing_station.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1906,
+      "tags": [
+        "warehouse",
+        "packing",
+        "station"
+      ]
+    },
+    {
+      "id": "150_warehouse_label_printing",
+      "file": "ecommerce_warehouse/150_warehouse_label_printing.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1140,
+      "tags": [
+        "warehouse",
+        "label",
+        "printing"
+      ]
+    },
+    {
+      "id": "151_warehouse_conveyor_packages",
+      "file": "ecommerce_warehouse/151_warehouse_conveyor_packages.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1986,
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "packages"
+      ]
+    },
+    {
+      "id": "152_warehouse_pallet_jack",
+      "file": "ecommerce_warehouse/152_warehouse_pallet_jack.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3126,
+      "tags": [
+        "warehouse",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "153_warehouse_loading_truck",
+      "file": "ecommerce_warehouse/153_warehouse_loading_truck.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3250,
+      "tags": [
+        "warehouse",
+        "loading",
+        "truck"
+      ]
+    },
+    {
+      "id": "154_warehouse_inventory_check",
+      "file": "ecommerce_warehouse/154_warehouse_inventory_check.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2886,
+      "tags": [
+        "warehouse",
+        "inventory",
+        "check"
+      ]
+    },
+    {
+      "id": "155_warehouse_damaged_package",
+      "file": "ecommerce_warehouse/155_warehouse_damaged_package.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2150,
+      "tags": [
+        "warehouse",
+        "damaged",
+        "package"
+      ]
+    },
+    {
+      "id": "156_ecommerce_delivery_handover",
+      "file": "ecommerce_warehouse/156_ecommerce_delivery_handover.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2052,
+      "tags": [
+        "ecommerce",
+        "delivery",
+        "handover"
+      ]
+    },
+    {
+      "id": "197_warehouse_picking_scan",
+      "file": "ecommerce_warehouse/197_warehouse_picking_scan.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 10426,
+      "tags": [
+        "warehouse",
+        "picking",
+        "scan"
+      ]
+    },
+    {
+      "id": "198_warehouse_packing_box",
+      "file": "ecommerce_warehouse/198_warehouse_packing_box.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 9154,
+      "tags": [
+        "warehouse",
+        "packing",
+        "box"
+      ]
+    },
+    {
+      "id": "199_warehouse_label_printing",
+      "file": "ecommerce_warehouse/199_warehouse_label_printing.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 4634,
+      "tags": [
+        "warehouse",
+        "label",
+        "printing"
+      ]
+    },
+    {
+      "id": "200_warehouse_conveyor_packages",
+      "file": "ecommerce_warehouse/200_warehouse_conveyor_packages.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 8128,
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "packages"
+      ]
+    },
+    {
+      "id": "201_delivery_truck_loading",
+      "file": "ecommerce_warehouse/201_delivery_truck_loading.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 8026,
+      "tags": [
+        "delivery",
+        "truck",
+        "loading"
+      ]
+    },
+    {
+      "id": "224_warehouse_scanning_box",
+      "file": "ecommerce_warehouse/224_warehouse_scanning_box.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6434,
+      "tags": [
+        "warehouse",
+        "scanning",
+        "box"
+      ]
+    },
+    {
+      "id": "225_warehouse_picking_item",
+      "file": "ecommerce_warehouse/225_warehouse_picking_item.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 8850,
+      "tags": [
+        "warehouse",
+        "picking",
+        "item"
+      ]
+    },
+    {
+      "id": "226_warehouse_packing_station",
+      "file": "ecommerce_warehouse/226_warehouse_packing_station.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6708,
+      "tags": [
+        "warehouse",
+        "packing",
+        "station"
+      ]
+    },
+    {
+      "id": "227_warehouse_conveyor_boxes",
+      "file": "ecommerce_warehouse/227_warehouse_conveyor_boxes.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6834,
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "boxes"
+      ]
+    },
+    {
+      "id": "228_warehouse_box_sealing",
+      "file": "ecommerce_warehouse/228_warehouse_box_sealing.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6732,
+      "tags": [
+        "warehouse",
+        "box",
+        "sealing"
+      ]
+    },
+    {
+      "id": "229_warehouse_loading_truck",
+      "file": "ecommerce_warehouse/229_warehouse_loading_truck.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5940,
+      "tags": [
+        "warehouse",
+        "loading",
+        "truck"
+      ]
+    },
+    {
+      "id": "248_warehouse_packing_station",
+      "file": "ecommerce_warehouse/248_warehouse_packing_station.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 15014,
+      "tags": [
+        "warehouse",
+        "packing",
+        "station"
+      ]
+    },
+    {
+      "id": "249_warehouse_picker_scan_sku",
+      "file": "ecommerce_warehouse/249_warehouse_picker_scan_sku.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 14598,
+      "tags": [
+        "warehouse",
+        "picker",
+        "scan",
+        "sku"
+      ]
+    },
+    {
+      "id": "250_delivery_loading_vehicle",
+      "file": "ecommerce_warehouse/250_delivery_loading_vehicle.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 11342,
+      "tags": [
+        "delivery",
+        "loading",
+        "vehicle"
+      ]
+    },
+    {
+      "id": "048_escalation_report_issue",
+      "file": "escalation_handover/048_escalation_report_issue.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 7168,
+      "tags": [
+        "escalation",
+        "report",
+        "issue"
+      ]
+    },
+    {
+      "id": "096_escalation_report_issue",
+      "file": "escalation_handover/096_escalation_report_issue.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 6698,
+      "tags": [
+        "escalation",
+        "report",
+        "issue"
+      ]
+    },
+    {
+      "id": "126_escalate_to_supervisor",
+      "file": "escalation_handover/126_escalate_to_supervisor.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 6738,
+      "tags": [
+        "escalate",
+        "to",
+        "supervisor"
+      ]
+    },
+    {
+      "id": "247_escalation_report_supervisor",
+      "file": "escalation_handover/247_escalation_report_supervisor.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 8608,
+      "tags": [
+        "escalation",
+        "report",
+        "supervisor"
+      ]
+    },
+    {
+      "id": "259_escalation_to_supervisor",
+      "file": "escalation_handover/259_escalation_to_supervisor.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 17334,
+      "tags": [
+        "escalation",
+        "to",
+        "supervisor"
+      ]
+    },
+    {
+      "id": "097_front_desk_checkin",
+      "file": "generic_actions/097_front_desk_checkin.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5724,
+      "tags": [
+        "front",
+        "desk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "102_maintenance_repair",
+      "file": "generic_actions/102_maintenance_repair.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 4660,
+      "tags": [
+        "maintenance",
+        "repair"
+      ]
+    },
+    {
+      "id": "160_team_discussion",
+      "file": "generic_actions/160_team_discussion.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1790,
+      "tags": [
+        "team",
+        "discussion"
+      ]
+    },
+    {
+      "id": "161_stop_work_signal",
+      "file": "generic_actions/161_stop_work_signal.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2288,
+      "tags": [
+        "stop",
+        "work",
+        "signal"
+      ]
+    },
+    {
+      "id": "162_first_aid_kit",
+      "file": "generic_actions/162_first_aid_kit.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2952,
+      "tags": [
+        "first",
+        "aid",
+        "kit"
+      ]
+    },
+    {
+      "id": "163_hygiene_handwashing",
+      "file": "generic_actions/163_hygiene_handwashing.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3644,
+      "tags": [
+        "hygiene",
+        "handwashing"
+      ]
+    },
+    {
+      "id": "165_incident_reporting",
+      "file": "generic_actions/165_incident_reporting.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1228,
+      "tags": [
+        "incident",
+        "reporting"
+      ]
+    },
+    {
+      "id": "166_supervisor_coaching",
+      "file": "generic_actions/166_supervisor_coaching.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2330,
+      "tags": [
+        "supervisor",
+        "coaching"
+      ]
+    },
+    {
+      "id": "202_employee_reading_document",
+      "file": "generic_actions/202_employee_reading_document.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 7586,
+      "tags": [
+        "employee",
+        "reading",
+        "document"
+      ]
+    },
+    {
+      "id": "203_employee_using_laptop",
+      "file": "generic_actions/203_employee_using_laptop.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 6814,
+      "tags": [
+        "employee",
+        "using",
+        "laptop"
+      ]
+    },
+    {
+      "id": "204_employee_phone_call",
+      "file": "generic_actions/204_employee_phone_call.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 5408,
+      "tags": [
+        "employee",
+        "phone",
+        "call"
+      ]
+    },
+    {
+      "id": "206_team_discussion",
+      "file": "generic_actions/206_team_discussion.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 10572,
+      "tags": [
+        "team",
+        "discussion"
+      ]
+    },
+    {
+      "id": "207_barcode_scanner",
+      "file": "generic_actions/207_barcode_scanner.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 8774,
+      "tags": [
+        "barcode",
+        "scanner"
+      ]
+    },
+    {
+      "id": "208_pos_terminal",
+      "file": "generic_actions/208_pos_terminal.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 4648,
+      "tags": [
+        "pos",
+        "terminal"
+      ]
+    },
+    {
+      "id": "209_weighing_scale",
+      "file": "generic_actions/209_weighing_scale.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 6360,
+      "tags": [
+        "weighing",
+        "scale"
+      ]
+    },
+    {
+      "id": "210_pallet_jack",
+      "file": "generic_actions/210_pallet_jack.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 1874,
+      "tags": [
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "211_cleaning_cart",
+      "file": "generic_actions/211_cleaning_cart.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 2550,
+      "tags": [
+        "cleaning",
+        "cart"
+      ]
+    },
+    {
+      "id": "257_fire_extinguisher",
+      "file": "generic_actions/257_fire_extinguisher.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 8282,
+      "tags": [
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "001_hotel_frontdesk_checkin",
+      "file": "hospitality/001_hotel_frontdesk_checkin.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3528,
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "002_hotel_bellhop_luggage",
+      "file": "hospitality/002_hotel_bellhop_luggage.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5370,
+      "tags": [
+        "hotel",
+        "bellhop",
+        "luggage"
+      ]
+    },
+    {
+      "id": "003_hotel_housekeeping_make_bed",
+      "file": "hospitality/003_hotel_housekeeping_make_bed.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4420,
+      "tags": [
+        "hotel",
+        "housekeeping",
+        "make",
+        "bed"
+      ]
+    },
+    {
+      "id": "004_hotel_restaurant_service",
+      "file": "hospitality/004_hotel_restaurant_service.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6532,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service"
+      ]
+    },
+    {
+      "id": "005_hotel_kitchen_food_prep",
+      "file": "hospitality/005_hotel_kitchen_food_prep.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6560,
+      "tags": [
+        "hotel",
+        "kitchen",
+        "food",
+        "prep"
+      ]
+    },
+    {
+      "id": "006_hotel_maintenance_plumbing",
+      "file": "hospitality/006_hotel_maintenance_plumbing.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4638,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "plumbing"
+      ]
+    },
+    {
+      "id": "007_hotel_guest_assistance",
+      "file": "hospitality/007_hotel_guest_assistance.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4064,
+      "tags": [
+        "hotel",
+        "guest",
+        "assistance"
+      ]
+    },
+    {
+      "id": "008_hotel_room_inspection",
+      "file": "hospitality/008_hotel_room_inspection.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4032,
+      "tags": [
+        "hotel",
+        "room",
+        "inspection"
+      ]
+    },
+    {
+      "id": "049_hotel_frontdesk_checkin",
+      "file": "hospitality/049_hotel_frontdesk_checkin.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4244,
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "050_hotel_bellboy_luggage",
+      "file": "hospitality/050_hotel_bellboy_luggage.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5926,
+      "tags": [
+        "hotel",
+        "bellboy",
+        "luggage"
+      ]
+    },
+    {
+      "id": "051_hotel_housekeeping_make_bed",
+      "file": "hospitality/051_hotel_housekeeping_make_bed.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5006,
+      "tags": [
+        "hotel",
+        "housekeeping",
+        "make",
+        "bed"
+      ]
+    },
+    {
+      "id": "052_hotel_restaurant_service",
+      "file": "hospitality/052_hotel_restaurant_service.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 7010,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service"
+      ]
+    },
+    {
+      "id": "053_hotel_kitchen_food_prep",
+      "file": "hospitality/053_hotel_kitchen_food_prep.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5488,
+      "tags": [
+        "hotel",
+        "kitchen",
+        "food",
+        "prep"
+      ]
+    },
+    {
+      "id": "054_hotel_maintenance_repair",
+      "file": "hospitality/054_hotel_maintenance_repair.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 2926,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "repair"
+      ]
+    },
+    {
+      "id": "055_hotel_guest_assistance",
+      "file": "hospitality/055_hotel_guest_assistance.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5528,
+      "tags": [
+        "hotel",
+        "guest",
+        "assistance"
+      ]
+    },
+    {
+      "id": "056_hotel_housekeeping_cart",
+      "file": "hospitality/056_hotel_housekeeping_cart.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4514,
+      "tags": [
+        "hotel",
+        "housekeeping",
+        "cart"
+      ]
+    },
+    {
+      "id": "098_hotel_porter_luggage",
+      "file": "hospitality/098_hotel_porter_luggage.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7038,
+      "tags": [
+        "hotel",
+        "porter",
+        "luggage"
+      ]
+    },
+    {
+      "id": "099_restaurant_server_food",
+      "file": "hospitality/099_restaurant_server_food.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7016,
+      "tags": [
+        "restaurant",
+        "server",
+        "food"
+      ]
+    },
+    {
+      "id": "100_kitchen_food_preparation",
+      "file": "hospitality/100_kitchen_food_preparation.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7910,
+      "tags": [
+        "kitchen",
+        "food",
+        "preparation"
+      ]
+    },
+    {
+      "id": "101_room_cleaning_bed",
+      "file": "hospitality/101_room_cleaning_bed.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5492,
+      "tags": [
+        "room",
+        "cleaning",
+        "bed"
+      ]
+    },
+    {
+      "id": "127_hotel_front_desk_checkin",
+      "file": "hospitality/127_hotel_front_desk_checkin.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2734,
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "128_hotel_restaurant_serving_food",
+      "file": "hospitality/128_hotel_restaurant_serving_food.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4298,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "serving",
+        "food"
+      ]
+    },
+    {
+      "id": "129_hotel_kitchen_food_preparation",
+      "file": "hospitality/129_hotel_kitchen_food_preparation.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3986,
+      "tags": [
+        "hotel",
+        "kitchen",
+        "food",
+        "preparation"
+      ]
+    },
+    {
+      "id": "130_hotel_restaurant_table_setup",
+      "file": "hospitality/130_hotel_restaurant_table_setup.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2988,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "table",
+        "setup"
+      ]
+    },
+    {
+      "id": "131_hotel_bellstaff_luggage_handling",
+      "file": "hospitality/131_hotel_bellstaff_luggage_handling.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3008,
+      "tags": [
+        "hotel",
+        "bellstaff",
+        "luggage",
+        "handling"
+      ]
+    },
+    {
+      "id": "132_hotel_room_inspection",
+      "file": "hospitality/132_hotel_room_inspection.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3638,
+      "tags": [
+        "hotel",
+        "room",
+        "inspection"
+      ]
+    },
+    {
+      "id": "133_hotel_cleaning_cart",
+      "file": "hospitality/133_hotel_cleaning_cart.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 5042,
+      "tags": [
+        "hotel",
+        "cleaning",
+        "cart"
+      ]
+    },
+    {
+      "id": "134_hotel_maintenance_check",
+      "file": "hospitality/134_hotel_maintenance_check.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 5572,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "check"
+      ]
+    },
+    {
+      "id": "135_hotel_guest_service",
+      "file": "hospitality/135_hotel_guest_service.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3710,
+      "tags": [
+        "hotel",
+        "guest",
+        "service"
+      ]
+    },
+    {
+      "id": "136_hotel_bar_preparing_drink",
+      "file": "hospitality/136_hotel_bar_preparing_drink.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4700,
+      "tags": [
+        "hotel",
+        "bar",
+        "preparing",
+        "drink"
+      ]
+    },
+    {
+      "id": "187_hotel_front_desk_checkin",
+      "file": "hospitality/187_hotel_front_desk_checkin.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 6912,
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "188_restaurant_table_setting",
+      "file": "hospitality/188_restaurant_table_setting.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 9362,
+      "tags": [
+        "restaurant",
+        "table",
+        "setting"
+      ]
+    },
+    {
+      "id": "189_kitchen_food_preparation",
+      "file": "hospitality/189_kitchen_food_preparation.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 10990,
+      "tags": [
+        "kitchen",
+        "food",
+        "preparation"
+      ]
+    },
+    {
+      "id": "190_hotel_bellman_luggage",
+      "file": "hospitality/190_hotel_bellman_luggage.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 8304,
+      "tags": [
+        "hotel",
+        "bellman",
+        "luggage"
+      ]
+    },
+    {
+      "id": "191_hotel_maintenance_repair",
+      "file": "hospitality/191_hotel_maintenance_repair.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 9542,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "repair"
+      ]
+    },
+    {
+      "id": "212_hotel_front_desk_checkin",
+      "file": "hospitality/212_hotel_front_desk_checkin.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5122,
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "checkin"
+      ]
+    },
+    {
+      "id": "213_hotel_bell_staff_luggage",
+      "file": "hospitality/213_hotel_bell_staff_luggage.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 7796,
+      "tags": [
+        "hotel",
+        "bell",
+        "staff",
+        "luggage"
+      ]
+    },
+    {
+      "id": "214_hotel_room_make_bed",
+      "file": "hospitality/214_hotel_room_make_bed.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4970,
+      "tags": [
+        "hotel",
+        "room",
+        "make",
+        "bed"
+      ]
+    },
+    {
+      "id": "215_hotel_restaurant_service",
+      "file": "hospitality/215_hotel_restaurant_service.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6726,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service"
+      ]
+    },
+    {
+      "id": "216_hotel_kitchen_preparation",
+      "file": "hospitality/216_hotel_kitchen_preparation.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6126,
+      "tags": [
+        "hotel",
+        "kitchen",
+        "preparation"
+      ]
+    },
+    {
+      "id": "217_hotel_maintenance_hvac",
+      "file": "hospitality/217_hotel_maintenance_hvac.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5364,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "hvac"
+      ]
+    },
+    {
+      "id": "251_hotel_front_desk_check_in",
+      "file": "hospitality/251_hotel_front_desk_check_in.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 10294,
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "check",
+        "in"
+      ]
+    },
+    {
+      "id": "254_kitchen_food_preparation",
+      "file": "hospitality/254_kitchen_food_preparation.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 12252,
+      "tags": [
+        "kitchen",
+        "food",
+        "preparation"
+      ]
+    },
+    {
+      "id": "255_restaurant_table_service",
+      "file": "hospitality/255_restaurant_table_service.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 13904,
+      "tags": [
+        "restaurant",
+        "table",
+        "service"
+      ]
+    },
+    {
+      "id": "287_hotel_frontdesk_guest_checkin_alt",
+      "file": "hospitality/287_hotel_frontdesk_guest_checkin_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 3452,
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "guest",
+        "checkin",
+        "alt"
+      ]
+    },
+    {
+      "id": "288_hotel_restaurant_table_service_alt",
+      "file": "hospitality/288_hotel_restaurant_table_service_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 3468,
+      "tags": [
+        "hotel",
+        "restaurant",
+        "table",
+        "service",
+        "alt"
+      ]
+    },
+    {
+      "id": "289_hotel_kitchen_food_preparation_alt",
+      "file": "hospitality/289_hotel_kitchen_food_preparation_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4722,
+      "tags": [
+        "hotel",
+        "kitchen",
+        "food",
+        "preparation",
+        "alt"
+      ]
+    },
+    {
+      "id": "290_hotel_bellman_luggage_alt",
+      "file": "hospitality/290_hotel_bellman_luggage_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4506,
+      "tags": [
+        "hotel",
+        "bellman",
+        "luggage",
+        "alt"
+      ]
+    },
+    {
+      "id": "291_hotel_maintenance_repair_alt",
+      "file": "hospitality/291_hotel_maintenance_repair_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4652,
+      "tags": [
+        "hotel",
+        "maintenance",
+        "repair",
+        "alt"
+      ]
+    },
+    {
+      "id": "292_hotel_housekeeping_make_bed_alt",
+      "file": "hospitality/292_hotel_housekeeping_make_bed_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 3530,
+      "tags": [
+        "hotel",
+        "housekeeping",
+        "make",
+        "bed",
+        "alt"
+      ]
+    },
+    {
+      "id": "293_hotel_guest_service_alt",
+      "file": "hospitality/293_hotel_guest_service_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4652,
+      "tags": [
+        "hotel",
+        "guest",
+        "service",
+        "alt"
+      ]
+    },
+    {
+      "id": "294_hotel_room_inspection_alt",
+      "file": "hospitality/294_hotel_room_inspection_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 3230,
+      "tags": [
+        "hotel",
+        "room",
+        "inspection",
+        "alt"
+      ]
+    },
+    {
+      "id": "295_hotel_cleaning_cart_alt",
+      "file": "hospitality/295_hotel_cleaning_cart_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4140,
+      "tags": [
+        "hotel",
+        "cleaning",
+        "cart",
+        "alt"
+      ]
+    },
+    {
+      "id": "296_hotel_bar_service_alt",
+      "file": "hospitality/296_hotel_bar_service_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 6102,
+      "tags": [
+        "hotel",
+        "bar",
+        "service",
+        "alt"
+      ]
+    },
+    {
+      "id": "009_retail_cashier_scan",
+      "file": "retail/009_retail_cashier_scan.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5628,
+      "tags": [
+        "retail",
+        "cashier",
+        "scan"
+      ]
+    },
+    {
+      "id": "010_retail_payment_pos",
+      "file": "retail/010_retail_payment_pos.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5054,
+      "tags": [
+        "retail",
+        "payment",
+        "pos"
+      ]
+    },
+    {
+      "id": "011_retail_shelf_stocking",
+      "file": "retail/011_retail_shelf_stocking.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 7720,
+      "tags": [
+        "retail",
+        "shelf",
+        "stocking"
+      ]
+    },
+    {
+      "id": "012_retail_price_check",
+      "file": "retail/012_retail_price_check.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6520,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "013_retail_customer_assistance",
+      "file": "retail/013_retail_customer_assistance.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5920,
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ]
+    },
+    {
+      "id": "014_retail_inventory_check",
+      "file": "retail/014_retail_inventory_check.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5898,
+      "tags": [
+        "retail",
+        "inventory",
+        "check"
+      ]
+    },
+    {
+      "id": "015_retail_visual_merchandising",
+      "file": "retail/015_retail_visual_merchandising.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 8188,
+      "tags": [
+        "retail",
+        "visual",
+        "merchandising"
+      ]
+    },
+    {
+      "id": "016_retail_returns_handling",
+      "file": "retail/016_retail_returns_handling.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 6112,
+      "tags": [
+        "retail",
+        "returns",
+        "handling"
+      ]
+    },
+    {
+      "id": "057_retail_cashier_scan",
+      "file": "retail/057_retail_cashier_scan.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5804,
+      "tags": [
+        "retail",
+        "cashier",
+        "scan"
+      ]
+    },
+    {
+      "id": "058_retail_customer_payment",
+      "file": "retail/058_retail_customer_payment.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5660,
+      "tags": [
+        "retail",
+        "customer",
+        "payment"
+      ]
+    },
+    {
+      "id": "059_retail_shelf_stocking",
+      "file": "retail/059_retail_shelf_stocking.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 7590,
+      "tags": [
+        "retail",
+        "shelf",
+        "stocking"
+      ]
+    },
+    {
+      "id": "060_retail_price_check",
+      "file": "retail/060_retail_price_check.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 7720,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "061_retail_customer_assistance",
+      "file": "retail/061_retail_customer_assistance.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 6478,
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ]
+    },
+    {
+      "id": "062_retail_inventory_check",
+      "file": "retail/062_retail_inventory_check.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 6040,
+      "tags": [
+        "retail",
+        "inventory",
+        "check"
+      ]
+    },
+    {
+      "id": "063_retail_visual_merchandising",
+      "file": "retail/063_retail_visual_merchandising.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 5394,
+      "tags": [
+        "retail",
+        "visual",
+        "merchandising"
+      ]
+    },
+    {
+      "id": "064_retail_returns_handling",
+      "file": "retail/064_retail_returns_handling.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 6026,
+      "tags": [
+        "retail",
+        "returns",
+        "handling"
+      ]
+    },
+    {
+      "id": "103_retail_cashier_scanning",
+      "file": "retail/103_retail_cashier_scanning.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7656,
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning"
+      ]
+    },
+    {
+      "id": "104_retail_shelf_stocking",
+      "file": "retail/104_retail_shelf_stocking.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 11034,
+      "tags": [
+        "retail",
+        "shelf",
+        "stocking"
+      ]
+    },
+    {
+      "id": "105_retail_customer_assistance",
+      "file": "retail/105_retail_customer_assistance.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 9658,
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ]
+    },
+    {
+      "id": "106_retail_price_check",
+      "file": "retail/106_retail_price_check.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 8974,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "107_retail_return_exchange",
+      "file": "retail/107_retail_return_exchange.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 6750,
+      "tags": [
+        "retail",
+        "return",
+        "exchange"
+      ]
+    },
+    {
+      "id": "108_retail_payment_card",
+      "file": "retail/108_retail_payment_card.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5542,
+      "tags": [
+        "retail",
+        "payment",
+        "card"
+      ]
+    },
+    {
+      "id": "137_retail_cashier_scanning_product",
+      "file": "retail/137_retail_cashier_scanning_product.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4562,
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "product"
+      ]
+    },
+    {
+      "id": "138_retail_payment_card",
+      "file": "retail/138_retail_payment_card.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4348,
+      "tags": [
+        "retail",
+        "payment",
+        "card"
+      ]
+    },
+    {
+      "id": "139_retail_shelf_stocking",
+      "file": "retail/139_retail_shelf_stocking.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2150,
+      "tags": [
+        "retail",
+        "shelf",
+        "stocking"
+      ]
+    },
+    {
+      "id": "140_retail_price_check",
+      "file": "retail/140_retail_price_check.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3298,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "141_retail_customer_assistance",
+      "file": "retail/141_retail_customer_assistance.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2632,
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ]
+    },
+    {
+      "id": "142_retail_inventory_count",
+      "file": "retail/142_retail_inventory_count.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2548,
+      "tags": [
+        "retail",
+        "inventory",
+        "count"
+      ]
+    },
+    {
+      "id": "143_retail_apparel_display",
+      "file": "retail/143_retail_apparel_display.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2666,
+      "tags": [
+        "retail",
+        "apparel",
+        "display"
+      ]
+    },
+    {
+      "id": "144_retail_fresh_produce_check",
+      "file": "retail/144_retail_fresh_produce_check.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2236,
+      "tags": [
+        "retail",
+        "fresh",
+        "produce",
+        "check"
+      ]
+    },
+    {
+      "id": "145_retail_returns_handling",
+      "file": "retail/145_retail_returns_handling.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2028,
+      "tags": [
+        "retail",
+        "returns",
+        "handling"
+      ]
+    },
+    {
+      "id": "146_retail_security_monitoring",
+      "file": "retail/146_retail_security_monitoring.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3500,
+      "tags": [
+        "retail",
+        "security",
+        "monitoring"
+      ]
+    },
+    {
+      "id": "192_retail_cashier_pos",
+      "file": "retail/192_retail_cashier_pos.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 10386,
+      "tags": [
+        "retail",
+        "cashier",
+        "pos"
+      ]
+    },
+    {
+      "id": "193_retail_scan_product",
+      "file": "retail/193_retail_scan_product.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 12728,
+      "tags": [
+        "retail",
+        "scan",
+        "product"
+      ]
+    },
+    {
+      "id": "194_retail_shelf_merchandising",
+      "file": "retail/194_retail_shelf_merchandising.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 11234,
+      "tags": [
+        "retail",
+        "shelf",
+        "merchandising"
+      ]
+    },
+    {
+      "id": "195_retail_customer_service",
+      "file": "retail/195_retail_customer_service.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 9808,
+      "tags": [
+        "retail",
+        "customer",
+        "service"
+      ]
+    },
+    {
+      "id": "196_retail_price_check",
+      "file": "retail/196_retail_price_check.webp",
+      "width": 307,
+      "height": 170,
+      "size_bytes": 6264,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "218_retail_cashier_scanning",
+      "file": "retail/218_retail_cashier_scanning.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5634,
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning"
+      ]
+    },
+    {
+      "id": "219_retail_shelving_products",
+      "file": "retail/219_retail_shelving_products.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 8544,
+      "tags": [
+        "retail",
+        "shelving",
+        "products"
+      ]
+    },
+    {
+      "id": "220_retail_price_check",
+      "file": "retail/220_retail_price_check.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 7748,
+      "tags": [
+        "retail",
+        "price",
+        "check"
+      ]
+    },
+    {
+      "id": "221_retail_customer_assistance",
+      "file": "retail/221_retail_customer_assistance.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6892,
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ]
+    },
+    {
+      "id": "222_retail_quality_check",
+      "file": "retail/222_retail_quality_check.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6742,
+      "tags": [
+        "retail",
+        "quality",
+        "check"
+      ]
+    },
+    {
+      "id": "223_retail_supervisor_discussion",
+      "file": "retail/223_retail_supervisor_discussion.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5944,
+      "tags": [
+        "retail",
+        "supervisor",
+        "discussion"
+      ]
+    },
+    {
+      "id": "252_retail_cashier_scanning_product",
+      "file": "retail/252_retail_cashier_scanning_product.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 16956,
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "product"
+      ]
+    },
+    {
+      "id": "253_retail_shelf_replenishment",
+      "file": "retail/253_retail_shelf_replenishment.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 17234,
+      "tags": [
+        "retail",
+        "shelf",
+        "replenishment"
+      ]
+    },
+    {
+      "id": "297_retail_cashier_pos_alt",
+      "file": "retail/297_retail_cashier_pos_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 5086,
+      "tags": [
+        "retail",
+        "cashier",
+        "pos",
+        "alt"
+      ]
+    },
+    {
+      "id": "298_retail_scan_product_alt",
+      "file": "retail/298_retail_scan_product_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 4104,
+      "tags": [
+        "retail",
+        "scan",
+        "product",
+        "alt"
+      ]
+    },
+    {
+      "id": "299_retail_shelf_merchandising_alt",
+      "file": "retail/299_retail_shelf_merchandising_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 5150,
+      "tags": [
+        "retail",
+        "shelf",
+        "merchandising",
+        "alt"
+      ]
+    },
+    {
+      "id": "300_retail_customer_service_alt",
+      "file": "retail/300_retail_customer_service_alt.webp",
+      "width": 153,
+      "height": 120,
+      "size_bytes": 5104,
+      "tags": [
+        "retail",
+        "customer",
+        "service",
+        "alt"
+      ]
+    },
+    {
+      "id": "033_safety_ppe_helmet",
+      "file": "safety/033_safety_ppe_helmet.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5816,
+      "tags": [
+        "safety",
+        "ppe",
+        "helmet"
+      ]
+    },
+    {
+      "id": "034_safety_gloves",
+      "file": "safety/034_safety_gloves.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4838,
+      "tags": [
+        "safety",
+        "gloves"
+      ]
+    },
+    {
+      "id": "035_safety_safety_shoes",
+      "file": "safety/035_safety_safety_shoes.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5078,
+      "tags": [
+        "safety",
+        "safety",
+        "shoes"
+      ]
+    },
+    {
+      "id": "036_safety_fire_extinguisher",
+      "file": "safety/036_safety_fire_extinguisher.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4250,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "037_safety_first_aid",
+      "file": "safety/037_safety_first_aid.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 2788,
+      "tags": [
+        "safety",
+        "first",
+        "aid"
+      ]
+    },
+    {
+      "id": "038_safety_wet_floor",
+      "file": "safety/038_safety_wet_floor.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4112,
+      "tags": [
+        "safety",
+        "wet",
+        "floor"
+      ]
+    },
+    {
+      "id": "039_safety_emergency_exit",
+      "file": "safety/039_safety_emergency_exit.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3146,
+      "tags": [
+        "safety",
+        "emergency",
+        "exit"
+      ]
+    },
+    {
+      "id": "040_safety_lockout_tagout",
+      "file": "safety/040_safety_lockout_tagout.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4394,
+      "tags": [
+        "safety",
+        "lockout",
+        "tagout"
+      ]
+    },
+    {
+      "id": "081_safety_ppe_helmet",
+      "file": "safety/081_safety_ppe_helmet.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3000,
+      "tags": [
+        "safety",
+        "ppe",
+        "helmet"
+      ]
+    },
+    {
+      "id": "082_safety_gloves",
+      "file": "safety/082_safety_gloves.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4424,
+      "tags": [
+        "safety",
+        "gloves"
+      ]
+    },
+    {
+      "id": "083_safety_safety_shoes",
+      "file": "safety/083_safety_safety_shoes.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3630,
+      "tags": [
+        "safety",
+        "safety",
+        "shoes"
+      ]
+    },
+    {
+      "id": "084_safety_fire_extinguisher",
+      "file": "safety/084_safety_fire_extinguisher.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4324,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "085_safety_first_aid",
+      "file": "safety/085_safety_first_aid.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4464,
+      "tags": [
+        "safety",
+        "first",
+        "aid"
+      ]
+    },
+    {
+      "id": "086_safety_wet_floor",
+      "file": "safety/086_safety_wet_floor.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3660,
+      "tags": [
+        "safety",
+        "wet",
+        "floor"
+      ]
+    },
+    {
+      "id": "087_safety_emergency_exit",
+      "file": "safety/087_safety_emergency_exit.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4138,
+      "tags": [
+        "safety",
+        "emergency",
+        "exit"
+      ]
+    },
+    {
+      "id": "088_safety_lockout_tagout",
+      "file": "safety/088_safety_lockout_tagout.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3538,
+      "tags": [
+        "safety",
+        "lockout",
+        "tagout"
+      ]
+    },
+    {
+      "id": "115_safety_ppe_equipment",
+      "file": "safety/115_safety_ppe_equipment.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 6046,
+      "tags": [
+        "safety",
+        "ppe",
+        "equipment"
+      ]
+    },
+    {
+      "id": "116_safety_fire_extinguisher",
+      "file": "safety/116_safety_fire_extinguisher.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5092,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "117_safety_wet_floor",
+      "file": "safety/117_safety_wet_floor.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 6078,
+      "tags": [
+        "safety",
+        "wet",
+        "floor"
+      ]
+    },
+    {
+      "id": "118_safety_first_aid",
+      "file": "safety/118_safety_first_aid.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 5316,
+      "tags": [
+        "safety",
+        "first",
+        "aid"
+      ]
+    },
+    {
+      "id": "119_safety_spill_cleanup",
+      "file": "safety/119_safety_spill_cleanup.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 7886,
+      "tags": [
+        "safety",
+        "spill",
+        "cleanup"
+      ]
+    },
+    {
+      "id": "120_safety_blocked_exit",
+      "file": "safety/120_safety_blocked_exit.webp",
+      "width": 256,
+      "height": 160,
+      "size_bytes": 3244,
+      "tags": [
+        "safety",
+        "blocked",
+        "exit"
+      ]
+    },
+    {
+      "id": "157_safety_ppe_wearing",
+      "file": "safety/157_safety_ppe_wearing.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3256,
+      "tags": [
+        "safety",
+        "ppe",
+        "wearing"
+      ]
+    },
+    {
+      "id": "158_safety_wet_floor_sign",
+      "file": "safety/158_safety_wet_floor_sign.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2436,
+      "tags": [
+        "safety",
+        "wet",
+        "floor",
+        "sign"
+      ]
+    },
+    {
+      "id": "159_safety_fire_extinguisher_check",
+      "file": "safety/159_safety_fire_extinguisher_check.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2028,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher",
+        "check"
+      ]
+    },
+    {
+      "id": "164_safety_briefing",
+      "file": "safety/164_safety_briefing.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2446,
+      "tags": [
+        "safety",
+        "briefing"
+      ]
+    },
+    {
+      "id": "236_safety_ppe_helmet",
+      "file": "safety/236_safety_ppe_helmet.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5018,
+      "tags": [
+        "safety",
+        "ppe",
+        "helmet"
+      ]
+    },
+    {
+      "id": "237_safety_gloves",
+      "file": "safety/237_safety_gloves.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6410,
+      "tags": [
+        "safety",
+        "gloves"
+      ]
+    },
+    {
+      "id": "238_safety_reflective_vest",
+      "file": "safety/238_safety_reflective_vest.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4108,
+      "tags": [
+        "safety",
+        "reflective",
+        "vest"
+      ]
+    },
+    {
+      "id": "239_safety_fire_extinguisher",
+      "file": "safety/239_safety_fire_extinguisher.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4760,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "240_safety_wet_floor_sign",
+      "file": "safety/240_safety_wet_floor_sign.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6242,
+      "tags": [
+        "safety",
+        "wet",
+        "floor",
+        "sign"
+      ]
+    },
+    {
+      "id": "241_safety_emergency_exit",
+      "file": "safety/241_safety_emergency_exit.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 3894,
+      "tags": [
+        "safety",
+        "emergency",
+        "exit"
+      ]
+    },
+    {
+      "id": "256_safety_ppe_check",
+      "file": "safety/256_safety_ppe_check.webp",
+      "width": 362,
+      "height": 300,
+      "size_bytes": 12962,
+      "tags": [
+        "safety",
+        "ppe",
+        "check"
+      ]
+    },
+    {
+      "id": "268_safety_helmet",
+      "file": "safety/268_safety_helmet.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 2892,
+      "tags": [
+        "safety",
+        "helmet"
+      ]
+    },
+    {
+      "id": "269_safety_eye_protection",
+      "file": "safety/269_safety_eye_protection.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 2480,
+      "tags": [
+        "safety",
+        "eye",
+        "protection"
+      ]
+    },
+    {
+      "id": "270_safety_gloves",
+      "file": "safety/270_safety_gloves.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 4064,
+      "tags": [
+        "safety",
+        "gloves"
+      ]
+    },
+    {
+      "id": "271_safety_reflective_vest",
+      "file": "safety/271_safety_reflective_vest.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3810,
+      "tags": [
+        "safety",
+        "reflective",
+        "vest"
+      ]
+    },
+    {
+      "id": "272_safety_safety_shoes",
+      "file": "safety/272_safety_safety_shoes.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 4004,
+      "tags": [
+        "safety",
+        "safety",
+        "shoes"
+      ]
+    },
+    {
+      "id": "273_safety_fire_extinguisher",
+      "file": "safety/273_safety_fire_extinguisher.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3530,
+      "tags": [
+        "safety",
+        "fire",
+        "extinguisher"
+      ]
+    },
+    {
+      "id": "274_safety_wet_floor_sign",
+      "file": "safety/274_safety_wet_floor_sign.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3428,
+      "tags": [
+        "safety",
+        "wet",
+        "floor",
+        "sign"
+      ]
+    },
+    {
+      "id": "275_safety_traffic_cone",
+      "file": "safety/275_safety_traffic_cone.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3286,
+      "tags": [
+        "safety",
+        "traffic",
+        "cone"
+      ]
+    },
+    {
+      "id": "025_tool_barcode_scanner",
+      "file": "tools_props/025_tool_barcode_scanner.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3368,
+      "tags": [
+        "tool",
+        "barcode",
+        "scanner"
+      ]
+    },
+    {
+      "id": "026_tool_handheld_terminal",
+      "file": "tools_props/026_tool_handheld_terminal.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3928,
+      "tags": [
+        "tool",
+        "handheld",
+        "terminal"
+      ]
+    },
+    {
+      "id": "027_tool_label_printer",
+      "file": "tools_props/027_tool_label_printer.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3478,
+      "tags": [
+        "tool",
+        "label",
+        "printer"
+      ]
+    },
+    {
+      "id": "028_tool_pos_terminal",
+      "file": "tools_props/028_tool_pos_terminal.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 4964,
+      "tags": [
+        "tool",
+        "pos",
+        "terminal"
+      ]
+    },
+    {
+      "id": "029_tool_cash_drawer",
+      "file": "tools_props/029_tool_cash_drawer.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5192,
+      "tags": [
+        "tool",
+        "cash",
+        "drawer"
+      ]
+    },
+    {
+      "id": "030_tool_trolley",
+      "file": "tools_props/030_tool_trolley.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3878,
+      "tags": [
+        "tool",
+        "trolley"
+      ]
+    },
+    {
+      "id": "031_tool_pallet_jack",
+      "file": "tools_props/031_tool_pallet_jack.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 3820,
+      "tags": [
+        "tool",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "032_tool_cleaning_cart",
+      "file": "tools_props/032_tool_cleaning_cart.webp",
+      "width": 181,
+      "height": 150,
+      "size_bytes": 5360,
+      "tags": [
+        "tool",
+        "cleaning",
+        "cart"
+      ]
+    },
+    {
+      "id": "073_tool_barcode_scanner",
+      "file": "tools_props/073_tool_barcode_scanner.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 1986,
+      "tags": [
+        "tool",
+        "barcode",
+        "scanner"
+      ]
+    },
+    {
+      "id": "074_tool_handheld_terminal",
+      "file": "tools_props/074_tool_handheld_terminal.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3380,
+      "tags": [
+        "tool",
+        "handheld",
+        "terminal"
+      ]
+    },
+    {
+      "id": "075_tool_label_printer",
+      "file": "tools_props/075_tool_label_printer.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3614,
+      "tags": [
+        "tool",
+        "label",
+        "printer"
+      ]
+    },
+    {
+      "id": "076_tool_pos_terminal",
+      "file": "tools_props/076_tool_pos_terminal.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4000,
+      "tags": [
+        "tool",
+        "pos",
+        "terminal"
+      ]
+    },
+    {
+      "id": "077_tool_cash_drawer",
+      "file": "tools_props/077_tool_cash_drawer.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 4700,
+      "tags": [
+        "tool",
+        "cash",
+        "drawer"
+      ]
+    },
+    {
+      "id": "078_tool_trolley",
+      "file": "tools_props/078_tool_trolley.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3870,
+      "tags": [
+        "tool",
+        "trolley"
+      ]
+    },
+    {
+      "id": "079_tool_pallet_jack",
+      "file": "tools_props/079_tool_pallet_jack.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 3324,
+      "tags": [
+        "tool",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "080_tool_cleaning_cart",
+      "file": "tools_props/080_tool_cleaning_cart.webp",
+      "width": 192,
+      "height": 135,
+      "size_bytes": 1418,
+      "tags": [
+        "tool",
+        "cleaning",
+        "cart"
+      ]
+    },
+    {
+      "id": "167_tool_barcode_scanner",
+      "file": "tools_props/167_tool_barcode_scanner.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3672,
+      "tags": [
+        "tool",
+        "barcode",
+        "scanner"
+      ]
+    },
+    {
+      "id": "168_tool_pos_terminal",
+      "file": "tools_props/168_tool_pos_terminal.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3004,
+      "tags": [
+        "tool",
+        "pos",
+        "terminal"
+      ]
+    },
+    {
+      "id": "169_tool_handheld_terminal",
+      "file": "tools_props/169_tool_handheld_terminal.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2508,
+      "tags": [
+        "tool",
+        "handheld",
+        "terminal"
+      ]
+    },
+    {
+      "id": "170_tool_label_printer",
+      "file": "tools_props/170_tool_label_printer.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1944,
+      "tags": [
+        "tool",
+        "label",
+        "printer"
+      ]
+    },
+    {
+      "id": "171_tool_weighing_scale",
+      "file": "tools_props/171_tool_weighing_scale.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2468,
+      "tags": [
+        "tool",
+        "weighing",
+        "scale"
+      ]
+    },
+    {
+      "id": "172_tool_pallet_jack",
+      "file": "tools_props/172_tool_pallet_jack.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4080,
+      "tags": [
+        "tool",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "173_tool_trolley",
+      "file": "tools_props/173_tool_trolley.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2192,
+      "tags": [
+        "tool",
+        "trolley"
+      ]
+    },
+    {
+      "id": "174_tool_cleaning_cart",
+      "file": "tools_props/174_tool_cleaning_cart.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2686,
+      "tags": [
+        "tool",
+        "cleaning",
+        "cart"
+      ]
+    },
+    {
+      "id": "175_tool_toolbox",
+      "file": "tools_props/175_tool_toolbox.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3486,
+      "tags": [
+        "tool",
+        "toolbox"
+      ]
+    },
+    {
+      "id": "176_tool_ppe_set",
+      "file": "tools_props/176_tool_ppe_set.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 1940,
+      "tags": [
+        "tool",
+        "ppe",
+        "set"
+      ]
+    },
+    {
+      "id": "177_tool_maintenance_tools",
+      "file": "tools_props/177_tool_maintenance_tools.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3050,
+      "tags": [
+        "tool",
+        "maintenance",
+        "tools"
+      ]
+    },
+    {
+      "id": "178_tool_tablet_device",
+      "file": "tools_props/178_tool_tablet_device.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2994,
+      "tags": [
+        "tool",
+        "tablet",
+        "device"
+      ]
+    },
+    {
+      "id": "179_tool_walkie_talkie",
+      "file": "tools_props/179_tool_walkie_talkie.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 2638,
+      "tags": [
+        "tool",
+        "walkie",
+        "talkie"
+      ]
+    },
+    {
+      "id": "180_tool_laptop",
+      "file": "tools_props/180_tool_laptop.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3518,
+      "tags": [
+        "tool",
+        "laptop"
+      ]
+    },
+    {
+      "id": "181_tool_cash_drawer",
+      "file": "tools_props/181_tool_cash_drawer.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3328,
+      "tags": [
+        "tool",
+        "cash",
+        "drawer"
+      ]
+    },
+    {
+      "id": "182_tool_storage_bin",
+      "file": "tools_props/182_tool_storage_bin.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 4362,
+      "tags": [
+        "tool",
+        "storage",
+        "bin"
+      ]
+    },
+    {
+      "id": "183_tool_storage_shelf",
+      "file": "tools_props/183_tool_storage_shelf.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3682,
+      "tags": [
+        "tool",
+        "storage",
+        "shelf"
+      ]
+    },
+    {
+      "id": "184_tool_tape_dispenser",
+      "file": "tools_props/184_tool_tape_dispenser.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3690,
+      "tags": [
+        "tool",
+        "tape",
+        "dispenser"
+      ]
+    },
+    {
+      "id": "185_tool_measuring_tape",
+      "file": "tools_props/185_tool_measuring_tape.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3844,
+      "tags": [
+        "tool",
+        "measuring",
+        "tape"
+      ]
+    },
+    {
+      "id": "186_tool_safety_cone",
+      "file": "tools_props/186_tool_safety_cone.webp",
+      "width": 144,
+      "height": 112,
+      "size_bytes": 3302,
+      "tags": [
+        "tool",
+        "safety",
+        "cone"
+      ]
+    },
+    {
+      "id": "230_tool_barcode_scanner",
+      "file": "tools_props/230_tool_barcode_scanner.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4310,
+      "tags": [
+        "tool",
+        "barcode",
+        "scanner"
+      ]
+    },
+    {
+      "id": "231_tool_label_printer",
+      "file": "tools_props/231_tool_label_printer.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5016,
+      "tags": [
+        "tool",
+        "label",
+        "printer"
+      ]
+    },
+    {
+      "id": "232_tool_weighing_scale",
+      "file": "tools_props/232_tool_weighing_scale.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 5490,
+      "tags": [
+        "tool",
+        "weighing",
+        "scale"
+      ]
+    },
+    {
+      "id": "233_tool_tablet_device",
+      "file": "tools_props/233_tool_tablet_device.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4476,
+      "tags": [
+        "tool",
+        "tablet",
+        "device"
+      ]
+    },
+    {
+      "id": "234_tool_payment_terminal",
+      "file": "tools_props/234_tool_payment_terminal.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 6354,
+      "tags": [
+        "tool",
+        "payment",
+        "terminal"
+      ]
+    },
+    {
+      "id": "235_tool_pallet_jack",
+      "file": "tools_props/235_tool_pallet_jack.webp",
+      "width": 256,
+      "height": 135,
+      "size_bytes": 4468,
+      "tags": [
+        "tool",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "260_tool_weighing_scale",
+      "file": "tools_props/260_tool_weighing_scale.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 1930,
+      "tags": [
+        "tool",
+        "weighing",
+        "scale"
+      ]
+    },
+    {
+      "id": "261_tool_label_printer",
+      "file": "tools_props/261_tool_label_printer.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 2274,
+      "tags": [
+        "tool",
+        "label",
+        "printer"
+      ]
+    },
+    {
+      "id": "262_tool_storage_bin",
+      "file": "tools_props/262_tool_storage_bin.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3166,
+      "tags": [
+        "tool",
+        "storage",
+        "bin"
+      ]
+    },
+    {
+      "id": "263_tool_storage_shelving",
+      "file": "tools_props/263_tool_storage_shelving.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 4968,
+      "tags": [
+        "tool",
+        "storage",
+        "shelving"
+      ]
+    },
+    {
+      "id": "264_tool_pallet_jack",
+      "file": "tools_props/264_tool_pallet_jack.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 2392,
+      "tags": [
+        "tool",
+        "pallet",
+        "jack"
+      ]
+    },
+    {
+      "id": "265_tool_wire_cart",
+      "file": "tools_props/265_tool_wire_cart.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3138,
+      "tags": [
+        "tool",
+        "wire",
+        "cart"
+      ]
+    },
+    {
+      "id": "266_tool_tape_dispenser",
+      "file": "tools_props/266_tool_tape_dispenser.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3178,
+      "tags": [
+        "tool",
+        "tape",
+        "dispenser"
+      ]
+    },
+    {
+      "id": "267_tool_cleaning_cart",
+      "file": "tools_props/267_tool_cleaning_cart.webp",
+      "width": 181,
+      "height": 140,
+      "size_bytes": 3404,
+      "tags": [
+        "tool",
+        "cleaning",
+        "cart"
+      ]
+    }
+  ]
+}

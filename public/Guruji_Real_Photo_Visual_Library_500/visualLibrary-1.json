@@ -1,0 +1,2342 @@
+{
+  "library": {
+    "name": "Guruji Real Photo Visual Library",
+    "version": "2.0",
+    "asset_count": 200,
+    "format": "WebP",
+    "dimensions": "320x240",
+    "quality": 76,
+    "categories": {
+      "hospitality": 50,
+      "people_safety": 37,
+      "retail": 43,
+      "ecommerce": 57,
+      "tools_props": 13
+    }
+  },
+  "assets": [
+    {
+      "id": "001",
+      "file": "hospitality/001_hotel_front_desk_checkin.webp",
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "checkin"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "002",
+      "file": "hospitality/002_hotel_server_serving_meal.webp",
+      "tags": [
+        "hotel",
+        "server",
+        "serving",
+        "meal"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "003",
+      "file": "hospitality/003_hotel_chef_preparing_food.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "preparing",
+        "food"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "004",
+      "file": "people_safety/004_maintenance_worker_electrical_panel.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "electrical",
+        "panel"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "005",
+      "file": "hospitality/005_hotel_bell_staff_handling_luggage.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "staff",
+        "handling",
+        "luggage"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "006",
+      "file": "retail/006_retail_cashier_scanning_product.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "product"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "007",
+      "file": "retail/007_retail_shelf_restocking.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "restocking"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "008",
+      "file": "retail/008_retail_cashier_counting_cash.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "counting",
+        "cash"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "009",
+      "file": "ecommerce/009_warehouse_worker_handheld_inventory_scan.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "handheld",
+        "inventory",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "010",
+      "file": "retail/010_retail_staff_customer_product_demo.webp",
+      "tags": [
+        "retail",
+        "staff",
+        "customer",
+        "product",
+        "demo"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "011",
+      "file": "retail/011_retail_cashier_scanning.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "012",
+      "file": "retail/012_retail_associate_handheld_scanner.webp",
+      "tags": [
+        "retail",
+        "associate",
+        "handheld",
+        "scanner"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "013",
+      "file": "retail/013_retail_stock_check_shelf.webp",
+      "tags": [
+        "retail",
+        "stock",
+        "check",
+        "shelf"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "014",
+      "file": "retail/014_retail_shelf_restocking.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "restocking"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "015",
+      "file": "retail/015_retail_customer_assistance.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "assistance"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "016",
+      "file": "hospitality/016_hotel_reception_guest_service.webp",
+      "tags": [
+        "hotel",
+        "reception",
+        "guest",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "017",
+      "file": "hospitality/017_hotel_bell_staff_luggage.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "staff",
+        "luggage"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "018",
+      "file": "hospitality/018_hotel_restaurant_service.webp",
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "019",
+      "file": "hospitality/019_hotel_chef_plating.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "plating"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "020",
+      "file": "hospitality/020_hotel_waiter_serving.webp",
+      "tags": [
+        "hotel",
+        "waiter",
+        "serving"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "021",
+      "file": "ecommerce/021_warehouse_packing_box.webp",
+      "tags": [
+        "warehouse",
+        "packing",
+        "box"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "022",
+      "file": "ecommerce/022_warehouse_worker_packing.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "packing"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "023",
+      "file": "retail/023_retail_checkout_station.webp",
+      "tags": [
+        "retail",
+        "checkout",
+        "station"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "024",
+      "file": "tools_props/024_payment_terminal_closeup.webp",
+      "tags": [
+        "payment",
+        "terminal",
+        "closeup"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "025",
+      "file": "retail/025_retail_customer_service.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "service"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "026",
+      "file": "hospitality/026_hotel_concierge_service.webp",
+      "tags": [
+        "hotel",
+        "concierge",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "027",
+      "file": "hospitality/027_hotel_guest_room_service.webp",
+      "tags": [
+        "hotel",
+        "guest",
+        "room",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "028",
+      "file": "hospitality/028_hotel_room_service_cart.webp",
+      "tags": [
+        "hotel",
+        "room",
+        "service",
+        "cart"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "029",
+      "file": "hospitality/029_hotel_guest_guidance.webp",
+      "tags": [
+        "hotel",
+        "guest",
+        "guidance"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "030",
+      "file": "hospitality/030_hotel_valet_car_service.webp",
+      "tags": [
+        "hotel",
+        "valet",
+        "car",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "031",
+      "file": "ecommerce/031_warehouse_picker_scanning_box.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "scanning",
+        "box"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "032",
+      "file": "ecommerce/032_warehouse_picker_location_check.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "location",
+        "check"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "033",
+      "file": "ecommerce/033_warehouse_packer_taping_box.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "taping",
+        "box"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "034",
+      "file": "ecommerce/034_warehouse_packer_protective_gloves.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "protective",
+        "gloves"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "035",
+      "file": "ecommerce/035_warehouse_picker_reaching_shelf.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "reaching",
+        "shelf"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "036",
+      "file": "tools_props/036_barcode_scanner_handheld.webp",
+      "tags": [
+        "barcode",
+        "scanner",
+        "handheld"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "037",
+      "file": "tools_props/037_warehouse_handheld_terminal.webp",
+      "tags": [
+        "warehouse",
+        "handheld",
+        "terminal"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "038",
+      "file": "tools_props/038_pos_terminal_workstation.webp",
+      "tags": [
+        "pos",
+        "terminal",
+        "workstation"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "039",
+      "file": "tools_props/039_cash_drawer_open.webp",
+      "tags": [
+        "cash",
+        "drawer",
+        "open"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "040",
+      "file": "tools_props/040_card_payment_terminal.webp",
+      "tags": [
+        "card",
+        "payment",
+        "terminal"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "041",
+      "file": "ecommerce/041_warehouse_conveyor_packages.webp",
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "packages"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "042",
+      "file": "ecommerce/042_warehouse_pallet_jack.webp",
+      "tags": [
+        "warehouse",
+        "pallet",
+        "jack"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "043",
+      "file": "ecommerce/043_packing_tape_box.webp",
+      "tags": [
+        "packing",
+        "tape",
+        "box"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "044",
+      "file": "ecommerce/044_warehouse_blue_storage_bin.webp",
+      "tags": [
+        "warehouse",
+        "blue",
+        "storage",
+        "bin"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "045",
+      "file": "ecommerce/045_delivery_truck_loading.webp",
+      "tags": [
+        "delivery",
+        "truck",
+        "loading"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "046",
+      "file": "tools_props/046_commercial_cleaning_cart.webp",
+      "tags": [
+        "commercial",
+        "cleaning",
+        "cart"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "047",
+      "file": "people_safety/047_wet_floor_safety_sign.webp",
+      "tags": [
+        "wet",
+        "floor",
+        "safety",
+        "sign"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "048",
+      "file": "people_safety/048_fire_extinguisher.webp",
+      "tags": [
+        "fire",
+        "extinguisher"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "049",
+      "file": "people_safety/049_maintenance_worker_ladder.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "ladder"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "050",
+      "file": "people_safety/050_worker_using_tablet.webp",
+      "tags": [
+        "worker",
+        "using",
+        "tablet"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "051",
+      "file": "retail/051_retail_cashier_scanning_02.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "02"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "052",
+      "file": "retail/052_retail_shelf_associate_scanning.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "associate",
+        "scanning"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "053",
+      "file": "retail/053_retail_customer_product_selection.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "product",
+        "selection"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "054",
+      "file": "retail/054_retail_customer_service_counter.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "service",
+        "counter"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "055",
+      "file": "retail/055_retail_cashier_box_handling.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "box",
+        "handling"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "056",
+      "file": "hospitality/056_hotel_reception_handshake.webp",
+      "tags": [
+        "hotel",
+        "reception",
+        "handshake"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "057",
+      "file": "hospitality/057_hotel_bell_luggage_cart.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "luggage",
+        "cart"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "058",
+      "file": "hospitality/058_hotel_dining_service.webp",
+      "tags": [
+        "hotel",
+        "dining",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "059",
+      "file": "hospitality/059_hotel_chef_kitchen.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "kitchen"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "060",
+      "file": "hospitality/060_hotel_server_table_service.webp",
+      "tags": [
+        "hotel",
+        "server",
+        "table",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "061",
+      "file": "retail/061_retail_stockroom_box_handling.webp",
+      "tags": [
+        "retail",
+        "stockroom",
+        "box",
+        "handling"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "062",
+      "file": "retail/062_retail_associate_shelf_check.webp",
+      "tags": [
+        "retail",
+        "associate",
+        "shelf",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "063",
+      "file": "retail/063_retail_customer_bag_handover.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "bag",
+        "handover"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "064",
+      "file": "tools_props/064_contactless_payment_terminal.webp",
+      "tags": [
+        "contactless",
+        "payment",
+        "terminal"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "065",
+      "file": "retail/065_retail_self_checkout.webp",
+      "tags": [
+        "retail",
+        "self",
+        "checkout"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "066",
+      "file": "ecommerce/066_warehouse_picker_scanning.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "scanning"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "067",
+      "file": "ecommerce/067_warehouse_picker_inventory_check.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "inventory",
+        "check"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "068",
+      "file": "ecommerce/068_warehouse_packing_station.webp",
+      "tags": [
+        "warehouse",
+        "packing",
+        "station"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "069",
+      "file": "ecommerce/069_warehouse_worker_blue_bin.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "blue",
+        "bin"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "070",
+      "file": "ecommerce/070_warehouse_scale_check.webp",
+      "tags": [
+        "warehouse",
+        "scale",
+        "check"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "071",
+      "file": "ecommerce/071_warehouse_picker_shelf_scan.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "shelf",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "072",
+      "file": "ecommerce/072_warehouse_picker_shelf_reach.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "shelf",
+        "reach"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "073",
+      "file": "ecommerce/073_warehouse_packer_box_sealing.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "box",
+        "sealing"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "074",
+      "file": "ecommerce/074_warehouse_packer_labeling.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "labeling"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "075",
+      "file": "ecommerce/075_warehouse_handheld_scanner.webp",
+      "tags": [
+        "warehouse",
+        "handheld",
+        "scanner"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "076",
+      "file": "ecommerce/076_warehouse_blue_bin_cart.webp",
+      "tags": [
+        "warehouse",
+        "blue",
+        "bin",
+        "cart"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "077",
+      "file": "ecommerce/077_warehouse_conveyor_line.webp",
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "line"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "078",
+      "file": "ecommerce/078_warehouse_truck_loading.webp",
+      "tags": [
+        "warehouse",
+        "truck",
+        "loading"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "079",
+      "file": "ecommerce/079_delivery_worker_customer_handover.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "customer",
+        "handover"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "080",
+      "file": "ecommerce/080_delivery_worker_parcel_scan.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "parcel",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "081",
+      "file": "hospitality/081_hotel_front_desk_service.webp",
+      "tags": [
+        "hotel",
+        "front",
+        "desk",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "082",
+      "file": "hospitality/082_hotel_waiter_serving_guest.webp",
+      "tags": [
+        "hotel",
+        "waiter",
+        "serving",
+        "guest"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "083",
+      "file": "hospitality/083_hotel_chef_cooking.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "cooking"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "084",
+      "file": "hospitality/084_hotel_room_service.webp",
+      "tags": [
+        "hotel",
+        "room",
+        "service"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "085",
+      "file": "hospitality/085_hotel_bell_luggage.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "luggage"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "086",
+      "file": "hospitality/086_hotel_guest_service_tablet.webp",
+      "tags": [
+        "hotel",
+        "guest",
+        "service",
+        "tablet"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "087",
+      "file": "people_safety/087_maintenance_worker_equipment_check.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "equipment",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "088",
+      "file": "people_safety/088_housekeeping_surface_cleaning.webp",
+      "tags": [
+        "housekeeping",
+        "surface",
+        "cleaning"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "089",
+      "file": "people_safety/089_maintenance_worker_aircon_check.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "aircon",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "090",
+      "file": "people_safety/090_hotel_housekeeper_bedmaking.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bedmaking"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "091",
+      "file": "retail/091_retail_cashier_scanning_03.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "03"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "092",
+      "file": "retail/092_retail_shelf_restocking_02.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "restocking",
+        "02"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "093",
+      "file": "retail/093_retail_shelf_price_check.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "price",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "094",
+      "file": "retail/094_retail_customer_assistance_02.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "assistance",
+        "02"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "095",
+      "file": "retail/095_retail_staff_box_handover.webp",
+      "tags": [
+        "retail",
+        "staff",
+        "box",
+        "handover"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "096",
+      "file": "retail/096_retail_inventory_check.webp",
+      "tags": [
+        "retail",
+        "inventory",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "097",
+      "file": "retail/097_retail_shelf_product_check.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "product",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "098",
+      "file": "retail/098_retail_bag_handover.webp",
+      "tags": [
+        "retail",
+        "bag",
+        "handover"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "099",
+      "file": "retail/099_retail_customer_payment.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "payment"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "100",
+      "file": "retail/100_retail_self_checkout_assistance.webp",
+      "tags": [
+        "retail",
+        "self",
+        "checkout",
+        "assistance"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "101",
+      "file": "ecommerce/101_warehouse_picker_barcode_scan_02.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "barcode",
+        "scan",
+        "02"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "102",
+      "file": "ecommerce/102_warehouse_picker_location_scan.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "location",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "103",
+      "file": "ecommerce/103_warehouse_picker_package_scan.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "package",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "104",
+      "file": "ecommerce/104_warehouse_packer_taping.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "taping"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "105",
+      "file": "ecommerce/105_warehouse_packer_weighing.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "weighing"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "106",
+      "file": "ecommerce/106_warehouse_blue_bin_handling.webp",
+      "tags": [
+        "warehouse",
+        "blue",
+        "bin",
+        "handling"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "107",
+      "file": "ecommerce/107_warehouse_conveyor_sorting.webp",
+      "tags": [
+        "warehouse",
+        "conveyor",
+        "sorting"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "108",
+      "file": "ecommerce/108_warehouse_truck_loading_02.webp",
+      "tags": [
+        "warehouse",
+        "truck",
+        "loading",
+        "02"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "109",
+      "file": "ecommerce/109_delivery_worker_parcel_handover.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "parcel",
+        "handover"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "110",
+      "file": "ecommerce/110_delivery_worker_large_package_scan.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "large",
+        "package",
+        "scan"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "111",
+      "file": "hospitality/111_hotel_reception_guest_service_02.webp",
+      "tags": [
+        "hotel",
+        "reception",
+        "guest",
+        "service",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "112",
+      "file": "hospitality/112_hotel_restaurant_service_02.webp",
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "113",
+      "file": "hospitality/113_hotel_chef_preparing_02.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "preparing",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "114",
+      "file": "hospitality/114_hotel_room_service_02.webp",
+      "tags": [
+        "hotel",
+        "room",
+        "service",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "115",
+      "file": "hospitality/115_hotel_bell_luggage_02.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "luggage",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "116",
+      "file": "hospitality/116_hotel_reception_team_coordination.webp",
+      "tags": [
+        "hotel",
+        "reception",
+        "team",
+        "coordination"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "117",
+      "file": "hospitality/117_hotel_valet_service_02.webp",
+      "tags": [
+        "hotel",
+        "valet",
+        "service",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "118",
+      "file": "people_safety/118_maintenance_worker_machine_check.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "machine",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "119",
+      "file": "people_safety/119_hotel_housekeeper_bedmaking_02.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bedmaking",
+        "02"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "120",
+      "file": "people_safety/120_hotel_housekeeper_bathroom_cleaning.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bathroom",
+        "cleaning"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "121",
+      "file": "people_safety/121_warehouse_worker_safety_briefing.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "safety",
+        "briefing"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "122",
+      "file": "people_safety/122_warehouse_worker_tablet_check.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "tablet",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "123",
+      "file": "people_safety/123_warehouse_worker_ppe_check.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "ppe",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "124",
+      "file": "people_safety/124_gloves_hand_safety.webp",
+      "tags": [
+        "gloves",
+        "hand",
+        "safety"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "125",
+      "file": "people_safety/125_wet_floor_sign_safety.webp",
+      "tags": [
+        "wet",
+        "floor",
+        "sign",
+        "safety"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "126",
+      "file": "tools_props/126_fire_extinguisher_closeup.webp",
+      "tags": [
+        "fire",
+        "extinguisher",
+        "closeup"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "127",
+      "file": "tools_props/127_commercial_cleaning_cart.webp",
+      "tags": [
+        "commercial",
+        "cleaning",
+        "cart"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "128",
+      "file": "tools_props/128_maintenance_electrical_panel.webp",
+      "tags": [
+        "maintenance",
+        "electrical",
+        "panel"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "129",
+      "file": "people_safety/129_worker_using_tablet_inventory.webp",
+      "tags": [
+        "worker",
+        "using",
+        "tablet",
+        "inventory"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "130",
+      "file": "people_safety/130_warehouse_worker_checklist.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "checklist"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "131",
+      "file": "hospitality/131_hotel_reception_policy_discussion.webp",
+      "tags": [
+        "hotel",
+        "reception",
+        "policy",
+        "discussion"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "132",
+      "file": "hospitality/132_hotel_housekeeper_bedmaking_03.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bedmaking",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "133",
+      "file": "hospitality/133_hotel_chef_food_prep_03.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "food",
+        "prep",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "134",
+      "file": "hospitality/134_hotel_waiter_table_setup.webp",
+      "tags": [
+        "hotel",
+        "waiter",
+        "table",
+        "setup"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "135",
+      "file": "hospitality/135_hotel_frontdesk_phone.webp",
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "phone"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "136",
+      "file": "hospitality/136_hotel_bell_luggage_03.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "luggage",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "137",
+      "file": "hospitality/137_hotel_housekeeper_bathroom_02.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bathroom",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "138",
+      "file": "people_safety/138_maintenance_door_repair.webp",
+      "tags": [
+        "maintenance",
+        "door",
+        "repair"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "139",
+      "file": "people_safety/139_hotel_team_coordination.webp",
+      "tags": [
+        "hotel",
+        "team",
+        "coordination"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "140",
+      "file": "people_safety/140_hotel_service_checklist.webp",
+      "tags": [
+        "hotel",
+        "service",
+        "checklist"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "141",
+      "file": "retail/141_retail_cashier_scanning_04.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "04"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "142",
+      "file": "retail/142_retail_associate_product_scan.webp",
+      "tags": [
+        "retail",
+        "associate",
+        "product",
+        "scan"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "143",
+      "file": "retail/143_retail_shelf_restocking_03.webp",
+      "tags": [
+        "retail",
+        "shelf",
+        "restocking",
+        "03"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "144",
+      "file": "retail/144_retail_clothing_stocking.webp",
+      "tags": [
+        "retail",
+        "clothing",
+        "stocking"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "145",
+      "file": "retail/145_retail_customer_service.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "service"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "146",
+      "file": "retail/146_retail_cash_counting_02.webp",
+      "tags": [
+        "retail",
+        "cash",
+        "counting",
+        "02"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "147",
+      "file": "tools_props/147_card_terminal_closeup_02.webp",
+      "tags": [
+        "card",
+        "terminal",
+        "closeup",
+        "02"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "148",
+      "file": "retail/148_retail_document_check.webp",
+      "tags": [
+        "retail",
+        "document",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "149",
+      "file": "retail/149_retail_clothing_inventory.webp",
+      "tags": [
+        "retail",
+        "clothing",
+        "inventory"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "150",
+      "file": "retail/150_retail_product_label_check.webp",
+      "tags": [
+        "retail",
+        "product",
+        "label",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "151",
+      "file": "ecommerce/151_warehouse_picker_scanning_03.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "scanning",
+        "03"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "152",
+      "file": "ecommerce/152_warehouse_picker_tablet.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "tablet"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "153",
+      "file": "ecommerce/153_warehouse_packer_tape.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "tape"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "154",
+      "file": "ecommerce/154_warehouse_packer_gloves.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "gloves"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "155",
+      "file": "ecommerce/155_warehouse_picker_scanning_04.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "scanning",
+        "04"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "156",
+      "file": "ecommerce/156_warehouse_scale_weighing.webp",
+      "tags": [
+        "warehouse",
+        "scale",
+        "weighing"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "157",
+      "file": "ecommerce/157_warehouse_measurement_check.webp",
+      "tags": [
+        "warehouse",
+        "measurement",
+        "check"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "158",
+      "file": "ecommerce/158_warehouse_barcode_label.webp",
+      "tags": [
+        "warehouse",
+        "barcode",
+        "label"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "159",
+      "file": "ecommerce/159_warehouse_pallet_handling.webp",
+      "tags": [
+        "warehouse",
+        "pallet",
+        "handling"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "160",
+      "file": "ecommerce/160_delivery_worker_parcel_handover_02.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "parcel",
+        "handover",
+        "02"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "161",
+      "file": "ecommerce/161_forklift_operator.webp",
+      "tags": [
+        "forklift",
+        "operator"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "162",
+      "file": "ecommerce/162_warehouse_worker_tablet.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "tablet"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "163",
+      "file": "ecommerce/163_warehouse_safety_team.webp",
+      "tags": [
+        "warehouse",
+        "safety",
+        "team"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "164",
+      "file": "people_safety/164_safety_helmet_check.webp",
+      "tags": [
+        "safety",
+        "helmet",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "165",
+      "file": "people_safety/165_safety_gloves_check.webp",
+      "tags": [
+        "safety",
+        "gloves",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "166",
+      "file": "people_safety/166_wet_floor_sign_02.webp",
+      "tags": [
+        "wet",
+        "floor",
+        "sign",
+        "02"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "167",
+      "file": "people_safety/167_fire_extinguisher_check.webp",
+      "tags": [
+        "fire",
+        "extinguisher",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "168",
+      "file": "tools_props/168_cleaning_cart_tools.webp",
+      "tags": [
+        "cleaning",
+        "cart",
+        "tools"
+      ],
+      "category": "tools_props",
+      "source_generated": true
+    },
+    {
+      "id": "169",
+      "file": "people_safety/169_maintenance_worker_electrical_check.webp",
+      "tags": [
+        "maintenance",
+        "worker",
+        "electrical",
+        "check"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "170",
+      "file": "ecommerce/170_warehouse_worker_lifting_box.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "lifting",
+        "box"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "171",
+      "file": "hospitality/171_hotel_frontdesk_checkin_03.webp",
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "checkin",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "172",
+      "file": "hospitality/172_hotel_bell_luggage_04.webp",
+      "tags": [
+        "hotel",
+        "bell",
+        "luggage",
+        "04"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "173",
+      "file": "hospitality/173_hotel_restaurant_service_03.webp",
+      "tags": [
+        "hotel",
+        "restaurant",
+        "service",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "174",
+      "file": "hospitality/174_hotel_chef_kitchen_03.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "kitchen",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "175",
+      "file": "hospitality/175_hotel_room_service_03.webp",
+      "tags": [
+        "hotel",
+        "room",
+        "service",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "176",
+      "file": "hospitality/176_hotel_guest_guidance_02.webp",
+      "tags": [
+        "hotel",
+        "guest",
+        "guidance",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "177",
+      "file": "people_safety/177_hotel_maintenance_aircon.webp",
+      "tags": [
+        "hotel",
+        "maintenance",
+        "aircon"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "178",
+      "file": "people_safety/178_hotel_housekeeper_bedmaking_04.webp",
+      "tags": [
+        "hotel",
+        "housekeeper",
+        "bedmaking",
+        "04"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "179",
+      "file": "people_safety/179_hotel_floor_safety_sign.webp",
+      "tags": [
+        "hotel",
+        "floor",
+        "safety",
+        "sign"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "180",
+      "file": "hospitality/180_hotel_valet_service_03.webp",
+      "tags": [
+        "hotel",
+        "valet",
+        "service",
+        "03"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "181",
+      "file": "people_safety/181_peopleops_interview_document_review.webp",
+      "tags": [
+        "peopleops",
+        "interview",
+        "document",
+        "review"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "182",
+      "file": "retail/182_retail_cashier_scanning_05.webp",
+      "tags": [
+        "retail",
+        "cashier",
+        "scanning",
+        "05"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "183",
+      "file": "ecommerce/183_warehouse_picker_barcode_scan_05.webp",
+      "tags": [
+        "warehouse",
+        "picker",
+        "barcode",
+        "scan",
+        "05"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "184",
+      "file": "hospitality/184_hotel_chef_food_prep_04.webp",
+      "tags": [
+        "hotel",
+        "chef",
+        "food",
+        "prep",
+        "04"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "185",
+      "file": "hospitality/185_hotel_frontdesk_phone_02.webp",
+      "tags": [
+        "hotel",
+        "frontdesk",
+        "phone",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "186",
+      "file": "ecommerce/186_warehouse_packer_taping_02.webp",
+      "tags": [
+        "warehouse",
+        "packer",
+        "taping",
+        "02"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "187",
+      "file": "retail/187_retail_customer_bag_handover_02.webp",
+      "tags": [
+        "retail",
+        "customer",
+        "bag",
+        "handover",
+        "02"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "188",
+      "file": "ecommerce/188_delivery_worker_loading_vehicle.webp",
+      "tags": [
+        "delivery",
+        "worker",
+        "loading",
+        "vehicle"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "189",
+      "file": "people_safety/189_forklift_operator_ppe.webp",
+      "tags": [
+        "forklift",
+        "operator",
+        "ppe"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "190",
+      "file": "retail/190_retail_clothing_stock_check.webp",
+      "tags": [
+        "retail",
+        "clothing",
+        "stock",
+        "check"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "191",
+      "file": "people_safety/191_maintenance_plumber_repair.webp",
+      "tags": [
+        "maintenance",
+        "plumber",
+        "repair"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "192",
+      "file": "hospitality/192_hotel_waiter_table_setup_02.webp",
+      "tags": [
+        "hotel",
+        "waiter",
+        "table",
+        "setup",
+        "02"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "193",
+      "file": "retail/193_retail_contactless_payment.webp",
+      "tags": [
+        "retail",
+        "contactless",
+        "payment"
+      ],
+      "category": "retail",
+      "source_generated": true
+    },
+    {
+      "id": "194",
+      "file": "people_safety/194_security_guard_radio.webp",
+      "tags": [
+        "security",
+        "guard",
+        "radio"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "195",
+      "file": "ecommerce/195_warehouse_inventory_check.webp",
+      "tags": [
+        "warehouse",
+        "inventory",
+        "check"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    },
+    {
+      "id": "196",
+      "file": "hospitality/196_hotel_food_safety_gloves.webp",
+      "tags": [
+        "hotel",
+        "food",
+        "safety",
+        "gloves"
+      ],
+      "category": "hospitality",
+      "source_generated": true
+    },
+    {
+      "id": "197",
+      "file": "people_safety/197_fire_extinguisher_inspection.webp",
+      "tags": [
+        "fire",
+        "extinguisher",
+        "inspection"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "198",
+      "file": "people_safety/198_commercial_floor_cleaning.webp",
+      "tags": [
+        "commercial",
+        "floor",
+        "cleaning"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "199",
+      "file": "people_safety/199_team_process_discussion.webp",
+      "tags": [
+        "team",
+        "process",
+        "discussion"
+      ],
+      "category": "people_safety",
+      "source_generated": true
+    },
+    {
+      "id": "200",
+      "file": "ecommerce/200_warehouse_worker_scanner.webp",
+      "tags": [
+        "warehouse",
+        "worker",
+        "scanner"
+      ],
+      "category": "ecommerce",
+      "source_generated": true
+    }
+  ]
+}
