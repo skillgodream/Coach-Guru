@@ -8,6 +8,7 @@
     "build": "vite build && esbuild server.ts --platform=node --format=esm --outfile=server.js --packages=external",
     "start": "node server.ts",
     "clean": "rm -rf dist server.js",
+    "design-lint": "node scripts/design-lint.js",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

@@ -16,15 +16,19 @@ export function Renderer({
   onChoiceSelect,
   feedback,
   onNext,
+  slideIndex,
+  totalSlides,
 }: {
   slide: Slide;
   onChoiceSelect?: (isCorrect: boolean, feedback: string) => void;
   feedback?: string | null;
   onNext: () => void;
+  slideIndex?: number;
+  totalSlides?: number;
 }) {
   switch (slide.type) {
     case 'WELCOME':
-      return <WelcomePage slide={slide} onNext={onNext} />;
+      return <WelcomePage slide={slide} onNext={onNext} slideIndex={slideIndex} totalSlides={totalSlides} />;
     case 'OBJECTIVES':
       return <ObjectivesPage slide={slide} onNext={onNext} />;
     case 'SECTION_INTRO':

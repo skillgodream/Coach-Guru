@@ -22,6 +22,7 @@ import BentoArchitectureShowcase from './components/BentoArchitectureShowcase';
 import ValidationErrorModal from './components/ValidationErrorModal';
 import { MeetGurujiScreen } from './screens/MeetGurujiScreen';
 import { HomeScreen } from './screens/HomeScreen';
+import { DesignCheckScreen } from './screens/DesignCheckScreen';
 
 import { INITIAL_LESSONS } from './data/lessonsData';
 import ProcessPassportModal from './components/ProcessPassportModal';
@@ -35,6 +36,22 @@ import { validateSourceFidelity } from './utils/sourceValidator';
 import { generateDomainNeutralLesson } from './utils/domainNeutralGenerator';
 
 export default function App() {
+  const [isDesignCheck, setIsDesignCheck] = useState<boolean>(
+    window.location.hash === '#design-check' ||
+    window.location.pathname === '/design-check'
+  );
+
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      setIsDesignCheck(
+        window.location.hash === '#design-check' ||
+        window.location.pathname === '/design-check'
+      );
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [lessons, setLessons] = useState<Lesson[]>(INITIAL_LESSONS);
   const [showBentoShowcase, setShowBentoShowcase] = useState<boolean>(false);
@@ -333,6 +350,10 @@ export default function App() {
   const handleResetData = () => {
     setLessons(INITIAL_LESSONS);
   };
+
+  if (isDesignCheck) {
+    return <DesignCheckScreen onBack={() => { window.location.hash = ''; setIsDesignCheck(false); }} />;
+  }
 
   return (
     <div className={`flex flex-col min-h-screen font-sans relative selection:bg-purple-100 selection:text-purple-900 transition-colors duration-300 ${

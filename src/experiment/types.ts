@@ -36,7 +36,7 @@ export interface DecisionOption {
 export interface Slide {
   type: SlideType;
   title: string;
-  content: string;
+  content?: string;
   tag?: string;
   role?: string;
   cta?: string;

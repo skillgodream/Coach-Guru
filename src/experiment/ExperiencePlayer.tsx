@@ -1,40 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SlidePlan } from './types';
 import { Renderer } from './Renderer';
-import { TeachMeIcon } from './TeachMeIcons';
-import './teach-me.css';
-
-export function getStageForSlide(slide: any): {
-  stageNum: number;
-  stageName: string;
-  stageTag: string;
-  pillClass: string;
-} {
-  switch (slide?.type) {
-    case 'WELCOME':
-      return { stageNum: 1, stageName: 'ORIENT', stageTag: 'Role & Expected Outcomes', pillClass: 'bg-indigo-100 text-indigo-900 border-indigo-300' };
-    case 'OBJECTIVES':
-      return { stageNum: 1, stageName: 'ORIENT', stageTag: 'What You Will Learn', pillClass: 'bg-indigo-100 text-indigo-900 border-indigo-300' };
-    case 'SECTION_INTRO':
-      return { stageNum: 2, stageName: 'PREPARE', stageTag: 'Prerequisites & Setup', pillClass: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
-    case 'TEACH_STEP':
-      return { stageNum: 3, stageName: 'PERFORM', stageTag: 'Sequential Protocol', pillClass: 'bg-blue-100 text-blue-900 border-blue-300' };
-    case 'IMPORTANT_RULE':
-      return { stageNum: 4, stageName: 'CONTROL', stageTag: 'Critical Rules & Safety', pillClass: 'bg-amber-100 text-amber-900 border-amber-300' };
-    case 'DO_DONT':
-      return { stageNum: 4, stageName: 'CONTROL', stageTag: 'Do & Don’t Boundaries', pillClass: 'bg-amber-100 text-amber-900 border-amber-300' };
-    case 'REAL_WORLD_SCENARIO':
-      return { stageNum: 5, stageName: 'DECIDE', stageTag: 'Frontline Judgment Point', pillClass: 'bg-purple-100 text-purple-900 border-purple-300' };
-    case 'DECISION':
-      return { stageNum: 6, stageName: 'HANDLE', stageTag: 'Evaluated Judgment', pillClass: 'bg-purple-100 text-purple-900 border-purple-300' };
-    case 'KEY_TAKEAWAYS':
-      return { stageNum: 8, stageName: 'PROVE', stageTag: 'Recall & Retention', pillClass: 'bg-yellow-100 text-yellow-900 border-yellow-300' };
-    case 'COMPLETION':
-      return { stageNum: 8, stageName: 'PROVE', stageTag: 'Operational Transition', pillClass: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
-    default:
-      return { stageNum: 3, stageName: 'PERFORM', stageTag: 'Operational Protocol', pillClass: 'bg-blue-100 text-blue-900 border-blue-300' };
-  }
-}
+import { Text, AccentProvider, getAccentForSlideType } from './tokens';
 
 export function ExperiencePlayer({
   plan,
@@ -50,10 +17,8 @@ export function ExperiencePlayer({
   const [decisionSolved, setDecisionSolved] = useState<boolean>(false);
 
   const slide = plan.slides[currentIndex];
-  const isWelcome = slide?.type === 'WELCOME';
   const isDecision = slide?.type === 'DECISION';
   const isLastSlide = currentIndex === plan.slides.length - 1;
-  const currentStage = getStageForSlide(slide);
 
   // Reset decision state when slide changes
   useEffect(() => {
@@ -61,7 +26,7 @@ export function ExperiencePlayer({
     setDecisionSolved(false);
   }, [currentIndex]);
 
-  if (!slide) return <div>Error: Slide not found</div>;
+  if (!slide) return <div>Error: slide not found</div>;
 
   const handleChoice = (isCorrect: boolean, feedbackText: string) => {
     setFeedback(feedbackText);
@@ -87,92 +52,95 @@ export function ExperiencePlayer({
   };
 
   const isNextDisabled = isDecision && !decisionSolved;
+  const accent = getAccentForSlideType(slide.type);
+
+  // Accent mapping for footer Next button and active dots
+  const buttonColors: Record<string, string> = {
+    indigo: 'bg-[#3B4FE0] hover:bg-[#2C3EB2] disabled:bg-[#3B4FE0]/40',
+    teal: 'bg-[#0E8A9A] hover:bg-[#0A6D7A] disabled:bg-[#0E8A9A]/40',
+    plum: 'bg-[#6B2FB0] hover:bg-[#53208E] disabled:bg-[#6B2FB0]/40',
+    ember: 'bg-[#D9541E] hover:bg-[#B34012] disabled:bg-[#D9541E]/40',
+  };
+
+  const activeDotColors: Record<string, string> = {
+    indigo: 'bg-[#3B4FE0]',
+    teal: 'bg-[#0E8A9A]',
+    plum: 'bg-[#6B2FB0]',
+    ember: 'bg-[#D9541E]',
+  };
+
+  const resolvedButtonColor = buttonColors[accent] || buttonColors.indigo;
+  const resolvedDotColor = activeDotColors[accent] || activeDotColors.indigo;
+
+  const isWelcome = slide?.type === 'WELCOME';
 
   return (
-    <div className="fixed inset-0 z-50 teach-me-wrapper">
-      <div id="app" className="teach-me-app">
-        {/* Top Header Bar with Explicit Current Stage Indicator */}
-        <div className="top flex items-center justify-between px-4 py-3 bg-slate-900 text-white border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleBack}
-              disabled={currentIndex === 0}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 disabled:opacity-40 transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={onClose}
-              className="px-3 py-1.5 rounded-lg bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/80 text-xs font-bold transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-
-          {/* Clean Learner-Facing Stage Header Display */}
-          <div className="flex items-center gap-2">
-            <span className={`text-[11px] font-bold tracking-wide px-3 py-1 rounded-full border shadow-xs ${currentStage.pillClass}`}>
-              {currentStage.stageTag}
-            </span>
-          </div>
-
-          <span className="text-xs font-black text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md">
-            {currentIndex + 1} / {plan.slides.length}
-          </span>
-        </div>
-
-        {/* Slide Body */}
-        <div className={`sl ${isWelcome ? 'full' : ''}`} id="sl" key={currentIndex}>
-          <Renderer
-            slide={slide}
-            onChoiceSelect={handleChoice}
-            feedback={feedback}
-            onNext={handleNext}
-          />
-        </div>
-
-        {/* Shared Bottom Navigation (hidden on Welcome) */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#070A14] select-none p-0 sm:p-4">
+      <div className="w-full max-w-[420px] h-full sm:h-[780px] sm:rounded-[28px] bg-[#F6F7FB] flex flex-col overflow-hidden shadow-[0_20px_50px_rgba(15,27,61,0.25)] relative">
+        {/* 1. TOP BAR CHROME (strictly 44px, Exit on left, counter on right) - Hidden on Welcome */}
         {!isWelcome && (
-          <div className="ft" id="ft">
+          <div className="h-11 flex items-center justify-between px-4 bg-white border-b border-[#E3E8F4] shrink-0 select-none">
             <button
-              className="bk"
-              id="bk"
-              onClick={handleBack}
-              disabled={currentIndex === 0}
-            >
-              ← Back
-            </button>
-
-            <button
-              className="cn"
-              style={{
-                background: 'rgba(239, 68, 68, 0.1)',
-                color: '#dc2626',
-                border: '1px solid rgba(239, 68, 68, 0.2)',
-                borderRadius: '12px',
-                padding: '6px 14px',
-                fontSize: '13px',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
               onClick={onClose}
+              className="h-11 flex items-center justify-center cursor-pointer hover:opacity-80 active:scale-95 border-0 bg-transparent text-[#3B4FE0]"
             >
-              Cancel
+              <Text styleName="button" className="text-[#3B4FE0]">Exit</Text>
             </button>
 
-            <div className="ds">
-              {plan.slides.map((_, j) => (
-                <i key={j} className={j === currentIndex ? 'a' : ''}></i>
+            <div className="flex items-center">
+              <Text styleName="counter" className="text-[#6B7691]">
+                {currentIndex + 1} / {plan.slides.length}
+              </Text>
+            </div>
+          </div>
+        )}
+
+        {/* 2. SLIDE BODY CONTAINER - Full screen padding-0 for welcome screen */}
+        <div className={`flex-1 overflow-y-auto animate-in fade-in duration-200 ${isWelcome ? 'p-0' : 'px-4 py-4'}`}>
+          <AccentProvider value={accent}>
+            <Renderer
+              slide={slide}
+              onChoiceSelect={handleChoice}
+              feedback={feedback}
+              onNext={handleNext}
+              slideIndex={currentIndex}
+              totalSlides={plan.slides.length}
+            />
+          </AccentProvider>
+        </div>
+
+        {/* 3. FIXED CHROME FOOTER - Hidden on Welcome */}
+        {!isWelcome && (
+          <div className="p-4 bg-white border-t border-[#E3E8F4] flex items-center justify-between shrink-0 select-none">
+            {currentIndex > 0 ? (
+              <button
+                onClick={handleBack}
+                className="min-h-[48px] px-5 py-2 rounded-[999px] border border-[#E3E8F4] text-[#0F1B3D] font-bold cursor-pointer hover:bg-[#F6F7FB] active:scale-95 transition-all bg-white"
+              >
+                <Text styleName="button">Back</Text>
+              </button>
+            ) : (
+              <div className="w-[72px]" /> // Spacer to balance layout
+            )}
+
+            {/* Progress dots */}
+            <div className="flex gap-1.5">
+              {plan.slides.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    idx === currentIndex ? `w-4 ${resolvedDotColor}` : 'bg-[#E3E8F4]'
+                  }`}
+                />
               ))}
             </div>
 
             <button
-              className="nx"
-              id="nx"
               onClick={handleNext}
               disabled={isNextDisabled}
+              className={`min-h-[48px] px-6 py-2 rounded-[999px] text-white font-bold cursor-pointer transition-all duration-200 active:scale-95 disabled:cursor-not-allowed ${resolvedButtonColor} border-0`}
             >
-              {isLastSlide ? 'Continue' : 'Next →'}
+              <Text styleName="button">{isLastSlide ? 'Complete' : 'Next'}</Text>
             </button>
           </div>
         )}
@@ -180,4 +148,3 @@ export function ExperiencePlayer({
     </div>
   );
 }
-

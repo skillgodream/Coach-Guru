@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slide } from '../types';
-import { TeachMeIcon } from '../TeachMeIcons';
+import { Text, Pill, Panel, Row, SopHeader } from '../tokens';
 
 export const TakeawaysPage: React.FC<{
   slide: Slide;
@@ -8,41 +8,31 @@ export const TakeawaysPage: React.FC<{
 }> = ({ slide }) => {
   let items = slide.items;
   if (!items || items.length === 0) {
-    items = slide.content
+    items = (slide.content || '')
       .split('\n')
       .map((l) => l.replace(/^\d+[\.\)]\s*/, '').trim())
       .filter(Boolean);
   }
 
+  // Ensure content limit of 2-4 items
+  const finalItems = items.slice(0, 4);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="pill stage-prove-pill">
-          <TeachMeIcon name="bulb" className="w-3.5 h-3.5 inline mr-1" />
-          Key Takeaways
-        </span>
-      </div>
+    <div className="flex flex-col gap-4">
+      {/* Universal SOP Header */}
+      <SopHeader tag={slide.tag || 'Key takeaways'} title={slide.title || 'Key takeaways'} />
 
-      <h2 className="text-xl font-extrabold text-[#0F1B3D] tracking-tight leading-snug">
-        Key Takeaways & Retention Checks
-      </h2>
-
-      <div className="bg-gradient-to-br from-amber-50 via-amber-100/40 to-yellow-50 rounded-2xl p-4 border border-amber-200/90 shadow-xs space-y-2.5">
-        <span className="text-xs font-bold text-amber-900 uppercase tracking-wider block pb-1 border-b border-amber-200/60">
-          Essential Operational Rules
-        </span>
-
-        {items.map((item, idx) => (
-          <div key={idx} className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-amber-100 shadow-2xs">
-            <span className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-              ✓
-            </span>
-            <span className="text-xs font-bold text-amber-950 leading-relaxed">
+      {/* 3. Content block: Amber Panel of checklist-style rows */}
+      <Panel type="takeaway" className="flex flex-col gap-3">
+        <Text styleName="panel-heading">Essential operational rules</Text>
+        <div className="flex flex-col gap-2">
+          {finalItems.map((item, index) => (
+            <Row key={index} isTick={true}>
               {item}
-            </span>
-          </div>
-        ))}
-      </div>
+            </Row>
+          ))}
+        </div>
+      </Panel>
     </div>
   );
 };
