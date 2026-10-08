@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useRef, useCallback } from 'react';
+import { Camera, Upload, BookOpen, Sparkles, ChevronRight, X } from 'lucide-react';
 import BottomNav from './components/BottomNav';
 import ScanModal from './components/ScanModal';
 import UploadModal from './components/UploadModal';
@@ -79,6 +80,14 @@ export default function App() {
   const [currentContextTitle, setCurrentContextTitle] = useState<string>('Standard Operating Procedure');
 
   const isPipelineProcessingRef = useRef<boolean>(false);
+
+  // Dynamic Background Management to completely eliminate any "white patch" / light background leakage on overscroll/elastic scroll
+  React.useEffect(() => {
+    const isDarkTheme = (activeTab === 'home' && !selectedLesson && !activeSimulator && !isIntroDeckOpen) || isIntroDeckOpen || analyzingSop !== null || isProcessing;
+    const targetColor = isDarkTheme ? '#070A14' : '#F7F7F5';
+    document.body.style.backgroundColor = targetColor;
+    document.documentElement.style.backgroundColor = targetColor;
+  }, [activeTab, selectedLesson, activeSimulator, isIntroDeckOpen, analyzingSop, isProcessing]);
 
   /**
    * AUTHORITATIVE SOP PIPELINE HANDLER
@@ -326,12 +335,14 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F7F7F5] text-[#0E1116] font-sans relative selection:bg-purple-100 selection:text-purple-900">
+    <div className={`flex flex-col min-h-screen font-sans relative selection:bg-purple-100 selection:text-purple-900 transition-colors duration-300 ${
+      activeTab === 'home' ? 'bg-[#070A14] text-white' : 'bg-[#F7F7F5] text-[#0E1116]'
+    }`}>
       {/* Main Tab Views & Bottom Navigation (only rendered when NOT in an active lesson, deck, or simulation) */}
       {!selectedLesson && !activeSimulator && !isIntroDeckOpen && (
         <>
           {activeTab === 'home' && (
-            <main className="flex-1 flex flex-col pb-24 max-w-lg mx-auto w-full animate-in fade-in duration-200">
+            <main className="flex-1 flex flex-col max-w-lg mx-auto w-full animate-in fade-in duration-200">
               <MeetGurujiScreen
                 onContinue={() => {
                   sounds.playTap();
@@ -339,72 +350,106 @@ export default function App() {
                 }}
               />
 
-              {/* Frosted Glass SOP Selection Drawer */}
+              {/* Modern Ultra-Sleek Glass SOP Selection Drawer (Redesigned Modern UI) */}
               {isSopOptionsOpen && (
-                <div className="fixed inset-0 z-50 bg-[#0E1116]/60 backdrop-blur-md flex items-end justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-                  <div className="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl space-y-4 animate-in slide-in-from-bottom-8 duration-200">
-                    <div className="flex items-center justify-between pb-1">
-                      <div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
-                          Step 1 of 4
-                        </span>
-                        <h3 className="text-xl font-black text-[#0E1116] mt-2">Choose an SOP to Begin</h3>
-                      </div>
+                <div className="fixed inset-0 z-50 bg-[#070A14]/80 backdrop-blur-2xl flex items-end justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+                  <div className="w-full max-w-md bg-[#0D1226]/95 backdrop-blur-3xl border-t sm:border border-white/10 rounded-t-[36px] sm:rounded-[36px] p-6 shadow-[0_-20px_60px_rgba(0,0,0,0.7)] space-y-4 animate-in slide-in-from-bottom-8 duration-300 text-white">
+                    {/* Header: Clean & Minimal, No header badge icons or static text pills */}
+                    <div className="flex items-center justify-between pb-2">
+                      <h3 className="text-xl font-bold tracking-tight text-white">
+                        Choose SOP
+                      </h3>
                       <button
                         onClick={() => setIsSopOptionsOpen(false)}
-                        className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 cursor-pointer"
+                        className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 flex items-center justify-center transition-all cursor-pointer shrink-0"
                         aria-label="Close"
                       >
-                        ✕
+                        <X size={16} />
                       </button>
                     </div>
 
-                    <div className="space-y-3 pt-1">
+                    {/* Action Cards Grid: Visual, Non-Text-Heavy, Modern Layout */}
+                    <div className="grid grid-cols-2 gap-3 pt-1">
+                      {/* Option 1: Housekeeping Featured SOP */}
                       <button
                         onClick={() => {
                           sounds.playTap();
                           setIsSopOptionsOpen(false);
                           handleSelectSop('housekeeping_sanitization', 'Housekeeping: Room Sanitization');
                         }}
-                        className="w-full h-16 rounded-full bg-[#3B4FE0] hover:bg-indigo-700 text-white flex items-center justify-center gap-3 text-base font-bold shadow-lg active:scale-98 transition-all cursor-pointer"
+                        className="col-span-2 relative overflow-hidden bg-gradient-to-r from-indigo-600/40 to-purple-600/40 hover:from-indigo-600/60 hover:to-purple-600/60 border border-indigo-500/30 rounded-2xl p-4 transition-all flex items-center justify-between group cursor-pointer text-left shadow-lg"
                       >
-                        <span className="text-xl">🧹</span>
-                        <span>1. Housekeeping: Room Sanitization</span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-lg shadow-inner group-hover:scale-105 transition-transform">
+                            🧹
+                          </div>
+                          <div>
+                            <span className="text-xs font-semibold text-indigo-300 uppercase tracking-wider block">
+                              Demo
+                            </span>
+                            <span className="text-sm font-bold text-white block leading-tight">
+                              Room Sanitization
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-indigo-300 group-hover:translate-x-1 transition-transform" />
                       </button>
 
+                      {/* Option 2: Scan SOP */}
                       <button
                         onClick={() => {
                           sounds.playTap();
                           setIsSopOptionsOpen(false);
                           setIsScanOpen(true);
                         }}
-                        className="w-full h-15 rounded-full bg-white border-2 border-slate-200 hover:border-slate-900 text-slate-900 flex items-center justify-center gap-3 text-base font-bold shadow-2xs active:scale-98 transition-all cursor-pointer"
+                        className="bg-white/5 hover:bg-white/10 border border-white/5 hover:border-sky-500/30 rounded-2xl p-4 backdrop-blur-md transition-all flex flex-col justify-between items-start group cursor-pointer text-left h-32"
                       >
-                        <span className="text-xl">📷</span>
-                        <span>2. Scan an SOP</span>
+                        <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shadow-inner group-hover:scale-105 transition-transform">
+                          <Camera className="w-4 h-4" />
+                        </div>
+                        <div className="mt-2">
+                          <span className="text-[10px] font-semibold text-sky-400 block uppercase tracking-wider">
+                            Camera
+                          </span>
+                          <span className="text-sm font-bold text-white block leading-tight">
+                            Scan SOP
+                          </span>
+                        </div>
                       </button>
 
+                      {/* Option 3: Upload SOP */}
                       <button
                         onClick={() => {
                           sounds.playTap();
                           setIsSopOptionsOpen(false);
                           setIsUploadOpen(true);
                         }}
-                        className="w-full h-15 rounded-full bg-white border-2 border-slate-200 hover:border-slate-900 text-slate-900 flex items-center justify-center gap-3 text-base font-bold shadow-2xs active:scale-98 transition-all cursor-pointer"
+                        className="bg-white/5 hover:bg-white/10 border border-white/5 hover:border-purple-500/30 rounded-2xl p-4 backdrop-blur-md transition-all flex flex-col justify-between items-start group cursor-pointer text-left h-32"
                       >
-                        <span className="text-xl">📄</span>
-                        <span>3. Upload an SOP</span>
+                        <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 shadow-inner group-hover:scale-105 transition-transform">
+                          <Upload className="w-4 h-4" />
+                        </div>
+                        <div className="mt-2">
+                          <span className="text-[10px] font-semibold text-purple-400 block uppercase tracking-wider">
+                            Document
+                          </span>
+                          <span className="text-sm font-bold text-white block leading-tight">
+                            Upload PDF
+                          </span>
+                        </div>
                       </button>
 
+                      {/* Option 4: Browse Library */}
                       <button
                         onClick={() => {
                           sounds.playTap();
                           setIsSopOptionsOpen(false);
                           setActiveTab('library');
                         }}
-                        className="w-full py-3 text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        className="col-span-2 py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-slate-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer mt-1"
                       >
-                        <span>Browse existing domain SOPs in Library →</span>
+                        <BookOpen className="w-4 h-4 text-indigo-400" />
+                        <span>Browse Library →</span>
                       </button>
                     </div>
                   </div>
@@ -446,8 +491,10 @@ export default function App() {
             </main>
           )}
 
-          {/* Floating Bottom Navigation Bar */}
-          <BottomNav activeTab={activeTab} onSelectTab={(tab) => setActiveTab(tab)} />
+          {/* Floating Bottom Navigation Bar (Hidden on Home tab) */}
+          {activeTab !== 'home' && (
+            <BottomNav activeTab={activeTab} onSelectTab={(tab) => setActiveTab(tab)} />
+          )}
         </>
       )}
 
